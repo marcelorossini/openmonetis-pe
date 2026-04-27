@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/images/logo_small.png" alt="OpenMonetis Logo" height="80" />
+  <img src="./public/images/logo_small.svg" alt="OpenMonetis Logo" height="80" />
 </p>
 
 <p align="center">
