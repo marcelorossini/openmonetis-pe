@@ -34,5 +34,5 @@ export type NotificationBellProps = {
 	unreadCount: number;
 	visibleCount: number;
 	budgetNotifications: BudgetNotification[];
-	preLancamentosCount?: number;
+	inboxPendingCount?: number;
 };

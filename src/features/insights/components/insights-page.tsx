@@ -21,7 +21,7 @@ import {
 	savedInsightsQueryKey,
 	useSavedInsights,
 } from "@/features/insights/hooks/use-saved-insights";
-import { EmptyState } from "@/shared/components/empty-state";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Alert, AlertDescription } from "@/shared/components/ui/alert";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";

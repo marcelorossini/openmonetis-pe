@@ -20,8 +20,8 @@ import { useMemo, useState } from "react";
 import type {
 	TransactionsExportContext,
 	TransactionsPaginationState,
-} from "@/features/transactions/export-types";
-import { EmptyState } from "@/shared/components/empty-state";
+} from "@/features/transactions/lib/export-types";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import {
@@ -50,7 +50,7 @@ import { getTransactionColumns } from "./transactions-columns";
 import { TransactionsFilters } from "./transactions-filters";
 import { TransactionsPagination } from "./transactions-pagination";
 
-type LancamentosTableProps = {
+type TransactionsTableProps = {
 	data: TransactionItem[];
 	currentUserId: string;
 	noteAsColumn?: boolean;
@@ -106,7 +106,7 @@ export function TransactionsTable({
 	isSettlementLoading,
 	showActions = true,
 	showFilters = true,
-}: LancamentosTableProps) {
+}: TransactionsTableProps) {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();

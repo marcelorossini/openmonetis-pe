@@ -26,7 +26,7 @@ export type NavItem = {
 	hideOnMobile?: boolean;
 };
 
-export type NavSection = {
+type NavSection = {
 	label: string;
 	items: NavItem[];
 };

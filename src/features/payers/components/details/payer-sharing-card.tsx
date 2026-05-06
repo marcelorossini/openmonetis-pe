@@ -16,7 +16,7 @@ import {
 	CardTitle,
 } from "@/shared/components/ui/card";
 
-type PagadorShare = {
+type PayerShare = {
 	id: string;
 	userId: string;
 	name: string;
@@ -24,17 +24,17 @@ type PagadorShare = {
 	createdAt: string;
 };
 
-interface PagadorSharingCardProps {
+interface PayerSharingCardProps {
 	payerId: string;
 	shareCode: string;
-	shares: PagadorShare[];
+	shares: PayerShare[];
 }
 
 export function PayerSharingCard({
 	payerId,
 	shareCode,
 	shares,
-}: PagadorSharingCardProps) {
+}: PayerSharingCardProps) {
 	const router = useRouter();
 	const [currentCode, setCurrentCode] = useState(shareCode);
 	const [regeneratePending, startRegenerate] = useTransition();

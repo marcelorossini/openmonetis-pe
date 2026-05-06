@@ -3,11 +3,11 @@
 import { RiAddLine, RiDeleteBinLine } from "@remixicon/react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { groupAndSortCategories } from "@/features/transactions/category-helpers";
+import { groupAndSortCategories } from "@/features/transactions/lib/category-helpers";
 import {
 	PAYMENT_METHODS,
 	type TRANSACTION_TYPES,
-} from "@/features/transactions/constants";
+} from "@/features/transactions/lib/constants";
 import { Button } from "@/shared/components/ui/button";
 import { CurrencyInput } from "@/shared/components/ui/currency-input";
 import { DatePicker } from "@/shared/components/ui/date-picker";
@@ -51,7 +51,7 @@ import {
 	PaymentMethodSelectContent,
 	TransactionTypeSelectContent,
 } from "../select-items";
-import { EstabelecimentoInput } from "../shared/establishment-input";
+import { EstablishmentInput } from "../shared/establishment-input";
 import type { SelectOption } from "../types";
 
 /** Payment methods sem Boleto para este modal */
@@ -490,7 +490,7 @@ export function MassAddDialog({
 											>
 												Estabelecimento {index + 1}
 											</Label>
-											<EstabelecimentoInput
+											<EstablishmentInput
 												id={`name-${transaction.id}`}
 												placeholder="Local"
 												value={transaction.name}

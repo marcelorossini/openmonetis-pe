@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { sendPayerSummaryAction } from "@/features/payers/detail-actions";
+import { sendPayerSummaryAction } from "@/features/payers/lib/detail-actions";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {

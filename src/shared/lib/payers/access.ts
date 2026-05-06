@@ -2,7 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { payerShares, payers, user as usersTable } from "@/db/schema";
 import { db } from "@/shared/lib/db";
 
-export type PayerWithAccess = Omit<typeof payers.$inferSelect, "shareCode"> & {
+type PayerWithAccess = Omit<typeof payers.$inferSelect, "shareCode"> & {
 	shareCode: string | null;
 	canEdit: boolean;
 	sharedByName: string | null;

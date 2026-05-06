@@ -1,7 +1,7 @@
 "use client";
 
 import { RiPieChartLine } from "@remixicon/react";
-import type { CardDetailData } from "@/features/reports/cards-report-queries";
+import type { CardDetailData } from "@/features/reports/lib/cards-report-queries";
 import { CategoryIconBadge } from "@/shared/components/entity-avatar";
 import MoneyValues from "@/shared/components/money-values";
 import {
@@ -11,7 +11,7 @@ import {
 	CardTitle,
 } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 
 type CardCategoryBreakdownProps = {
 	data: CardDetailData["categoryBreakdown"];

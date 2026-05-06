@@ -26,7 +26,7 @@ type BudgetData = {
 	} | null;
 };
 
-export type CategoryOption = {
+type CategoryOption = {
 	id: string;
 	name: string;
 	icon: string | null;

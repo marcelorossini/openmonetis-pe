@@ -1,7 +1,7 @@
 "use client";
 
 import { PercentageChangeIndicator } from "@/features/dashboard/components/percentage-change-indicator";
-import { formatPercentageChange } from "@/features/reports/utils";
+import { formatPercentageChange } from "@/features/reports/lib/utils";
 import {
 	Tooltip,
 	TooltipContent,

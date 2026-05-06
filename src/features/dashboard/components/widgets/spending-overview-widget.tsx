@@ -3,7 +3,7 @@
 import { RiArrowUpDoubleLine, RiStore2Line } from "@remixicon/react";
 import { useState } from "react";
 import type { TopExpensesData } from "@/features/dashboard/expenses/top-expenses-queries";
-import type { TopEstablishmentsData } from "@/features/dashboard/top-establishments-queries";
+import type { TopEstablishmentsData } from "@/features/dashboard/lib/top-establishments-queries";
 import {
 	Tabs,
 	TabsContent,

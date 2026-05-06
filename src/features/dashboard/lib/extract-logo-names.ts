@@ -1,4 +1,4 @@
-import type { DashboardData } from "./fetch-dashboard-data";
+import type { DashboardData } from "../fetch-dashboard-data";
 
 /**
  * Coleta todos os nomes de estabelecimentos exibidos nos widgets do

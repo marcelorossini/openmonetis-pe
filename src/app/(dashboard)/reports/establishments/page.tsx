@@ -34,7 +34,7 @@ const validatePeriodFilter = (value: string | null): PeriodFilter => {
 	return "6";
 };
 
-export default async function TopEstabelecimentosPage({
+export default async function TopEstablishmentsPage({
 	searchParams,
 }: PageProps) {
 	await connection();

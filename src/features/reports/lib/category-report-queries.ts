@@ -4,13 +4,13 @@ import { ACCOUNT_AUTO_INVOICE_NOTE_PREFIX } from "@/shared/lib/accounts/constant
 import { excludeTransactionsFromExcludedAccounts } from "@/shared/lib/accounts/query-filters";
 import { db } from "@/shared/lib/db";
 import { getAdminPayerId } from "@/shared/lib/payers/get-admin-id";
-import { safeToNumber as toNumber } from "@/shared/utils/number";
 import type {
 	CategoryReportData,
 	CategoryReportFilters,
 	CategoryReportItem,
 	MonthlyData,
-} from "./types";
+} from "@/shared/lib/types/reports";
+import { safeToNumber as toNumber } from "@/shared/utils/number";
 import { calculatePercentageChange, generatePeriodRange } from "./utils";
 
 /**

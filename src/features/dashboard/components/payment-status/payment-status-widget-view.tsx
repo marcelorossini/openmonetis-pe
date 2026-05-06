@@ -1,7 +1,7 @@
 import { RiWallet3Line } from "@remixicon/react";
 import type { PaymentStatusData } from "@/features/dashboard/payments/payment-status-queries";
 import { CardContent } from "@/shared/components/ui/card";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { PaymentStatusCategorySection } from "./payment-status-category-section";
 
 type PaymentStatusWidgetViewProps = {

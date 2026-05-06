@@ -1,6 +1,6 @@
 import { RiBarcodeFill } from "@remixicon/react";
 import type { DashboardBill } from "@/features/dashboard/bills/bills-queries";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { BillListItem } from "./bill-list-item";
 
 type BillsListProps = {

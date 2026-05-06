@@ -154,7 +154,7 @@ export async function fetchAccountSummary(
 	};
 }
 
-export async function fetchAccountLancamentos(
+export async function fetchAccountTransactions(
 	filters: SQL[],
 	settledOnly = true,
 ) {
@@ -167,7 +167,7 @@ export async function fetchAccountLancamentos(
 	});
 }
 
-export async function fetchAccountLancamentosPage(
+export async function fetchAccountTransactionsPage(
 	filters: SQL[],
 	{
 		page,

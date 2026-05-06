@@ -26,7 +26,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/shared/components/ui/popover";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { CATEGORY_COLORS } from "@/shared/utils/category-colors";
 import { formatCurrency, formatCurrencyCompact } from "@/shared/utils/currency";
 import { getIconComponent } from "@/shared/utils/icons";

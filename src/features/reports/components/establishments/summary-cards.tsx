@@ -6,12 +6,12 @@ import {
 	RiRepeatLine,
 	RiStore2Line,
 } from "@remixicon/react";
-import type { TopEstabelecimentosData } from "@/features/reports/establishments/queries";
+import type { TopEstablishmentsData } from "@/features/reports/establishments/queries";
 import MoneyValues from "@/shared/components/money-values";
 import { Card, CardContent } from "@/shared/components/ui/card";
 
 type SummaryCardsProps = {
-	summary: TopEstabelecimentosData["summary"];
+	summary: TopEstablishmentsData["summary"];
 };
 
 export function SummaryCards({ summary }: SummaryCardsProps) {

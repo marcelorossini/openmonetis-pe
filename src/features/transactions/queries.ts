@@ -32,7 +32,7 @@ type TransactionQueryInput = BaseTransactionQueryInput & {
 	offset?: number;
 };
 
-export type PaginatedTransactionsResult = {
+type PaginatedTransactionsResult = {
 	rows: Awaited<ReturnType<typeof fetchTransactions>>;
 	totalItems: number;
 	page: number;

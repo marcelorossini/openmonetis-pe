@@ -1,10 +1,10 @@
-export type CategoryOption = {
+type CategoryOption = {
 	id: string;
 	name: string;
 	type: string;
 };
 
-export type CategoryTransaction = {
+type CategoryTransaction = {
 	id: string;
 	name: string;
 	amount: number;

@@ -13,7 +13,7 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@/shared/components/ui/tabs";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { formatPeriodForUrl } from "@/shared/utils/period";
 import { CategoryBreakdownChart } from "./category-breakdown-chart";
 import { CategoryBreakdownList } from "./category-breakdown-list";

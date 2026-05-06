@@ -3,9 +3,9 @@
 import { RiInformationLine } from "@remixicon/react";
 import Link from "next/link";
 import { useMemo } from "react";
-import { formatPeriodLabel } from "@/features/reports/utils";
+import { formatPeriodLabel } from "@/features/reports/lib/utils";
 import { CategoryIconBadge } from "@/shared/components/entity-avatar";
-import StatusDot from "@/shared/components/status-dot";
+import StatusDot from "@/shared/components/feedback/status-dot";
 import { Card } from "@/shared/components/ui/card";
 import {
 	Table,
@@ -26,7 +26,7 @@ import { formatCurrency } from "@/shared/utils/currency";
 import { formatPeriodForUrl } from "@/shared/utils/period";
 import { CategoryCell } from "./category-cell";
 
-export interface CategoryTableProps {
+interface CategoryTableProps {
 	title: string;
 	categories: CategoryReportItem[];
 	periods: string[];

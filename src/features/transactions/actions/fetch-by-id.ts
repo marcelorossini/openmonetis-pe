@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { transactions } from "@/db/schema";
-import { mapTransactionsData } from "@/features/transactions/page-helpers";
+import { mapTransactionsData } from "@/features/transactions/lib/page-helpers";
 import { fetchTransactionsWithRelations } from "@/features/transactions/queries";
 import { getUser } from "@/shared/lib/auth/server";
 import type { TransactionItem } from "../components/types";

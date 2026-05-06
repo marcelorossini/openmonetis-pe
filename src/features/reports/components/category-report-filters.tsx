@@ -7,7 +7,7 @@ import {
 } from "@remixicon/react";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
-import { validateDateRange } from "@/features/reports/utils";
+import { validateDateRange } from "@/features/reports/lib/utils";
 import { Button } from "@/shared/components/ui/button";
 import {
 	Command,

@@ -4,7 +4,7 @@ import { fetchCalendarData } from "@/features/calendar/queries";
 import {
 	getSingleParam,
 	type ResolvedSearchParams,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import MonthNavigation from "@/shared/components/month-picker/month-navigation";
 import { getUserId } from "@/shared/lib/auth/server";
 import type { CalendarPeriod } from "@/shared/lib/types/calendar";

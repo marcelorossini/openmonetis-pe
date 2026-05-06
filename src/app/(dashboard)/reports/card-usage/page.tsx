@@ -1,11 +1,11 @@
 import { RiBankCard2Line } from "@remixicon/react";
 import { connection } from "next/server";
-import { fetchCartoesReportData } from "@/features/reports/cards-report-queries";
 import { CardCategoryBreakdown } from "@/features/reports/components/cards/card-category-breakdown";
 import { CardInvoiceStatus } from "@/features/reports/components/cards/card-invoice-status";
 import { CardTopExpenses } from "@/features/reports/components/cards/card-top-expenses";
 import { CardUsageChart } from "@/features/reports/components/cards/card-usage-chart";
 import { CardsOverview } from "@/features/reports/components/cards/cards-overview";
+import { fetchCartoesReportData } from "@/features/reports/lib/cards-report-queries";
 import MonthNavigation from "@/shared/components/month-picker/month-navigation";
 import { Card } from "@/shared/components/ui/card";
 import { getUser } from "@/shared/lib/auth/server";

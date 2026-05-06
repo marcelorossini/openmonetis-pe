@@ -1,5 +1,5 @@
+import StatusDot from "@/shared/components/feedback/status-dot";
 import MoneyValues from "@/shared/components/money-values";
-import StatusDot from "@/shared/components/status-dot";
 import { Progress } from "@/shared/components/ui/progress";
 
 type PaymentStatusCategorySectionProps = {

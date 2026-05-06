@@ -1,4 +1,4 @@
-import type { TransactionFormState } from "@/features/transactions/form-helpers";
+import type { TransactionFormState } from "@/features/transactions/lib/form-helpers";
 import type { SelectOption, TransactionItem } from "../../types";
 
 export type FormState = TransactionFormState;
@@ -71,7 +71,7 @@ export interface TransactionDialogProps {
 	}) => void;
 }
 
-export interface BaseFieldSectionProps {
+interface BaseFieldSectionProps {
 	formState: FormState;
 	onFieldChange: <Key extends keyof FormState>(
 		key: Key,

@@ -1,4 +1,4 @@
-export type GoalProgressStatus = "on-track" | "critical" | "exceeded";
+type GoalProgressStatus = "on-track" | "critical" | "exceeded";
 
 export type GoalProgressItem = {
 	id: string;

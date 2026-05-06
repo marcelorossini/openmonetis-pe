@@ -6,7 +6,7 @@ import { transactions } from "@/db/schema";
 import {
 	validateCartaoOwnership,
 	validateContaOwnership,
-	validatePagadorOwnership,
+	validatePayerOwnership,
 } from "@/features/transactions/actions/core";
 import { revalidateForEntity } from "@/shared/lib/actions/helpers";
 import { getUserId } from "@/shared/lib/auth/server";
@@ -36,8 +36,7 @@ const importSchema = z.object({
 		.optional(),
 });
 
-export type ImportRow = z.infer<typeof importRowSchema>;
-export type ImportInput = z.infer<typeof importSchema>;
+type ImportInput = z.infer<typeof importSchema>;
 
 type ImportResult =
 	| { success: true; imported: number; skipped: number; importBatchId: string }
@@ -79,7 +78,7 @@ export async function importTransactionsAction(
 
 	// Valida ownership
 	const [payerOk, accountOk, cardOk] = await Promise.all([
-		validatePagadorOwnership(userId, payerId),
+		validatePayerOwnership(userId, payerId),
 		validateContaOwnership(userId, accountId),
 		validateCartaoOwnership(userId, cardId),
 	]);

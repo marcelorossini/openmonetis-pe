@@ -19,7 +19,7 @@ import {
 	SelectValue,
 } from "@/shared/components/ui/select";
 
-export type AccountCardValue = `card:${string}` | `account:${string}`;
+type AccountCardValue = `card:${string}` | `account:${string}`;
 
 export function encodeAccountCard(
 	type: "card" | "account",

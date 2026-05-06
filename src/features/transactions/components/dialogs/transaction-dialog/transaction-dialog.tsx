@@ -14,12 +14,12 @@ import {
 import {
 	filterSecondaryPayerOptions,
 	groupAndSortCategories,
-} from "@/features/transactions/category-helpers";
+} from "@/features/transactions/lib/category-helpers";
 import {
 	applyFieldDependencies,
 	buildTransactionInitialState,
 	deriveCreditCardPeriod,
-} from "@/features/transactions/form-helpers";
+} from "@/features/transactions/lib/form-helpers";
 import { Button } from "@/shared/components/ui/button";
 import {
 	Collapsible,

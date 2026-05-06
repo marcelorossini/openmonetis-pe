@@ -1,6 +1,6 @@
 import { RiBillLine } from "@remixicon/react";
 import type { DashboardInvoice } from "@/features/dashboard/invoices/invoices-queries";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { InvoiceListItem } from "./invoice-list-item";
 
 type InvoicesListProps = {

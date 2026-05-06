@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/shared/components/logo";
+import { Logo } from "@/shared/components/brand/logo";
 
 type NavbarShellProps = {
 	logoHref?: string;

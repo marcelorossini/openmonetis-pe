@@ -18,11 +18,11 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
-import { DEFAULT_LANCAMENTOS_COLUMN_ORDER } from "@/features/transactions/column-order";
+import { DEFAULT_TRANSACTIONS_COLUMN_ORDER } from "@/features/transactions/lib/column-order";
 import {
 	CREDIT_CARD_PAYMENT_METHOD,
 	SETTLEABLE_PAYMENT_METHODS,
-} from "@/features/transactions/constants";
+} from "@/features/transactions/lib/constants";
 import {
 	CategoryIconBadge,
 	EstablishmentLogo,
@@ -58,7 +58,7 @@ import { getConditionIcon, getPaymentMethodIcon } from "@/shared/utils/icons";
 import { cn } from "@/shared/utils/ui";
 import type { TransactionItem } from "../types";
 
-export type BuildColumnsArgs = {
+type BuildColumnsArgs = {
 	currentUserId: string;
 	noteAsColumn: boolean;
 	onEdit?: (item: TransactionItem) => void;
@@ -748,6 +748,6 @@ export function getTransactionColumns(
 	const built = buildColumns(args);
 	const order = args.columnOrder?.length
 		? args.columnOrder
-		: DEFAULT_LANCAMENTOS_COLUMN_ORDER;
+		: DEFAULT_TRANSACTIONS_COLUMN_ORDER;
 	return reorderColumnsByPreference(built, order);
 }

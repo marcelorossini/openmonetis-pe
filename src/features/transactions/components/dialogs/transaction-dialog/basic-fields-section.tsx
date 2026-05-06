@@ -5,7 +5,7 @@ import { CalculatorDialogButton } from "@/shared/components/calculator/calculato
 import { CurrencyInput } from "@/shared/components/ui/currency-input";
 import { DatePicker } from "@/shared/components/ui/date-picker";
 import { Label } from "@/shared/components/ui/label";
-import { EstabelecimentoInput } from "../../shared/establishment-input";
+import { EstablishmentInput } from "../../shared/establishment-input";
 import type { BasicFieldsSectionProps } from "./transaction-dialog-types";
 
 export function BasicFieldsSection({
@@ -17,7 +17,7 @@ export function BasicFieldsSection({
 		<div className="space-y-3">
 			<div className="space-y-1">
 				<Label htmlFor="name">Descrição</Label>
-				<EstabelecimentoInput
+				<EstablishmentInput
 					id="name"
 					value={formState.name}
 					onChange={(value) => onFieldChange("name", value)}

@@ -4,10 +4,7 @@ import {
 	RiArrowRightDoubleLine,
 	RiArrowRightSLine,
 } from "@remixicon/react";
-import {
-	INBOX_DEFAULT_PAGE_SIZE,
-	INBOX_PAGE_SIZE_OPTIONS,
-} from "@/features/inbox/page-helpers";
+import { INBOX_PAGE_SIZE_OPTIONS } from "@/features/inbox/page-helpers";
 import { Button } from "@/shared/components/ui/button";
 import {
 	Select,
@@ -117,6 +114,3 @@ export function InboxPagination({
 		</div>
 	);
 }
-
-// Re-export para facilitar uso externo
-export { INBOX_DEFAULT_PAGE_SIZE };

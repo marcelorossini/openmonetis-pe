@@ -25,7 +25,7 @@ export function NotificationBell(props: NotificationBellProps) {
 		hasArchivedItems,
 		archivedDashboardCount,
 		hasVisibleItems,
-		displayedPreLancamentosCount,
+		displayedInboxPendingCount,
 		displayedBudgetNotifications,
 		invoiceNotifications,
 		boletoNotifications,
@@ -62,7 +62,7 @@ export function NotificationBell(props: NotificationBellProps) {
 
 				{hasVisibleItems ? (
 					<NotificationBellContent
-						displayedPreLancamentosCount={displayedPreLancamentosCount}
+						displayedInboxPendingCount={displayedInboxPendingCount}
 						displayedBudgetNotifications={displayedBudgetNotifications}
 						invoiceNotifications={invoiceNotifications}
 						boletoNotifications={boletoNotifications}

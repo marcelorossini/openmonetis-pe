@@ -2,7 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { notes } from "@/db/schema";
 import { db } from "@/shared/lib/db";
 
-export type DashboardTask = {
+type DashboardTask = {
 	id: string;
 	text: string;
 	completed: boolean;

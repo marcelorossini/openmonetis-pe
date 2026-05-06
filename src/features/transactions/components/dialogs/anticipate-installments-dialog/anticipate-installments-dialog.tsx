@@ -7,7 +7,7 @@ import { CategoryIcon } from "@/features/categories/components/category-icon";
 import {
 	createInstallmentAnticipationAction,
 	getEligibleInstallmentsAction,
-} from "@/features/transactions/anticipation-actions";
+} from "@/features/transactions/actions/anticipation";
 import MoneyValues from "@/shared/components/money-values";
 import { PeriodPicker } from "@/shared/components/period-picker";
 import { Button } from "@/shared/components/ui/button";

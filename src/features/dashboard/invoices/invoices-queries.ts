@@ -55,7 +55,7 @@ type RawInvoiceBreakdownRow = {
 	amount: number | string | null;
 };
 
-export type InvoicePagadorBreakdown = {
+type InvoicePagadorBreakdown = {
 	payerId: string | null;
 	pagadorName: string;
 	pagadorAvatar: string | null;

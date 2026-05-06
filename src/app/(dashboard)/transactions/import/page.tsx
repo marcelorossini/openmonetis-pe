@@ -3,7 +3,7 @@ import { ImportPage } from "@/features/transactions/components/import/import-pag
 import {
 	buildOptionSets,
 	buildSluggedFilters,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import { fetchTransactionFilterSources } from "@/features/transactions/queries";
 import { getUserId } from "@/shared/lib/auth/server";
 

@@ -8,7 +8,7 @@ import {
 } from "@/shared/utils/financial-dates";
 
 export type BillDialogState = PaymentDialogState;
-export type BillStatusDateItem = Pick<
+type BillStatusDateItem = Pick<
 	DashboardBill,
 	"dueDate" | "boletoPaymentDate" | "isSettled"
 >;

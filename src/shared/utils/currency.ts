@@ -15,13 +15,6 @@ export const currencyFormatter = new Intl.NumberFormat("pt-BR", {
 	maximumFractionDigits: 2,
 });
 
-export const currencyFormatterNoCents = new Intl.NumberFormat("pt-BR", {
-	style: "currency",
-	currency: "BRL",
-	minimumFractionDigits: 0,
-	maximumFractionDigits: 0,
-});
-
 export const formatCurrency = (
 	value: number,
 	options: CurrencyFormatOptions = {},
@@ -46,19 +39,6 @@ export const formatCurrencyCompact = (
 
 /**
  * Formats a decimal number for database storage (2 decimal places)
- * @param value - The number to format
- * @returns Formatted string with 2 decimal places, or null if input is null
- */
-export function formatDecimalForDb(value: number | null): string | null {
-	if (value === null) {
-		return null;
-	}
-
-	return (Math.round(value * 100) / 100).toFixed(2);
-}
-
-/**
- * Formats a decimal number for database storage (non-nullable version)
  * @param value - The number to format
  * @returns Formatted string with 2 decimal places
  */

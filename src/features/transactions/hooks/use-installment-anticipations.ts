@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
-import { fetchJson } from "@/shared/lib/fetch-json";
+import { fetchJson } from "@/shared/utils/fetch-json";
 
 const anticipationItemSchema = z.object({
 	id: z.string().uuid(),

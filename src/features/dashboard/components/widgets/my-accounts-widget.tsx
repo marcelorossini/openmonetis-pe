@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import type { DashboardAccount } from "@/features/dashboard/accounts-queries";
+import type { DashboardAccount } from "@/features/dashboard/lib/accounts-queries";
 import { updateMyAccountsWidgetPreference } from "@/features/dashboard/widget-registry/widget-actions";
 import MoneyValues from "@/shared/components/money-values";
 import { Badge } from "@/shared/components/ui/badge";
@@ -21,7 +21,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/shared/components/ui/tooltip";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { isAccountInactive } from "@/shared/lib/accounts/constants";
 import { resolveLogoSrc } from "@/shared/lib/logo";
 import { formatPeriodForUrl } from "@/shared/utils/period";

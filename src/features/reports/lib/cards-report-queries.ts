@@ -23,7 +23,7 @@ import {
 
 const DESPESA = "Despesa";
 
-export type CardSummary = {
+type CardSummary = {
 	id: string;
 	name: string;
 	brand: string | null;

@@ -1,6 +1,6 @@
 "use client";
 
-import StatusDot from "@/shared/components/status-dot";
+import StatusDot from "@/shared/components/feedback/status-dot";
 import { getAccountTypeIcon } from "@/shared/utils/icons";
 
 export function AccountTypeSelectContent({ label }: { label: string }) {

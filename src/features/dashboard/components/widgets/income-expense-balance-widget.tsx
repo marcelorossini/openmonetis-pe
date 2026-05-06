@@ -9,7 +9,7 @@ import {
 	ChartContainer,
 	ChartTooltip,
 } from "@/shared/components/ui/chart";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { formatCurrency } from "@/shared/utils/currency";
 
 type IncomeExpenseBalanceWidgetProps = {

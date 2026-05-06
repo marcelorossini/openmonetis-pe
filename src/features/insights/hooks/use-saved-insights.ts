@@ -3,8 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import type { SavedInsightsRecord } from "@/features/insights/queries";
-import { fetchJson } from "@/shared/lib/fetch-json";
 import { InsightsResponseSchema } from "@/shared/lib/schemas/insights";
+import { fetchJson } from "@/shared/utils/fetch-json";
 
 const savedInsightsRecordSchema = z.object({
 	insights: InsightsResponseSchema,

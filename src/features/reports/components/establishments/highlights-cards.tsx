@@ -1,11 +1,11 @@
 "use client";
 
 import { RiFireLine, RiTrophyLine } from "@remixicon/react";
-import type { TopEstabelecimentosData } from "@/features/reports/establishments/queries";
+import type { TopEstablishmentsData } from "@/features/reports/establishments/queries";
 import { Card, CardContent } from "@/shared/components/ui/card";
 
 type HighlightsCardsProps = {
-	summary: TopEstabelecimentosData["summary"];
+	summary: TopEstablishmentsData["summary"];
 };
 
 export function HighlightsCards({ summary }: HighlightsCardsProps) {

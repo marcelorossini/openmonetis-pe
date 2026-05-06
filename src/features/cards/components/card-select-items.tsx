@@ -2,7 +2,7 @@
 
 import { RiBankLine } from "@remixicon/react";
 import Image from "next/image";
-import StatusDot from "@/shared/components/status-dot";
+import StatusDot from "@/shared/components/feedback/status-dot";
 import { resolveCardBrandLogoSrc } from "@/shared/lib/cards/brand-assets";
 import { resolveLogoSrc } from "@/shared/lib/logo";
 

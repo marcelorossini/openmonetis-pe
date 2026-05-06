@@ -1,7 +1,7 @@
 import { RiAtLine, RiCalendarEventLine } from "@remixicon/react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { EmptyState } from "@/shared/components/empty-state";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Card } from "@/shared/components/ui/card";
 import { InboxCard } from "./inbox-card";
 import type { InboxItem } from "./types";

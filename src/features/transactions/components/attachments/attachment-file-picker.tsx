@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import {
 	ALLOWED_MIME_TYPES,
 	DEFAULT_MAX_FILE_SIZE_MB,
-} from "@/features/transactions/attachments-config";
+} from "@/features/transactions/lib/attachments-config";
 import { Button } from "@/shared/components/ui/button";
 
 interface AttachmentFilePickerProps {

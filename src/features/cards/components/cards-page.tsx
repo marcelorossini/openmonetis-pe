@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { deleteCardAction } from "@/features/cards/actions";
 import { ConfirmActionDialog } from "@/shared/components/confirm-action-dialog";
-import { EmptyState } from "@/shared/components/empty-state";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { Card as UiCard } from "@/shared/components/ui/card";
 import {

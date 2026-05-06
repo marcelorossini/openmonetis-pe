@@ -31,7 +31,7 @@ function calculateDueDate(period: string, dueDay: string | null): Date | null {
 	}
 }
 
-export type InstallmentDetail = {
+type InstallmentDetail = {
 	id: string;
 	currentInstallment: number;
 	amount: number;

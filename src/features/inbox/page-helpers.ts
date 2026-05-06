@@ -7,9 +7,9 @@ export type ResolvedInboxSearchParams =
 export const INBOX_DEFAULT_PAGE_SIZE = 12;
 export const INBOX_PAGE_SIZE_OPTIONS = [12, 24, 48];
 
-export const INBOX_STATUSES = ["pending", "processed", "discarded"] as const;
+const INBOX_STATUSES = ["pending", "processed", "discarded"] as const;
 
-export const getSingleParam = (
+const getSingleParam = (
 	params: ResolvedInboxSearchParams,
 	key: string,
 ): string | null => {

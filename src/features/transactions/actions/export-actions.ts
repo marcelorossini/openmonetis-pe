@@ -1,14 +1,14 @@
 "use server";
 
 import { z } from "zod";
-import { fetchAccountLancamentos } from "@/features/accounts/statement-queries";
-import type { TransactionsExportContext } from "@/features/transactions/export-types";
+import { fetchAccountTransactions } from "@/features/accounts/statement-queries";
+import type { TransactionsExportContext } from "@/features/transactions/lib/export-types";
 import {
 	buildSluggedFilters,
 	buildSlugMaps,
 	buildTransactionWhere,
 	mapTransactionsData,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import {
 	fetchTransactionFilterSources,
 	fetchTransactions,
@@ -66,7 +66,7 @@ export async function exportTransactionsDataAction(
 
 		const rows =
 			validated.source === "account-statement"
-				? await fetchAccountLancamentos(filters, validated.settledOnly ?? true)
+				? await fetchAccountTransactions(filters, validated.settledOnly ?? true)
 				: await fetchTransactions(filters);
 
 		return {

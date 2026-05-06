@@ -2,7 +2,7 @@
  * Ids das colunas reordenáveis da tabela de lançamentos (extrato).
  * select, purchaseDate e actions são fixos (início, oculto, fim).
  */
-export const LANCAMENTOS_REORDERABLE_COLUMN_IDS = [
+const TRANSACTIONS_REORDERABLE_COLUMN_IDS = [
 	"name",
 	"transactionType",
 	"amount",
@@ -14,7 +14,7 @@ export const LANCAMENTOS_REORDERABLE_COLUMN_IDS = [
 	"contaCartao",
 ] as const;
 
-export const LANCAMENTOS_COLUMN_LABELS: Record<string, string> = {
+export const TRANSACTIONS_COLUMN_LABELS: Record<string, string> = {
 	name: "Estabelecimento",
 	transactionType: "Transação",
 	amount: "Valor",
@@ -26,6 +26,6 @@ export const LANCAMENTOS_COLUMN_LABELS: Record<string, string> = {
 	contaCartao: "Conta/Cartão",
 };
 
-export const DEFAULT_LANCAMENTOS_COLUMN_ORDER: string[] = [
-	...LANCAMENTOS_REORDERABLE_COLUMN_IDS,
+export const DEFAULT_TRANSACTIONS_COLUMN_ORDER: string[] = [
+	...TRANSACTIONS_REORDERABLE_COLUMN_IDS,
 ];

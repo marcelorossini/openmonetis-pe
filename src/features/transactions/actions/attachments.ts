@@ -7,7 +7,7 @@ import { attachments, transactionAttachments, transactions } from "@/db/schema";
 import {
 	ALLOWED_MIME_TYPES,
 	MAX_FILE_SIZE,
-} from "@/features/transactions/attachments-config";
+} from "@/features/transactions/lib/attachments-config";
 import {
 	handleActionError,
 	revalidateForEntity,

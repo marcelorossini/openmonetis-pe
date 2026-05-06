@@ -3,8 +3,6 @@ import { establishmentLogos } from "@/db/schema";
 import { db } from "@/shared/lib/db";
 import { toNameKey } from "@/shared/lib/logo";
 
-export { toNameKey };
-
 /**
  * Busca o domínio salvo para um único estabelecimento.
  */

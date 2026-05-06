@@ -5,10 +5,7 @@ import { z } from "zod";
 import { savedInsights } from "@/db/schema";
 import { getUser } from "@/shared/lib/auth/server";
 import { db } from "@/shared/lib/db";
-import {
-	type InsightsResponse,
-	InsightsResponseSchema,
-} from "@/shared/lib/schemas/insights";
+import type { InsightsResponse } from "@/shared/lib/schemas/insights";
 import type { ActionResult } from "./types";
 
 const periodSchema = z
@@ -111,62 +108,6 @@ export async function saveInsightsAction(
 		return {
 			success: false,
 			error: "Erro ao salvar análise. Tente novamente.",
-		};
-	}
-}
-
-export async function loadSavedInsightsAction(period: string): Promise<
-	ActionResult<{
-		insights: InsightsResponse;
-		modelId: string;
-		createdAt: Date;
-	} | null>
-> {
-	try {
-		const user = await getUser();
-		const validatedPeriod = periodSchema.safeParse(period);
-		if (!validatedPeriod.success) {
-			return {
-				success: false,
-				error: validatedPeriod.error.issues[0]?.message ?? "Período inválido",
-			};
-		}
-		period = validatedPeriod.data;
-
-		const result = await db
-			.select()
-			.from(savedInsights)
-			.where(
-				and(
-					eq(savedInsights.userId, user.id),
-					eq(savedInsights.period, period),
-				),
-			)
-			.limit(1);
-
-		if (result.length === 0) {
-			return {
-				success: true,
-				data: null,
-			};
-		}
-
-		const saved = result[0];
-		const insights = InsightsResponseSchema.parse(JSON.parse(saved.data));
-
-		return {
-			success: true,
-			data: {
-				insights,
-				modelId: saved.modelId,
-				createdAt: saved.createdAt,
-			},
-		};
-	} catch (error) {
-		console.error("Error loading saved insights:", error);
-		return {
-			success: false,
-			error: "Erro ao carregar análise salva. Tente novamente.",
 		};
 	}
 }

@@ -6,7 +6,7 @@ import {
 import { formatPercentage } from "@/shared/utils/percentage";
 import { cn } from "@/shared/utils/ui";
 
-export type PercentageChangeTrend = "up" | "down" | "flat";
+type PercentageChangeTrend = "up" | "down" | "flat";
 
 type PercentageChangeIndicatorProps = {
 	value?: number | null;

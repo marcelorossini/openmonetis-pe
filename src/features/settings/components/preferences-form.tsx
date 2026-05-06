@@ -24,11 +24,11 @@ import { updatePreferencesAction } from "@/features/settings/actions";
 import {
 	ATTACHMENT_SIZE_OPTIONS,
 	type AttachmentSizeOption,
-} from "@/features/transactions/attachments-config";
+} from "@/features/transactions/lib/attachments-config";
 import {
-	DEFAULT_LANCAMENTOS_COLUMN_ORDER,
-	LANCAMENTOS_COLUMN_LABELS,
-} from "@/features/transactions/column-order";
+	DEFAULT_TRANSACTIONS_COLUMN_ORDER,
+	TRANSACTIONS_COLUMN_LABELS,
+} from "@/features/transactions/lib/column-order";
 import { Button } from "@/shared/components/ui/button";
 import { Label } from "@/shared/components/ui/label";
 import { Separator } from "@/shared/components/ui/separator";
@@ -59,7 +59,7 @@ function SortableColumnItem({ id }: { id: string }) {
 		transition,
 	};
 
-	const label = LANCAMENTOS_COLUMN_LABELS[id] ?? id;
+	const label = TRANSACTIONS_COLUMN_LABELS[id] ?? id;
 
 	return (
 		<div
@@ -94,7 +94,7 @@ export function PreferencesForm({
 	const [columnOrder, setColumnOrder] = useState<string[]>(
 		initialColumnOrder && initialColumnOrder.length > 0
 			? initialColumnOrder
-			: DEFAULT_LANCAMENTOS_COLUMN_ORDER,
+			: DEFAULT_TRANSACTIONS_COLUMN_ORDER,
 	);
 	const [attachmentMaxSizeMb, setAttachmentMaxSizeMb] =
 		useState<AttachmentSizeOption>(

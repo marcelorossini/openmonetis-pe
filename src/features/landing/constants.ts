@@ -28,7 +28,7 @@ import {
 } from "@remixicon/react";
 import type { ComponentType } from "react";
 
-export type FeatureItem = {
+type FeatureItem = {
 	icon: ComponentType<{ className?: string; style?: React.CSSProperties }>;
 	title: string;
 	description: string;

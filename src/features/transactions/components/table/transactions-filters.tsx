@@ -18,7 +18,7 @@ import {
 	SETTLED_FILTER_VALUES,
 	TRANSACTION_CONDITIONS,
 	TRANSACTION_TYPES,
-} from "@/features/transactions/constants";
+} from "@/features/transactions/lib/constants";
 import { Button } from "@/shared/components/ui/button";
 import {
 	Command,

@@ -1,4 +1,4 @@
-import type { SelectOption as LancamentoSelectOption } from "@/features/transactions/components/types";
+import type { SelectOption as TransactionSelectOption } from "@/features/transactions/components/types";
 
 export type InboxStatus = "pending" | "processed" | "discarded";
 
@@ -29,4 +29,4 @@ export type InboxPaginationState = {
 };
 
 // Re-export the lancamentos SelectOption for use in inbox components
-export type SelectOption = LancamentoSelectOption;
+export type SelectOption = TransactionSelectOption;

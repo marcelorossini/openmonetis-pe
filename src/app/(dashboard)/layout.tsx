@@ -1,5 +1,5 @@
 import { connection } from "next/server";
-import { fetchDashboardNavbarData } from "@/features/dashboard/navbar-queries";
+import { fetchDashboardNavbarData } from "@/features/dashboard/lib/navbar-queries";
 import { AppNavbar } from "@/shared/components/navigation/navbar/app-navbar";
 import { LogoDevProvider } from "@/shared/components/providers/logo-dev-provider";
 import { PrivacyProvider } from "@/shared/components/providers/privacy-provider";
@@ -21,8 +21,8 @@ export default async function DashboardLayout({
 			<PrivacyProvider>
 				<AppNavbar
 					user={{ ...session.user, image: session.user.image ?? null }}
-					pagadorAvatarUrl={navbarData.pagadorAvatarUrl}
-					preLancamentosCount={navbarData.preLancamentosCount}
+					payerAvatarUrl={navbarData.payerAvatarUrl}
+					inboxPendingCount={navbarData.inboxPendingCount}
 					notificationsSnapshot={navbarData.notificationsSnapshot}
 				/>
 				<div className="relative flex flex-1 flex-col pt-16">

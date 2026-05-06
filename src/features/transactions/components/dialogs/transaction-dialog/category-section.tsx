@@ -1,6 +1,6 @@
 "use client";
 
-import { TRANSACTION_TYPES } from "@/features/transactions/constants";
+import { TRANSACTION_TYPES } from "@/features/transactions/lib/constants";
 import { Label } from "@/shared/components/ui/label";
 import {
 	Select,

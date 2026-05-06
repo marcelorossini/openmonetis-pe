@@ -6,7 +6,7 @@ import {
 	PAYMENT_METHODS,
 	TRANSACTION_CONDITIONS,
 	TRANSACTION_TYPES,
-} from "@/features/transactions/constants";
+} from "@/features/transactions/lib/constants";
 import { handleActionError } from "@/shared/lib/actions/helpers";
 import { getUser } from "@/shared/lib/auth/server";
 import { db } from "@/shared/lib/db";
@@ -705,7 +705,7 @@ export async function createMassTransactionsAction(
 			await sendPayerAutoEmails({
 				userLabel: resolveUserLabel(user),
 				action: "created",
-				entriesByPagador: notificationEntries,
+				entriesByPayer: notificationEntries,
 			});
 		}
 
@@ -799,7 +799,7 @@ export async function deleteMultipleTransactionsAction(
 			await sendPayerAutoEmails({
 				userLabel: resolveUserLabel(user),
 				action: "deleted",
-				entriesByPagador: notificationEntries,
+				entriesByPayer: notificationEntries,
 			});
 		}
 

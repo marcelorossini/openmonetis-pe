@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { deleteAccountAction } from "@/features/accounts/actions";
 import { AccountCard } from "@/features/accounts/components/account-card";
 import { ConfirmActionDialog } from "@/shared/components/confirm-action-dialog";
-import { EmptyState } from "@/shared/components/empty-state";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import {

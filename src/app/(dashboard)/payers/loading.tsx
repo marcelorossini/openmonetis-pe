@@ -4,7 +4,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
  * Loading state para a página de pessoas
  * Layout: Header + Input de compartilhamento + Grid de cards
  */
-export default function PagadoresLoading() {
+export default function PayersLoading() {
 	return (
 		<main className="flex flex-col items-start gap-6">
 			<div className="w-full space-y-6">

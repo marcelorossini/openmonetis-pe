@@ -1,4 +1,4 @@
-export type PaymentStatusCategory = {
+type PaymentStatusCategory = {
 	total: number;
 	confirmed: number;
 	pending: number;

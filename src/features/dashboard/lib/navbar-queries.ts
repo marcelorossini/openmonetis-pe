@@ -8,11 +8,11 @@ import { getBusinessDateString } from "@/shared/utils/date";
 import {
 	type DashboardNotificationsSnapshot,
 	fetchDashboardNotifications,
-} from "./notifications/notifications-queries";
+} from "../notifications/notifications-queries";
 
 type DashboardNavbarData = {
-	pagadorAvatarUrl: string | null;
-	preLancamentosCount: number;
+	payerAvatarUrl: string | null;
+	inboxPendingCount: number;
 	notificationsSnapshot: DashboardNotificationsSnapshot;
 };
 
@@ -39,7 +39,7 @@ async function fetchDashboardNavbarDataInternal(
 	userId: string,
 ): Promise<DashboardNavbarData> {
 	const currentPeriod = getBusinessDateString().slice(0, 7);
-	const [pagadorAvatarUrl, notificationsSnapshot, preLancamentosCount] =
+	const [payerAvatarUrl, notificationsSnapshot, inboxPendingCount] =
 		await Promise.all([
 			fetchAdminPayerAvatarUrl(userId),
 			fetchDashboardNotifications(userId, currentPeriod),
@@ -47,8 +47,8 @@ async function fetchDashboardNavbarDataInternal(
 		]);
 
 	return {
-		pagadorAvatarUrl,
-		preLancamentosCount,
+		payerAvatarUrl,
+		inboxPendingCount,
 		notificationsSnapshot,
 	};
 }

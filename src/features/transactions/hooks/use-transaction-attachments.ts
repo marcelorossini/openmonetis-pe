@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import type { TransactionAttachmentListItem } from "@/features/transactions/attachment-queries";
-import { fetchJson } from "@/shared/lib/fetch-json";
+import type { TransactionAttachmentListItem } from "@/features/transactions/lib/attachment-queries";
+import { fetchJson } from "@/shared/utils/fetch-json";
 
 export const transactionAttachmentsQueryKey = (transactionId: string) =>
 	["transactions", "attachments", transactionId] as const;

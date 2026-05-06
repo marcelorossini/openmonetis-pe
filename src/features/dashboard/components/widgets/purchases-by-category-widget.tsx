@@ -12,7 +12,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/shared/components/ui/select";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { CATEGORY_TYPE_LABEL } from "@/shared/lib/categories/constants";
 import { formatTransactionDate } from "@/shared/utils/date";
 

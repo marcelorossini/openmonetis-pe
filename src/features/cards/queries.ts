@@ -19,7 +19,7 @@ type CardData = {
 	accountName: string;
 };
 
-export type AccountSimple = {
+type AccountSimple = {
 	id: string;
 	name: string;
 	logo: string | null;
@@ -121,7 +121,7 @@ async function fetchCardsByStatus(
 	return { cards: cardList, accounts, logoOptions };
 }
 
-export async function fetchCardsForUser(userId: string): Promise<{
+async function fetchCardsForUser(userId: string): Promise<{
 	cards: CardData[];
 	accounts: AccountSimple[];
 	logoOptions: string[];
@@ -129,7 +129,7 @@ export async function fetchCardsForUser(userId: string): Promise<{
 	return fetchCardsByStatus(userId, false);
 }
 
-export async function fetchInactiveForUser(userId: string): Promise<{
+async function fetchInactiveForUser(userId: string): Promise<{
 	cards: CardData[];
 	accounts: AccountSimple[];
 	logoOptions: string[];

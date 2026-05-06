@@ -9,8 +9,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/shared/components/ui/dialog";
-import type { WidgetCardProps } from "@/shared/components/widget-card";
-import WidgetCard from "@/shared/components/widget-card";
+import type { WidgetCardProps } from "@/shared/components/widgets/widget-card";
+import WidgetCard from "@/shared/components/widgets/widget-card";
 
 const OVERFLOW_THRESHOLD_PX = 16;
 const EXPANDABLE_CONTENT_CLASSNAME =

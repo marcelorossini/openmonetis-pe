@@ -1,4 +1,4 @@
-export type NoteType = "nota" | "tarefa";
+type NoteType = "nota" | "tarefa";
 
 export interface Task {
 	id: string;

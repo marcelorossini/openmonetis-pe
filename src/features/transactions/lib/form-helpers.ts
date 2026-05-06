@@ -90,7 +90,7 @@ export type TransactionFormState = {
 /**
  * Initial state overrides for lancamento form
  */
-export type LancamentoFormOverrides = {
+type TransactionFormOverrides = {
 	defaultCardId?: string | null;
 	defaultPaymentMethod?: string | null;
 	defaultPurchaseDate?: string | null;
@@ -107,7 +107,7 @@ export function buildTransactionInitialState(
 	transaction?: TransactionItem,
 	defaultPayerId?: string | null,
 	preferredPeriod?: string,
-	overrides?: LancamentoFormOverrides,
+	overrides?: TransactionFormOverrides,
 ): TransactionFormState {
 	const purchaseDate = transaction?.purchaseDate
 		? transaction.purchaseDate.slice(0, 10)

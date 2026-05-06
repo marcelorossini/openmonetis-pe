@@ -1,4 +1,4 @@
-export type TransactionExportFilters = {
+type TransactionExportFilters = {
 	transactionFilter: string | null;
 	conditionFilter: string | null;
 	paymentFilter: string | null;

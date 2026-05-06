@@ -205,7 +205,7 @@ const MONTH_MAP = new Map<string, number>(
 const normalize = (value: string | null | undefined) =>
 	(value ?? "").trim().toLowerCase();
 
-export type ParsedPeriod = {
+type ParsedPeriod = {
 	period: string;
 	monthName: string;
 	year: number;
@@ -254,7 +254,7 @@ export function parsePeriodParam(
  * @param year - Year number
  * @returns URL param string in "mes-ano" format
  */
-export function formatPeriodParam(monthName: string, year: number): string {
+function formatPeriodParam(monthName: string, year: number): string {
 	return `${normalize(monthName)}-${year}`;
 }
 
@@ -321,15 +321,6 @@ export function displayPeriod(period: string): string {
 	const { year, month } = parsePeriod(period);
 	const monthName = MONTH_NAMES[month - 1] ?? "";
 	return `${capitalize(monthName)} de ${year}`;
-}
-
-/**
- * Alias for displayPeriod - formats period for display
- * @example
- * formatMonthLabel("2024-01") // "Janeiro de 2024"
- */
-export function formatMonthLabel(period: string): string {
-	return displayPeriod(period);
 }
 
 /**

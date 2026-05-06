@@ -35,14 +35,14 @@ export type InsightCategoryId = keyof typeof INSIGHT_CATEGORIES;
 /**
  * Schema para item individual de insight
  */
-export const InsightItemSchema = z.object({
+const InsightItemSchema = z.object({
 	text: z.string().min(1),
 });
 
 /**
  * Schema para categoria de insights
  */
-export const InsightCategorySchema = z.object({
+const InsightCategorySchema = z.object({
 	category: z.enum([
 		"behaviors",
 		"triggers",

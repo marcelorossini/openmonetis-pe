@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export type ChangelogSection = {
+type ChangelogSection = {
 	type: string;
 	items: string[];
 };

@@ -18,7 +18,7 @@ import { fetchTransactionDialogOptionsAction } from "@/features/transactions/act
 import { TransactionDetailsDialog } from "@/features/transactions/components/dialogs/transaction-details-dialog";
 import { TransactionDialog } from "@/features/transactions/components/dialogs/transaction-dialog/transaction-dialog";
 import type { TransactionItem } from "@/features/transactions/components/types";
-import { EmptyState } from "@/shared/components/empty-state";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { cn } from "@/shared/utils/ui";
 

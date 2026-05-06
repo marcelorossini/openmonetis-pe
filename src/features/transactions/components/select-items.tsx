@@ -3,7 +3,7 @@
 import { RiBankCard2Line, RiBankLine } from "@remixicon/react";
 import Image from "next/image";
 import { CategoryIcon } from "@/features/categories/components/category-icon";
-import StatusDot from "@/shared/components/status-dot";
+import StatusDot from "@/shared/components/feedback/status-dot";
 import {
 	Avatar,
 	AvatarFallback,

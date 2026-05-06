@@ -11,8 +11,8 @@ import {
 	updatePaymentDateAction,
 } from "@/features/invoices/actions";
 import { AccountCardSelectContent } from "@/features/transactions/components/select-items";
+import StatusDot from "@/shared/components/feedback/status-dot";
 import MoneyValues from "@/shared/components/money-values";
-import StatusDot from "@/shared/components/status-dot";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";

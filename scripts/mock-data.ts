@@ -21,7 +21,7 @@ import type {
 	PAYMENT_METHODS,
 	TRANSACTION_CONDITIONS,
 	TRANSACTION_TYPES,
-} from "@/features/transactions/constants";
+} from "@/features/transactions/lib/constants";
 import {
 	buildInvoicePaymentNote,
 	INITIAL_BALANCE_CATEGORY_NAME,

@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import {
 	formatPercentageChange,
 	formatPeriodLabel,
-} from "@/features/reports/utils";
+} from "@/features/reports/lib/utils";
 import { Button } from "@/shared/components/ui/button";
 import {
 	DropdownMenu,

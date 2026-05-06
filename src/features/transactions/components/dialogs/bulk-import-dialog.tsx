@@ -3,7 +3,7 @@
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createTransactionAction } from "@/features/transactions/actions";
-import { groupAndSortCategories } from "@/features/transactions/category-helpers";
+import { groupAndSortCategories } from "@/features/transactions/lib/category-helpers";
 import { Button } from "@/shared/components/ui/button";
 import {
 	Dialog,

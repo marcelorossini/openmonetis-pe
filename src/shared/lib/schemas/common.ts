@@ -13,25 +13,6 @@ export const uuidSchema = (entityName: string = "ID") =>
 		.uuid(`${entityName} inválido.`);
 
 /**
- * Optional/nullable decimal string schema
- */
-export const optionalDecimalSchema = z.union([
-	z.number().nullable(),
-	z
-		.string()
-		.trim()
-		.optional()
-		.transform((value) =>
-			value && value.length > 0 ? value.replace(",", ".") : null,
-		)
-		.refine(
-			(value) => value === null || !Number.isNaN(Number.parseFloat(value)),
-			"Informe um valor numérico válido.",
-		)
-		.transform((value) => (value === null ? null : Number.parseFloat(value))),
-]);
-
-/**
  * Required positive decimal schema — accepts number or numeric string.
  */
 export const requiredDecimalSchema = (fieldName: string = "valor") =>

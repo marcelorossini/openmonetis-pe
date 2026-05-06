@@ -21,7 +21,7 @@ import { ConfirmActionDialog } from "@/shared/components/confirm-action-dialog";
 import type {
 	TransactionsExportContext,
 	TransactionsPaginationState,
-} from "../../export-types";
+} from "../../lib/export-types";
 import { AnticipateInstallmentsDialog } from "../dialogs/anticipate-installments-dialog/anticipate-installments-dialog";
 import { AnticipationHistoryDialog } from "../dialogs/anticipate-installments-dialog/anticipation-history-dialog";
 import {

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchTransactionAttachments } from "@/features/transactions/attachment-queries";
+import { fetchTransactionAttachments } from "@/features/transactions/lib/attachment-queries";
 import { getOptionalUserSession } from "@/shared/lib/auth/server";
 
 const PRIVATE_RESPONSE_HEADERS = {

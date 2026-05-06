@@ -2,16 +2,16 @@ import { RiBankCard2Line } from "@remixicon/react";
 import Image from "next/image";
 import MoneyValues from "@/shared/components/money-values";
 import { CardContent } from "@/shared/components/ui/card";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { resolveLogoSrc } from "@/shared/lib/logo";
 import type { PayerCardUsageItem } from "@/shared/lib/payers/details";
 import { buildInitials } from "@/shared/utils/initials";
 
-type PagadorCardUsageCardProps = {
+type PayerCardUsageCardProps = {
 	items: PayerCardUsageItem[];
 };
 
-export function PayerCardUsageCard({ items }: PagadorCardUsageCardProps) {
+export function PayerCardUsageCard({ items }: PayerCardUsageCardProps) {
 	if (items.length === 0) {
 		return (
 			<CardContent className="px-0">

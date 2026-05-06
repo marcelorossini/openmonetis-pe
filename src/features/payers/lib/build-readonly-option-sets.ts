@@ -5,7 +5,7 @@ import type {
 	TransactionFilterOption,
 	TransactionItem,
 } from "@/features/transactions/components/types";
-import type { buildOptionSets } from "@/features/transactions/page-helpers";
+import type { buildOptionSets } from "@/features/transactions/lib/page-helpers";
 
 type OptionSet = ReturnType<typeof buildOptionSets>;
 

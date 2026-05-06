@@ -27,7 +27,7 @@ import { getPreviousPeriod } from "@/shared/utils/period";
 
 const DESPESA = "Despesa";
 
-export type EstablishmentData = {
+type EstablishmentData = {
 	name: string;
 	count: number;
 	totalAmount: number;
@@ -35,7 +35,7 @@ export type EstablishmentData = {
 	categories: { name: string; count: number }[];
 };
 
-export type TopCategoryData = {
+type TopCategoryData = {
 	id: string;
 	name: string;
 	icon: string | null;
@@ -43,7 +43,7 @@ export type TopCategoryData = {
 	transactionCount: number;
 };
 
-export type TopEstabelecimentosData = {
+export type TopEstablishmentsData = {
 	establishments: EstablishmentData[];
 	topCategories: TopCategoryData[];
 	summary: {
@@ -73,7 +73,7 @@ export async function fetchTopEstablishmentsData(
 	userId: string,
 	currentPeriod: string,
 	periodFilter: PeriodFilter = "6",
-): Promise<TopEstabelecimentosData> {
+): Promise<TopEstablishmentsData> {
 	const months = parseInt(periodFilter, 10);
 	const periods = buildPeriodRange(currentPeriod, months);
 	const startPeriod = periods[0];

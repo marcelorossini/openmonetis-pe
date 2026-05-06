@@ -21,7 +21,7 @@ import {
 	getSingleParam,
 	mapTransactionsData,
 	type ResolvedSearchParams,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import {
 	fetchRecentEstablishments,
 	fetchTransactionFilterSources,

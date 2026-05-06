@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import type { DashboardInboxSnapshot } from "@/features/dashboard/inbox-snapshot-queries";
+import type { DashboardInboxSnapshot } from "@/features/dashboard/lib/inbox-snapshot-queries";
 import type { DashboardWidgetQuickActionOptions } from "@/features/dashboard/widget-registry/widget-config";
 import {
 	discardInboxItemAction,
@@ -19,7 +19,7 @@ import { TransactionDialog } from "@/features/transactions/components/dialogs/tr
 import { ConfirmActionDialog } from "@/shared/components/confirm-action-dialog";
 import MoneyValues from "@/shared/components/money-values";
 import { Button } from "@/shared/components/ui/button";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { resolveLogoSrc } from "@/shared/lib/logo";
 
 const DEFAULT_INBOX_APP_LOGO = "/avatars/default_icon.png";

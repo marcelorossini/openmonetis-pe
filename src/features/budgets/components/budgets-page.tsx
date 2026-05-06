@@ -8,7 +8,7 @@ import {
 	duplicatePreviousMonthBudgetsAction,
 } from "@/features/budgets/actions";
 import { ConfirmActionDialog } from "@/shared/components/confirm-action-dialog";
-import { EmptyState } from "@/shared/components/empty-state";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { BudgetCard } from "./budget-card";

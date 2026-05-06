@@ -3,7 +3,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import { cards, financialAccounts, inboxItems } from "@/db/schema";
 import { db } from "@/shared/lib/db";
 
-export type DashboardInboxItem = {
+type DashboardInboxItem = {
 	id: string;
 	sourceAppName: string | null;
 	parsedName: string | null;

@@ -14,7 +14,7 @@ import {
 	SETTLED_FILTER_VALUES,
 	TRANSACTION_CONDITIONS,
 	TRANSACTION_TYPES,
-} from "@/features/transactions/constants";
+} from "@/features/transactions/lib/constants";
 import { ACCOUNT_AUTO_INVOICE_NOTE_PREFIX } from "@/shared/lib/accounts/constants";
 import {
 	PAYER_ROLE_ADMIN,
@@ -32,8 +32,8 @@ export type ResolvedSearchParams =
 	| Record<string, string | string[] | undefined>
 	| undefined;
 
-export const TRANSACTIONS_DEFAULT_PAGE_SIZE = 30;
-export const TRANSACTIONS_PAGE_SIZE_OPTIONS = [5, 10, 20, 30, 40, 50, 100];
+const TRANSACTIONS_DEFAULT_PAGE_SIZE = 30;
+const TRANSACTIONS_PAGE_SIZE_OPTIONS = [5, 10, 20, 30, 40, 50, 100];
 
 export type TransactionSearchFilters = {
 	transactionFilter: string | null;
@@ -91,16 +91,16 @@ export type SlugMaps = {
 	card: Map<string, string>;
 };
 
-export type FilterOption = {
+type FilterOption = {
 	slug: string;
 	label: string;
 };
 
-export type AccountCardFilterOption = FilterOption & {
+type AccountCardFilterOption = FilterOption & {
 	kind: "conta" | "cartao";
 };
 
-export type TransactionOptionSets = {
+type TransactionOptionSets = {
 	payerOptions: SelectOption[];
 	splitPayerOptions: SelectOption[];
 	defaultPayerId: string | null;
@@ -186,7 +186,7 @@ const createSlugGenerator = () => {
 	};
 };
 
-export const toOption = (
+const toOption = (
 	value: string,
 	label: string | null | undefined,
 	role?: string | null,

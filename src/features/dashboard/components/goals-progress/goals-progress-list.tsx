@@ -1,6 +1,6 @@
 import { RiFundsLine } from "@remixicon/react";
 import type { GoalProgressItem } from "@/features/dashboard/goals-progress/goals-progress-queries";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { GoalProgressItem as GoalProgressListItem } from "./goals-progress-item";
 
 type GoalsProgressListProps = {

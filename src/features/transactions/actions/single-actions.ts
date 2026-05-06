@@ -21,11 +21,11 @@ import {
 	getBusinessTodayDate,
 	parseLocalDateString,
 } from "@/shared/utils/date";
-import { copyAttachmentsForImport } from "../attachment-copy";
+import { copyAttachmentsForImport } from "../lib/attachment-copy";
 import { cleanupAttachmentsAfterTransactionDelete } from "./attachments";
 import {
-	buildLancamentoRecords,
 	buildShares,
+	buildTransactionRecords,
 	type CreateInput,
 	centsToDecimalString,
 	createSchema,
@@ -33,7 +33,7 @@ import {
 	deleteSchema,
 	formatPaidInvoicePeriods,
 	getPaidInvoicePeriods,
-	isInitialBalanceLancamento,
+	isInitialBalanceTransaction,
 	resolvePeriod,
 	resolveUserLabel,
 	revalidate,
@@ -95,7 +95,7 @@ export async function createTransactionAction(
 			data.condition === "Parcelado" || data.condition === "Recorrente";
 		const seriesId = isSeriesLancamento ? randomUUID() : null;
 
-		const records = buildLancamentoRecords({
+		const records = buildTransactionRecords({
 			data,
 			userId: user.id,
 			period,
@@ -180,7 +180,7 @@ export async function createTransactionAction(
 			await sendPayerAutoEmails({
 				userLabel: resolveUserLabel(user),
 				action: "created",
-				entriesByPagador: notificationEntries,
+				entriesByPayer: notificationEntries,
 			});
 		}
 
@@ -343,7 +343,7 @@ export async function updateTransactionAction(
 				and(eq(transactions.id, data.id), eq(transactions.userId, user.id)),
 			);
 
-		if (isInitialBalanceLancamento(existing) && existing.accountId) {
+		if (isInitialBalanceTransaction(existing) && existing.accountId) {
 			const updatedInitialBalance = formatDecimalForDbRequired(
 				Math.abs(data.amount ?? 0),
 			);
@@ -465,7 +465,7 @@ export async function deleteTransactionAction(
 			await sendPayerAutoEmails({
 				userLabel: resolveUserLabel(user),
 				action: "deleted",
-				entriesByPagador: notificationEntries,
+				entriesByPayer: notificationEntries,
 			});
 		}
 

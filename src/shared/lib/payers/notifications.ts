@@ -8,7 +8,7 @@ import { formatDateTime } from "@/shared/utils/date";
 
 type ActionType = "created" | "deleted";
 
-export type NotificationEntry = {
+type NotificationEntry = {
 	payerId: string;
 	name: string | null;
 	amount: number;
@@ -20,10 +20,10 @@ export type NotificationEntry = {
 	note: string | null;
 };
 
-export type PayerNotificationRequest = {
+type PayerNotificationRequest = {
 	userLabel: string;
 	action: ActionType;
-	entriesByPagador: Map<string, NotificationEntry[]>;
+	entriesByPayer: Map<string, NotificationEntry[]>;
 };
 
 type PayerNotificationRecipient = {
@@ -113,11 +113,11 @@ const buildHtmlBody = ({
 export async function sendPayerAutoEmails({
 	userLabel,
 	action,
-	entriesByPagador,
+	entriesByPayer,
 }: PayerNotificationRequest) {
 	"use server";
 
-	if (entriesByPagador.size === 0) {
+	if (entriesByPayer.size === 0) {
 		return;
 	}
 
@@ -131,7 +131,7 @@ export async function sendPayerAutoEmails({
 		return;
 	}
 
-	const pagadorIds = Array.from(entriesByPagador.keys());
+	const pagadorIds = Array.from(entriesByPayer.keys());
 	if (pagadorIds.length === 0) {
 		return;
 	}
@@ -154,7 +154,7 @@ export async function sendPayerAutoEmails({
 				return;
 			}
 
-			const entries = entriesByPagador.get(payer.id);
+			const entries = entriesByPayer.get(payer.id);
 			if (!entries || entries.length === 0) {
 				return;
 			}
@@ -186,7 +186,7 @@ export async function sendPayerAutoEmails({
 	});
 }
 
-export type RawNotificationRecord = {
+type RawNotificationRecord = {
 	payerId: string | null;
 	name: string | null;
 	amount: string | number | null;

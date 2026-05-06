@@ -9,8 +9,8 @@ import { getUser } from "@/shared/lib/auth/server";
 import { db } from "@/shared/lib/db";
 import { getResendFromEmail } from "@/shared/lib/email/resend";
 import {
-	fetchPagadorBoletoStats,
-	fetchPagadorCardUsage,
+	fetchPayerBoletoStats,
+	fetchPayerCardUsage,
 	fetchPayerHistory,
 	fetchPayerMonthlyBreakdown,
 } from "@/shared/lib/payers/details";
@@ -50,7 +50,7 @@ const escapeHtml = (text: string | null | undefined): string => {
 		.replace(/'/g, "&#039;");
 };
 
-type LancamentoRow = {
+type TransactionRow = {
 	id: string;
 	name: string | null;
 	paymentMethod: string | null;
@@ -80,10 +80,10 @@ type SummaryPayload = {
 	periodLabel: string;
 	monthlyBreakdown: Awaited<ReturnType<typeof fetchPayerMonthlyBreakdown>>;
 	historyData: Awaited<ReturnType<typeof fetchPayerHistory>>;
-	cardUsage: Awaited<ReturnType<typeof fetchPagadorCardUsage>>;
-	boletoStats: Awaited<ReturnType<typeof fetchPagadorBoletoStats>>;
+	cardUsage: Awaited<ReturnType<typeof fetchPayerCardUsage>>;
+	boletoStats: Awaited<ReturnType<typeof fetchPayerBoletoStats>>;
 	boletos: BoletoItem[];
-	transactions: LancamentoRow[];
+	transactions: TransactionRow[];
 	parcelados: ParceladoItem[];
 };
 
@@ -445,12 +445,12 @@ export async function sendPayerSummaryAction(
 				payerId,
 				period,
 			}),
-			fetchPagadorCardUsage({
+			fetchPayerCardUsage({
 				userId: user.id,
 				payerId,
 				period,
 			}),
-			fetchPagadorBoletoStats({
+			fetchPayerBoletoStats({
 				userId: user.id,
 				payerId,
 				period,
@@ -523,7 +523,7 @@ export async function sendPayerSummaryAction(
 			dueDate: row.dueDate,
 		}));
 
-		const normalizedLancamentos: LancamentoRow[] = (
+		const normalizedLancamentos: TransactionRow[] = (
 			transactionRows as Array<{
 				id: string;
 				name: string | null;

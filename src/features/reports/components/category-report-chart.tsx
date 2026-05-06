@@ -11,8 +11,8 @@ import {
 	type TooltipValueType,
 	XAxis,
 } from "recharts";
-import type { CategoryChartData } from "@/features/reports/category-chart-queries";
-import { EmptyState } from "@/shared/components/empty-state";
+import type { CategoryChartData } from "@/features/reports/lib/category-chart-queries";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import {
 	Card,
 	CardContent,

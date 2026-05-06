@@ -1,16 +1,16 @@
 import { and, asc, eq, gte, inArray, lte, sql } from "drizzle-orm";
 import { financialAccounts, transactions } from "@/db/schema";
-import type { DashboardCardMetrics } from "@/features/dashboard/overview/dashboard-metrics-queries";
-import type {
-	IncomeExpenseBalanceData,
-	MonthData,
-} from "@/features/dashboard/overview/income-expense-balance-queries";
 import {
 	buildDashboardAdminFilters,
 	excludeAutoInvoiceEntries,
 	excludeInitialBalanceWhenConfigured,
 	excludeTransactionsFromExcludedAccounts,
-} from "@/features/dashboard/transaction-filters";
+} from "@/features/dashboard/lib/transaction-filters";
+import type { DashboardCardMetrics } from "@/features/dashboard/overview/dashboard-metrics-queries";
+import type {
+	IncomeExpenseBalanceData,
+	MonthData,
+} from "@/features/dashboard/overview/income-expense-balance-queries";
 import { REFUND_NOTE_PREFIX } from "@/shared/lib/accounts/constants";
 import { db } from "@/shared/lib/db";
 import { getAdminPayerId } from "@/shared/lib/payers/get-admin-id";

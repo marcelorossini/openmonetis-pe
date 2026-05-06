@@ -1,4 +1,4 @@
-export type RecurringExpense = {
+type RecurringExpense = {
 	id: string;
 	name: string;
 	amount: number;

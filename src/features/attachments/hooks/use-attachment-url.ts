@@ -2,11 +2,11 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { fetchJson } from "@/shared/lib/fetch-json";
+import { fetchJson } from "@/shared/utils/fetch-json";
 
 const ATTACHMENT_URL_STALE_TIME = 4 * 60 * 1000;
 
-export const attachmentUrlQueryKey = (attachmentId: string) =>
+const attachmentUrlQueryKey = (attachmentId: string) =>
 	["attachments", "url", attachmentId] as const;
 
 export function useAttachmentUrlQuery(attachmentId: string, enabled: boolean) {

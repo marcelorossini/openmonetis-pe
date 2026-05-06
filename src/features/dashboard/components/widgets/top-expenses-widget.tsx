@@ -9,7 +9,7 @@ import type {
 import { EstablishmentLogo } from "@/shared/components/entity-avatar";
 import MoneyValues from "@/shared/components/money-values";
 import { Switch } from "@/shared/components/ui/switch";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { formatTransactionDate } from "@/shared/utils/date";
 
 type TopExpensesWidgetProps = {

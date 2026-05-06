@@ -14,7 +14,7 @@ import {
 	RiTimeLine,
 } from "@remixicon/react";
 import Image from "next/image";
-import StatusDot from "@/shared/components/status-dot";
+import StatusDot from "@/shared/components/feedback/status-dot";
 import { buttonVariants } from "@/shared/components/ui/button";
 import {
 	Tooltip,
@@ -33,7 +33,7 @@ import type {
 } from "./types";
 
 type NotificationBellContentProps = {
-	displayedPreLancamentosCount: number;
+	displayedInboxPendingCount: number;
 	displayedBudgetNotifications: ResolvedBudgetNotification[];
 	invoiceNotifications: ResolvedDashboardNotification[];
 	boletoNotifications: ResolvedDashboardNotification[];
@@ -361,7 +361,7 @@ function formatDueDateDetail(
 // ---------------------------------------------------------------------------
 
 export function NotificationBellContent({
-	displayedPreLancamentosCount,
+	displayedInboxPendingCount,
 	displayedBudgetNotifications,
 	invoiceNotifications,
 	boletoNotifications,
@@ -372,7 +372,7 @@ export function NotificationBellContent({
 }: NotificationBellContentProps) {
 	return (
 		<div className="max-h-[460px] overflow-y-auto p-2">
-			{displayedPreLancamentosCount > 0 && (
+			{displayedInboxPendingCount > 0 && (
 				<div>
 					<SectionLabel
 						icon={<RiAtLine className="size-3" />}
@@ -382,9 +382,9 @@ export function NotificationBellContent({
 						icon={<RiAtLine className="size-5 text-primary" />}
 						isOverdue={false}
 						title={
-							displayedPreLancamentosCount === 1
+							displayedInboxPendingCount === 1
 								? "1 pré-lançamento pendente"
-								: `${displayedPreLancamentosCount} pré-lançamentos pendentes`
+								: `${displayedInboxPendingCount} pré-lançamentos pendentes`
 						}
 						detail="Aguardando revisão"
 						onNavigate={onInboxNavigate}

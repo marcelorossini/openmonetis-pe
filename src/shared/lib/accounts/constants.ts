@@ -2,7 +2,7 @@ import {
 	PAYMENT_METHODS,
 	TRANSACTION_CONDITIONS,
 	TRANSACTION_TYPES,
-} from "@/features/transactions/constants";
+} from "@/features/transactions/lib/constants";
 
 export const INITIAL_BALANCE_CATEGORY_NAME = "Saldo inicial";
 export const INITIAL_BALANCE_NOTE = "saldo inicial";

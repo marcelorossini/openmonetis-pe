@@ -1,5 +1,5 @@
 import { TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
-import type { InboxStatus, InboxStatusCounts } from "./types";
+import type { InboxStatusCounts } from "./types";
 
 type InboxTabsProps = {
 	counts: InboxStatusCounts;
@@ -36,5 +36,3 @@ export function InboxTabs({ counts, isPending }: InboxTabsProps) {
 		</TabsList>
 	);
 }
-
-export type { InboxStatus, InboxStatusCounts };

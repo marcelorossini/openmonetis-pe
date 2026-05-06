@@ -1,10 +1,3 @@
-import type {
-	Category,
-	InstallmentAnticipation,
-	Payer,
-	Transaction,
-} from "@/db/schema";
-
 /**
  * Parcela elegível para antecipação
  */
@@ -20,15 +13,6 @@ export type EligibleInstallment = {
 	paymentMethod: string;
 	categoryId: string | null;
 	payerId: string | null;
-};
-
-/**
- * Antecipação com dados completos
- */
-export type InstallmentAnticipationWithRelations = InstallmentAnticipation & {
-	transaction: Transaction | null;
-	payer: Payer | null;
-	category: Category | null;
 };
 
 /**

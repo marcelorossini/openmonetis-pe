@@ -1,4 +1,4 @@
-export type PaymentConditionSummary = {
+type PaymentConditionSummary = {
 	condition: string;
 	amount: number;
 	percentage: number;

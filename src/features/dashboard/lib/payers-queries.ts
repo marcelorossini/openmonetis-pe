@@ -1,6 +1,6 @@
 import { and, desc, eq, inArray, isNull, or, sql } from "drizzle-orm";
 import { financialAccounts, payers, transactions } from "@/db/schema";
-import { excludeTransactionsFromExcludedAccounts } from "@/features/dashboard/transaction-filters";
+import { excludeTransactionsFromExcludedAccounts } from "@/features/dashboard/lib/transaction-filters";
 import { ACCOUNT_AUTO_INVOICE_NOTE_PREFIX } from "@/shared/lib/accounts/constants";
 import { db } from "@/shared/lib/db";
 import { PAYER_ROLE_ADMIN } from "@/shared/lib/payers/constants";

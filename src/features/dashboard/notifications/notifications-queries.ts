@@ -31,13 +31,7 @@ import {
 	getNextPeriod,
 } from "@/shared/utils/period";
 
-export type {
-	BudgetNotification,
-	BudgetStatus,
-	DashboardNotification,
-	DashboardNotificationsSnapshot,
-	NotificationType,
-} from "@/shared/lib/types/notifications";
+export type { DashboardNotificationsSnapshot } from "@/shared/lib/types/notifications";
 
 const PAYMENT_METHOD_BOLETO = "Boleto";
 const BUDGET_CRITICAL_THRESHOLD = 80;

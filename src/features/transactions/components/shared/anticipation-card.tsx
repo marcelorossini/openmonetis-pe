@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { cancelInstallmentAnticipationAction } from "@/features/transactions/anticipation-actions";
+import { cancelInstallmentAnticipationAction } from "@/features/transactions/actions/anticipation";
 import type { InstallmentAnticipationListItem } from "@/features/transactions/hooks/use-installment-anticipations";
 import { ConfirmActionDialog } from "@/shared/components/confirm-action-dialog";
 import MoneyValues from "@/shared/components/money-values";

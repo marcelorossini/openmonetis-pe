@@ -7,14 +7,14 @@ import {
 } from "@remixicon/react";
 import Link from "next/link";
 import { PercentageChangeIndicator } from "@/features/dashboard/components/percentage-change-indicator";
-import type { DashboardPagador } from "@/features/dashboard/payers-queries";
+import type { DashboardPagador } from "@/features/dashboard/lib/payers-queries";
 import MoneyValues from "@/shared/components/money-values";
 import {
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
 } from "@/shared/components/ui/avatar";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { getAvatarSrc } from "@/shared/lib/payers/utils";
 import { buildInitials } from "@/shared/utils/initials";
 

@@ -23,7 +23,7 @@ export function handleActionError(error: unknown): ActionResult {
 /**
  * Configuration for revalidation after mutations
  */
-export const revalidateConfig = {
+const revalidateConfig = {
 	cards: ["/cards", "/accounts", "/transactions"],
 	accounts: ["/accounts", "/transactions"],
 	categories: ["/categories"],

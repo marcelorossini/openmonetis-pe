@@ -7,8 +7,8 @@ import { AdjustBalanceDialog } from "@/features/accounts/components/adjust-balan
 import type { Account } from "@/features/accounts/components/types";
 import {
 	fetchAccountData,
-	fetchAccountLancamentosPage,
 	fetchAccountSummary,
+	fetchAccountTransactionsPage,
 } from "@/features/accounts/statement-queries";
 import { fetchUserPreferences } from "@/features/settings/queries";
 import { TransactionsPage as LancamentosSection } from "@/features/transactions/components/page/transactions-page";
@@ -22,7 +22,7 @@ import {
 	mapTransactionsData,
 	type ResolvedSearchParams,
 	resolveTransactionPagination,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import {
 	fetchRecentEstablishments,
 	fetchTransactionFilterSources,
@@ -89,7 +89,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 		accountId: account.id,
 	});
 
-	const transactionsPage = await fetchAccountLancamentosPage(
+	const transactionsPage = await fetchAccountTransactionsPage(
 		filters,
 		pagination,
 	);

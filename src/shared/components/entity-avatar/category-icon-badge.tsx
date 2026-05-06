@@ -27,9 +27,9 @@ const sizeVariants = {
 	},
 } as const;
 
-export type CategoryIconBadgeSize = keyof typeof sizeVariants;
+type CategoryIconBadgeSize = keyof typeof sizeVariants;
 
-export interface CategoryIconBadgeProps {
+interface CategoryIconBadgeProps {
 	/** Nome do ícone Remix (ex: "RiShoppingBag3Line") */
 	icon?: string | null;
 	/** Nome da categoria — define cor e iniciais de fallback */

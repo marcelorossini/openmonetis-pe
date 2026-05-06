@@ -5,7 +5,7 @@ import {
 	RiCheckboxCircleFill,
 } from "@remixicon/react";
 import { useState } from "react";
-import { PAYMENT_METHODS } from "@/features/transactions/constants";
+import { PAYMENT_METHODS } from "@/features/transactions/lib/constants";
 import { Button } from "@/shared/components/ui/button";
 import { Label } from "@/shared/components/ui/label";
 import { MonthPicker } from "@/shared/components/ui/month-picker";

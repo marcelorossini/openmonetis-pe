@@ -11,14 +11,14 @@ import {
 	formatPeriodMonthShort,
 } from "@/shared/utils/period";
 
-export type CategoryOption = {
+type CategoryOption = {
 	id: string;
 	name: string;
 	icon: string | null;
 	type: "receita" | "despesa";
 };
 
-export type CategoryHistoryItem = {
+type CategoryHistoryItem = {
 	id: string;
 	name: string;
 	icon: string | null;

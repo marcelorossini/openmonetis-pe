@@ -24,7 +24,7 @@ const segmentConfig = {
 	},
 } as const;
 
-type PagadorMonthlySummaryCardProps = {
+type PayerMonthlySummaryCardProps = {
 	periodLabel: string;
 	breakdown: PayerMonthlyBreakdown;
 };
@@ -32,7 +32,7 @@ type PagadorMonthlySummaryCardProps = {
 export function PayerMonthlySummaryCard({
 	periodLabel,
 	breakdown,
-}: PagadorMonthlySummaryCardProps) {
+}: PayerMonthlySummaryCardProps) {
 	const splittableEntries = (
 		Object.keys(segmentConfig) as Array<keyof typeof segmentConfig>
 	).map((key) => ({

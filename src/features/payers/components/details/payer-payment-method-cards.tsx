@@ -10,7 +10,7 @@ import MoneyValues from "@/shared/components/money-values";
 import { CardContent } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
 import { Separator } from "@/shared/components/ui/separator";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import type {
 	PayerBoletoItem,
 	PayerPaymentStatusData,
@@ -19,11 +19,11 @@ import { cn } from "@/shared/utils/ui";
 
 // --- PayerBoletoCard ---
 
-type PagadorBoletoCardProps = {
+type PayerBoletoCardProps = {
 	items: PayerBoletoItem[];
 };
 
-export function PayerBoletoCard({ items }: PagadorBoletoCardProps) {
+export function PayerBoletoCard({ items }: PayerBoletoCardProps) {
 	if (items.length === 0) {
 		return (
 			<CardContent className="px-0">
@@ -72,13 +72,11 @@ export function PayerBoletoCard({ items }: PagadorBoletoCardProps) {
 
 // --- PayerPaymentStatusCard ---
 
-type PagadorPaymentStatusCardProps = {
+type PayerPaymentStatusCardProps = {
 	data: PayerPaymentStatusData;
 };
 
-export function PayerPaymentStatusCard({
-	data,
-}: PagadorPaymentStatusCardProps) {
+export function PayerPaymentStatusCard({ data }: PayerPaymentStatusCardProps) {
 	const { paidAmount, paidCount, pendingAmount, pendingCount, totalAmount } =
 		data;
 

@@ -5,7 +5,6 @@ import type {
 import type {
 	GoalProgressCategory,
 	GoalProgressItem,
-	GoalProgressStatus,
 } from "@/features/dashboard/goals-progress/goals-progress-queries";
 import { formatPercentage } from "@/shared/utils/percentage";
 
@@ -17,9 +16,6 @@ export const formatGoalProgressPercentage = (value: number, withSign = false) =>
 		maximumFractionDigits: 1,
 		signDisplay: withSign ? "always" : "auto",
 	});
-
-export const getGoalProgressStatusColorClass = (status: GoalProgressStatus) =>
-	status === "exceeded" ? "text-destructive" : "";
 
 export const mapGoalProgressCategoriesToBudgetCategories = (
 	categories: GoalProgressCategory[],

@@ -5,12 +5,12 @@
  * - /lib/category-icons.ts
  */
 
-export type CategoryIconOption = {
+type CategoryIconOption = {
 	label: string;
 	value: string;
 };
 
-export const CATEGORY_ICON_OPTIONS: CategoryIconOption[] = [
+const CATEGORY_ICON_OPTIONS: CategoryIconOption[] = [
 	// Finanças
 	{ label: "Dinheiro", value: "RiMoneyDollarCircleLine" },
 	{ label: "Carteira", value: "RiWallet3Line" },
@@ -156,7 +156,7 @@ export const CATEGORY_ICON_OPTIONS: CategoryIconOption[] = [
 	{ label: "Nuvem Upload", value: "RiCloudUploadLine" },
 ];
 
-export type CategoryIconGroup = {
+type CategoryIconGroup = {
 	label: string;
 	icons: CategoryIconOption[];
 };

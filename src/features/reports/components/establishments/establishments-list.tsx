@@ -1,7 +1,7 @@
 "use client";
 
 import { RiStore2Line } from "@remixicon/react";
-import type { TopEstabelecimentosData } from "@/features/reports/establishments/queries";
+import type { TopEstablishmentsData } from "@/features/reports/establishments/queries";
 import MoneyValues from "@/shared/components/money-values";
 import { Badge } from "@/shared/components/ui/badge";
 import {
@@ -11,11 +11,11 @@ import {
 	CardTitle,
 } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { buildInitials } from "@/shared/utils/initials";
 
 type EstablishmentsListProps = {
-	establishments: TopEstabelecimentosData["establishments"];
+	establishments: TopEstablishmentsData["establishments"];
 };
 
 export function EstablishmentsList({

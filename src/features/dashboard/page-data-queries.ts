@@ -1,10 +1,10 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { fetchDashboardData } from "@/features/dashboard/fetch-dashboard-data";
-import { fetchUserDashboardPreferences } from "@/features/dashboard/preferences-queries";
+import { fetchUserDashboardPreferences } from "@/features/dashboard/lib/preferences-queries";
 import {
 	buildOptionSets,
 	buildSluggedFilters,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import {
 	fetchRecentEstablishments,
 	fetchTransactionFilterSources,
@@ -52,7 +52,7 @@ async function fetchDashboardQuickActionOptionsInternal(
 	};
 }
 
-export async function fetchDashboardQuickActionOptions(userId: string) {
+async function fetchDashboardQuickActionOptions(userId: string) {
 	"use cache";
 	cacheTag(`dashboard-${userId}`);
 	cacheLife({ revalidate: 3 });

@@ -1,5 +1,5 @@
 import { and, count, desc, eq } from "drizzle-orm";
-import { cards, categories, financialAccounts, inboxItems } from "@/db/schema";
+import { cards, financialAccounts, inboxItems } from "@/db/schema";
 import type {
 	InboxItem,
 	InboxPaginationState,
@@ -10,28 +10,12 @@ import type {
 import {
 	buildOptionSets,
 	buildSluggedFilters,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import {
 	fetchRecentEstablishments,
 	fetchTransactionFilterSources,
 } from "@/features/transactions/queries";
 import { db } from "@/shared/lib/db";
-
-export async function fetchInboxItems(
-	userId: string,
-	status: InboxStatus = "pending",
-): Promise<InboxItem[]> {
-	const items = await db
-		.select()
-		.from(inboxItems)
-		.where(and(eq(inboxItems.userId, userId), eq(inboxItems.status, status)))
-		.orderBy(
-			desc(inboxItems.notificationTimestamp),
-			desc(inboxItems.createdAt),
-		);
-
-	return items;
-}
 
 export async function fetchInboxItemsPage(
 	userId: string,
@@ -124,65 +108,6 @@ export async function fetchInboxStatusCounts(
 	}
 
 	return counts;
-}
-
-export async function fetchInboxItemById(
-	userId: string,
-	itemId: string,
-): Promise<InboxItem | null> {
-	const [item] = await db
-		.select()
-		.from(inboxItems)
-		.where(and(eq(inboxItems.id, itemId), eq(inboxItems.userId, userId)))
-		.limit(1);
-
-	return item ?? null;
-}
-
-export async function fetchCategoriesForSelect(
-	userId: string,
-	type?: string,
-): Promise<SelectOption[]> {
-	const rows = await db
-		.select({ id: categories.id, name: categories.name })
-		.from(categories)
-		.where(
-			type
-				? and(eq(categories.userId, userId), eq(categories.type, type))
-				: eq(categories.userId, userId),
-		)
-		.orderBy(categories.name);
-
-	return rows.map((row) => ({ value: row.id, label: row.name }));
-}
-
-export async function fetchAccountsForSelect(
-	userId: string,
-): Promise<SelectOption[]> {
-	const rows = await db
-		.select({ id: financialAccounts.id, name: financialAccounts.name })
-		.from(financialAccounts)
-		.where(
-			and(
-				eq(financialAccounts.userId, userId),
-				eq(financialAccounts.status, "ativo"),
-			),
-		)
-		.orderBy(financialAccounts.name);
-
-	return rows.map((row) => ({ value: row.id, label: row.name }));
-}
-
-export async function fetchCardsForSelect(
-	userId: string,
-): Promise<(SelectOption & { lastDigits?: string })[]> {
-	const rows = await db
-		.select({ id: cards.id, name: cards.name })
-		.from(cards)
-		.where(and(eq(cards.userId, userId), eq(cards.status, "ativo")))
-		.orderBy(cards.name);
-
-	return rows.map((row) => ({ value: row.id, label: row.name }));
 }
 
 export async function fetchAppLogoMap(

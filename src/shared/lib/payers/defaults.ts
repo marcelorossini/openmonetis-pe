@@ -18,7 +18,7 @@ interface SeedUserLike {
 	image?: string | null;
 }
 
-export async function ensureDefaultPagadorForUser(user: SeedUserLike) {
+export async function ensureDefaultPayerForUser(user: SeedUserLike) {
 	const userId = user.id;
 
 	if (!userId) {

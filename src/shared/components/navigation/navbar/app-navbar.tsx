@@ -14,15 +14,15 @@ type AppNavbarProps = {
 		email: string;
 		image: string | null;
 	};
-	pagadorAvatarUrl: string | null;
-	preLancamentosCount?: number;
+	payerAvatarUrl: string | null;
+	inboxPendingCount?: number;
 	notificationsSnapshot: DashboardNotificationsSnapshot;
 };
 
 export async function AppNavbar({
 	user,
-	pagadorAvatarUrl,
-	preLancamentosCount = 0,
+	payerAvatarUrl,
+	inboxPendingCount = 0,
 	notificationsSnapshot,
 }: AppNavbarProps) {
 	const updateCheck = await checkForUpdate();
@@ -36,14 +36,14 @@ export async function AppNavbar({
 					unreadCount={notificationsSnapshot.unreadCount}
 					visibleCount={notificationsSnapshot.visibleCount}
 					budgetNotifications={notificationsSnapshot.budgetNotifications}
-					preLancamentosCount={preLancamentosCount}
+					inboxPendingCount={inboxPendingCount}
 				/>
 				<RefreshPageButton variant="navbar" />
 				<AnimatedThemeToggler variant="navbar" />
 			</div>
 			<NavbarUser
 				user={user}
-				pagadorAvatarUrl={pagadorAvatarUrl}
+				payerAvatarUrl={payerAvatarUrl}
 				updateCheck={updateCheck}
 			/>
 		</NavbarShell>

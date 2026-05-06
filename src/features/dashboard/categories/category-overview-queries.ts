@@ -22,7 +22,7 @@ import {
 	excludeInitialBalanceWhenConfigured,
 	excludeRefundEntries,
 	excludeTransactionsFromExcludedAccounts,
-} from "@/features/dashboard/transaction-filters";
+} from "@/features/dashboard/lib/transaction-filters";
 import { db } from "@/shared/lib/db";
 import { getAdminPayerId } from "@/shared/lib/payers/get-admin-id";
 import { safeToNumber as toNumber } from "@/shared/utils/number";

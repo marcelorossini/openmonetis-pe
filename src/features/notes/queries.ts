@@ -2,13 +2,13 @@ import { and, eq } from "drizzle-orm";
 import { type Note, notes } from "@/db/schema";
 import { db } from "@/shared/lib/db";
 
-export type Task = {
+type Task = {
 	id: string;
 	text: string;
 	completed: boolean;
 };
 
-export type NoteData = {
+type NoteData = {
 	id: string;
 	title: string;
 	description: string;
@@ -43,7 +43,7 @@ function toNoteData(note: Note): NoteData {
 	};
 }
 
-export async function fetchNotesForUser(userId: string): Promise<NoteData[]> {
+async function fetchNotesForUser(userId: string): Promise<NoteData[]> {
 	const noteRows = await db.query.notes.findMany({
 		where: and(eq(notes.userId, userId), eq(notes.archived, false)),
 		orderBy: (table, { desc }) => [desc(table.createdAt)],
@@ -63,9 +63,7 @@ export async function fetchAllNotesForUser(
 	return { activeNotes, archivedNotes };
 }
 
-export async function fetchArchivedForUser(
-	userId: string,
-): Promise<NoteData[]> {
+async function fetchArchivedForUser(userId: string): Promise<NoteData[]> {
 	const noteRows = await db.query.notes.findMany({
 		where: and(eq(notes.userId, userId), eq(notes.archived, true)),
 		orderBy: (table, { desc }) => [desc(table.createdAt)],

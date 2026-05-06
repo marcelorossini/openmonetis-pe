@@ -1,7 +1,7 @@
 "use client";
 
 import { RiShoppingBag3Line } from "@remixicon/react";
-import type { CardDetailData } from "@/features/reports/cards-report-queries";
+import type { CardDetailData } from "@/features/reports/lib/cards-report-queries";
 import MoneyValues from "@/shared/components/money-values";
 import { Badge } from "@/shared/components/ui/badge";
 import {
@@ -11,7 +11,7 @@ import {
 	CardTitle,
 } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 
 type CardTopExpensesProps = {
 	data: CardDetailData["topExpenses"];

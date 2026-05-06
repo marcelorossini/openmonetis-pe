@@ -1,4 +1,4 @@
-export type TopEstablishment = {
+type TopEstablishment = {
 	id: string;
 	name: string;
 	amount: number;

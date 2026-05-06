@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { archiveNoteAction, deleteNoteAction } from "@/features/notes/actions";
 import { ConfirmActionDialog } from "@/shared/components/confirm-action-dialog";
-import { EmptyState } from "@/shared/components/empty-state";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import {

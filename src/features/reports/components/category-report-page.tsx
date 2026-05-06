@@ -7,8 +7,8 @@ import {
 } from "@remixicon/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
-import type { CategoryChartData } from "@/features/reports/category-chart-queries";
-import { EmptyState } from "@/shared/components/empty-state";
+import type { CategoryChartData } from "@/features/reports/lib/category-chart-queries";
+import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { CategoryReportSkeleton } from "@/shared/components/skeletons/category-report-skeleton";
 import { Card } from "@/shared/components/ui/card";
 import {

@@ -1,6 +1,6 @@
 import { RiNumbersLine } from "@remixicon/react";
 import type { InstallmentExpense } from "@/features/dashboard/expenses/installment-expenses-queries";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { InstallmentExpenseListItem } from "./installment-expense-list-item";
 
 type InstallmentExpensesListProps = {

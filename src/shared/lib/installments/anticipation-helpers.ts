@@ -4,7 +4,7 @@ import type { EligibleInstallment } from "./anticipation-types";
  * Formata o resumo de parcelas antecipadas
  * Exemplo: "Parcelas 1-3 de 12" ou "Parcela 5 de 12"
  */
-export function formatAnticipatedInstallmentsRange(
+function formatAnticipatedInstallmentsRange(
 	installments: EligibleInstallment[],
 ): string {
 	const numbers = installments
@@ -33,16 +33,6 @@ export function formatAnticipatedInstallmentsRange(
 	} else {
 		return `${numbers.length} parcelas de ${total}`;
 	}
-}
-
-/**
- * Calcula quantas parcelas restam após uma antecipação
- */
-export function calculateRemainingInstallments(
-	totalInstallments: number,
-	anticipatedCount: number,
-): number {
-	return Math.max(0, totalInstallments - anticipatedCount);
 }
 
 /**

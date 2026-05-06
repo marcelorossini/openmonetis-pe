@@ -4,7 +4,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import type { GoogleProfile } from "better-auth/social-providers";
 import { seedDefaultCategoriesForUser } from "@/shared/lib/categories/defaults";
 import { db, schema } from "@/shared/lib/db";
-import { ensureDefaultPagadorForUser } from "@/shared/lib/payers/defaults";
+import { ensureDefaultPayerForUser } from "@/shared/lib/payers/defaults";
 import { normalizeNameFromEmail } from "@/shared/lib/payers/utils";
 
 // ============================================================================
@@ -131,7 +131,7 @@ export const auth = betterAuth({
 					// Se falhar aqui, o usuário já foi criado - considere usar queue para retry
 					try {
 						await seedDefaultCategoriesForUser(user.id);
-						await ensureDefaultPagadorForUser({
+						await ensureDefaultPayerForUser({
 							id: user.id,
 							name: user.name ?? undefined,
 							email: user.email ?? undefined,

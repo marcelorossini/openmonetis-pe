@@ -1,5 +1,5 @@
-import { LogoIcon } from "@/shared/components/logo-icon";
-import { LogoText } from "@/shared/components/logo-text";
+import { LogoIcon } from "@/shared/components/brand/logo-icon";
+import { LogoText } from "@/shared/components/brand/logo-text";
 import { cn } from "@/shared/utils/ui";
 
 interface LogoProps {

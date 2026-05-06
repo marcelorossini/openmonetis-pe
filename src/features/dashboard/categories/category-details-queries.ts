@@ -1,6 +1,6 @@
 import { and, desc, eq, isNull, ne, or, sql } from "drizzle-orm";
 import { categories, financialAccounts, transactions } from "@/db/schema";
-import { mapTransactionsData } from "@/features/transactions/page-helpers";
+import { mapTransactionsData } from "@/features/transactions/lib/page-helpers";
 import {
 	ACCOUNT_AUTO_INVOICE_NOTE_PREFIX,
 	INITIAL_BALANCE_NOTE,
@@ -17,7 +17,7 @@ import { getPreviousPeriod } from "@/shared/utils/period";
 
 type MappedLancamentos = ReturnType<typeof mapTransactionsData>;
 
-export type CategoryDetailData = {
+type CategoryDetailData = {
 	category: {
 		id: string;
 		name: string;

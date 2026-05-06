@@ -17,7 +17,7 @@ import {
 	PopoverTrigger,
 } from "@/shared/components/ui/popover";
 
-export interface EstabelecimentoInputProps {
+interface EstablishmentInputProps {
 	id?: string;
 	value: string;
 	onChange: (value: string) => void;
@@ -27,7 +27,7 @@ export interface EstabelecimentoInputProps {
 	maxLength?: number;
 }
 
-export function EstabelecimentoInput({
+export function EstablishmentInput({
 	id,
 	value,
 	onChange,
@@ -35,7 +35,7 @@ export function EstabelecimentoInput({
 	placeholder = "Ex.: Padaria, Transferência, Saldo inicial",
 	required = false,
 	maxLength = 20,
-}: EstabelecimentoInputProps) {
+}: EstablishmentInputProps) {
 	const [open, setOpen] = React.useState(false);
 	const [searchValue, setSearchValue] = React.useState("");
 	const [width, setWidth] = React.useState<number | undefined>();

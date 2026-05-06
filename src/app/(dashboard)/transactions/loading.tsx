@@ -8,7 +8,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
  * Loading state para a página de lançamentos
  * Mantém o mesmo layout da página final
  */
-export default function LancamentosLoading() {
+export default function TransactionsLoading() {
 	return (
 		<main className="flex flex-col gap-6">
 			{/* Month Picker placeholder */}

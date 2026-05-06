@@ -12,8 +12,10 @@
 	],
 	// PostCSS is inferred from the config file, but the project only depends on
 	// the Tailwind PostCSS plugin directly.
+	// `server-only` is provided implicitly by Next.js — no install needed.
 	"ignoreDependencies": [
-		"postcss"
+		"postcss",
+		"server-only"
 	],
 	"next": true,
 	"postcss": true,

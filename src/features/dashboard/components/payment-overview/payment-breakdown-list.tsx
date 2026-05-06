@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import {
 	PaymentBreakdownListItem,
 	type PaymentBreakdownListItemData,

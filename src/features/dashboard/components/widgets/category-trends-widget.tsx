@@ -5,7 +5,7 @@ import type { DashboardCategoryBreakdownItem } from "@/features/dashboard/catego
 import { PercentageChangeIndicator } from "@/features/dashboard/components/percentage-change-indicator";
 import { CategoryIconBadge } from "@/shared/components/entity-avatar";
 import MoneyValues from "@/shared/components/money-values";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { formatPercentage } from "@/shared/utils/percentage";
 
 type CategoryTrendsWidgetProps = {

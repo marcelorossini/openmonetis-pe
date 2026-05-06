@@ -1,4 +1,4 @@
-import { Logo } from "@/shared/components/logo";
+import { Logo } from "@/shared/components/brand/logo";
 
 export default function AuthLayout({
 	children,

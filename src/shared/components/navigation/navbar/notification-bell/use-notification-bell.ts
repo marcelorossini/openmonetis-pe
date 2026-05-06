@@ -33,7 +33,7 @@ type UseNotificationBellReturn = {
 	hasArchivedItems: boolean;
 	archivedDashboardCount: number;
 	hasVisibleItems: boolean;
-	displayedPreLancamentosCount: number;
+	displayedInboxPendingCount: number;
 	displayedBudgetNotifications: ResolvedBudgetNotification[];
 	invoiceNotifications: ResolvedDashboardNotification[];
 	boletoNotifications: ResolvedDashboardNotification[];
@@ -82,7 +82,7 @@ export function useNotificationBell({
 	unreadCount: initialUnreadCount,
 	visibleCount: initialVisibleCount,
 	budgetNotifications,
-	preLancamentosCount = 0,
+	inboxPendingCount = 0,
 }: NotificationBellProps): UseNotificationBellReturn {
 	const [open, setOpen] = useState(false);
 	const [viewMode, setViewMode] = useState<NotificationViewMode>("active");
@@ -178,19 +178,19 @@ export function useNotificationBell({
 	const displayedDashboardCount = showArchived
 		? displayedDashboardCountFromItems
 		: activeDashboardCount;
-	const displayedPreLancamentosCount = showArchived ? 0 : preLancamentosCount;
-	const effectiveUnreadCount = unreadDashboardCountValue + preLancamentosCount;
+	const displayedInboxPendingCount = showArchived ? 0 : inboxPendingCount;
+	const effectiveUnreadCount = unreadDashboardCountValue + inboxPendingCount;
 	const displayCount =
 		effectiveUnreadCount > 99 ? "99+" : effectiveUnreadCount.toString();
 	const hasUnreadNotifications = effectiveUnreadCount > 0;
 	const hasVisibleItems =
-		displayedDashboardCount + displayedPreLancamentosCount > 0;
+		displayedDashboardCount + displayedInboxPendingCount > 0;
 	const hasArchivedItems = archivedDashboardCount > 0;
 	const hasDashboardNotificationItems = dashboardNotificationCount > 0;
 	const hasAnySourceItems =
 		allResolvedNotifications.length +
 			allResolvedBudgetNotifications.length +
-			preLancamentosCount >
+			inboxPendingCount >
 		0;
 	const headerCountLabel = `${effectiveUnreadCount} ${effectiveUnreadCount === 1 ? "pendente" : "pendentes"}`;
 
@@ -306,7 +306,7 @@ export function useNotificationBell({
 		hasArchivedItems,
 		archivedDashboardCount,
 		hasVisibleItems,
-		displayedPreLancamentosCount,
+		displayedInboxPendingCount,
 		displayedBudgetNotifications,
 		invoiceNotifications,
 		boletoNotifications,

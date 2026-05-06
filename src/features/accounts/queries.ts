@@ -99,13 +99,13 @@ async function fetchAccountsByStatus(
 	return { accounts, logoOptions };
 }
 
-export async function fetchAccountsForUser(
+async function fetchAccountsForUser(
 	userId: string,
 ): Promise<{ accounts: AccountData[]; logoOptions: string[] }> {
 	return fetchAccountsByStatus(userId, false);
 }
 
-export async function fetchInactiveForUser(
+async function fetchInactiveForUser(
 	userId: string,
 ): Promise<{ accounts: AccountData[]; logoOptions: string[] }> {
 	return fetchAccountsByStatus(userId, true);

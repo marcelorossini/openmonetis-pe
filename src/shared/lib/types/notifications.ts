@@ -1,8 +1,8 @@
-export type NotificationType = "overdue" | "due_soon";
+type NotificationType = "overdue" | "due_soon";
 
-export type BudgetStatus = "exceeded" | "critical";
+type BudgetStatus = "exceeded" | "critical";
 
-export type DashboardNotificationStateFields = {
+type DashboardNotificationStateFields = {
 	notificationKey: string;
 	fingerprint: string;
 	href: string;

@@ -13,7 +13,7 @@ import {
 	PAYMENT_METHODS,
 	TRANSACTION_CONDITIONS,
 	TRANSACTION_TYPES,
-} from "@/features/transactions/constants";
+} from "@/features/transactions/lib/constants";
 import {
 	INITIAL_BALANCE_CONDITION,
 	INITIAL_BALANCE_NOTE,
@@ -31,7 +31,7 @@ import { addMonthsToPeriod, MONTH_NAMES } from "@/shared/utils/period";
 // Authorization Validation Functions
 // ============================================================================
 
-export async function validatePagadorOwnership(
+export async function validatePayerOwnership(
 	userId: string,
 	payerId: string | null | undefined,
 ): Promise<boolean> {
@@ -63,19 +63,6 @@ export async function fetchOwnedPayerIds(
 		.where(and(eq(payers.userId, userId), inArray(payers.id, ids)));
 
 	return new Set(rows.map((row) => row.id));
-}
-
-export async function validateCategoriaOwnership(
-	userId: string,
-	categoryId: string | null | undefined,
-): Promise<boolean> {
-	if (!categoryId) return true;
-
-	const categoria = await db.query.categories.findFirst({
-		where: and(eq(categories.id, categoryId), eq(categories.userId, userId)),
-	});
-
-	return !!categoria;
 }
 
 export async function fetchOwnedCategoryIds(
@@ -298,10 +285,10 @@ export const resolvePeriod = (purchaseDate: string, period?: string | null) => {
 	return `${year}-${month}`;
 };
 
-export const isValidDateInput = (value: string) =>
+const isValidDateInput = (value: string) =>
 	!Number.isNaN(parseLocalDateString(value).getTime());
 
-export const baseFields = z.object({
+const baseFields = z.object({
 	purchaseDate: z
 		.string({ message: "Informe a data da transação." })
 		.trim()
@@ -498,7 +485,7 @@ export const toggleSettlementSchema = z.object({
 		.optional(),
 });
 
-export type BaseInput = z.infer<typeof baseFields>;
+type BaseInput = z.infer<typeof baseFields>;
 export type CreateInput = z.infer<typeof createSchema>;
 export type UpdateInput = z.infer<typeof updateSchema>;
 export type DeleteInput = z.infer<typeof deleteSchema>;
@@ -527,7 +514,7 @@ type InitialCandidate = {
 	paymentMethod: string | null;
 };
 
-export const isInitialBalanceLancamento = (record?: InitialCandidate | null) =>
+export const isInitialBalanceTransaction = (record?: InitialCandidate | null) =>
 	!!record &&
 	record.note === INITIAL_BALANCE_NOTE &&
 	record.transactionType === INITIAL_BALANCE_TRANSACTION_TYPE &&
@@ -554,7 +541,7 @@ const splitAmount = (totalCents: number, parts: number) => {
 	);
 };
 
-export type Share = {
+type Share = {
 	payerId: string | null;
 	amountCents: number;
 };
@@ -617,7 +604,7 @@ type BuildTransactionRecordsParams = {
 
 export type TransactionInsert = typeof transactions.$inferInsert;
 
-export const buildLancamentoRecords = ({
+export const buildTransactionRecords = ({
 	data,
 	userId,
 	period,
@@ -859,7 +846,7 @@ export const updateBulkSchema = z.object({
 
 export type UpdateBulkInput = z.infer<typeof updateBulkSchema>;
 
-export const massAddTransactionSchema = z.object({
+const massAddTransactionSchema = z.object({
 	purchaseDate: z
 		.string({ message: "Informe a data da transação." })
 		.trim()

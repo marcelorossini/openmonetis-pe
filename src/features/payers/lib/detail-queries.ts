@@ -11,7 +11,7 @@ import {
 } from "@/db/schema";
 import { db } from "@/shared/lib/db";
 
-export type ShareData = {
+type ShareData = {
 	id: string;
 	userId: string;
 	name: string;
@@ -66,7 +66,7 @@ export async function fetchCurrentUserShare(
 	};
 }
 
-export async function fetchPagadorLancamentos(filters: SQL[]) {
+export async function fetchPayerTransactions(filters: SQL[]) {
 	const transactionRows = await db
 		.select({
 			transaction: transactions,

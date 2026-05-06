@@ -17,7 +17,7 @@ type PayerInfoCardProps = {
 	payer: PayerInfo;
 };
 
-export function PagadorInfoCard({ payer }: PayerInfoCardProps) {
+export function PayerInfoCard({ payer }: PayerInfoCardProps) {
 	const showSensitiveDetails = payer.canEdit;
 
 	const getStatusBadgeVariant = (status: string): "success" | "outline" => {

@@ -20,7 +20,7 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/shared/components/ui/chart";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import type { PayerHistoryPoint } from "@/shared/lib/payers/details";
 import { currencyFormatter } from "@/shared/utils/currency";
 
@@ -31,7 +31,7 @@ const chartConfig = {
 	},
 };
 
-type PagadorHistoryCardProps = {
+type PayerHistoryCardProps = {
 	data: PayerHistoryPoint[];
 };
 
@@ -57,7 +57,7 @@ const ValueLabel = (props: LabelProps) => {
 	);
 };
 
-export function PayerHistoryCard({ data }: PagadorHistoryCardProps) {
+export function PayerHistoryCard({ data }: PayerHistoryCardProps) {
 	const hasData = data.length > 0;
 
 	return (

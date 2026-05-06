@@ -1,6 +1,6 @@
 "use server";
 
-import { and, asc, desc, eq, inArray, isNull, or } from "drizzle-orm";
+import { and, asc, eq, inArray, isNull, or } from "drizzle-orm";
 import { z } from "zod";
 import {
 	categories,
@@ -22,7 +22,6 @@ import type {
 	CancelAnticipationInput,
 	CreateAnticipationInput,
 	EligibleInstallment,
-	InstallmentAnticipationWithRelations,
 } from "@/shared/lib/installments/anticipation-types";
 import { uuidSchema } from "@/shared/lib/schemas/common";
 import type { ActionResult } from "@/shared/lib/types/actions";
@@ -327,71 +326,6 @@ export async function createInstallmentAnticipationAction(
 }
 
 /**
- * Busca histórico de antecipações de uma série
- */
-export async function getInstallmentAnticipationsAction(
-	seriesId: string,
-): Promise<ActionResult<InstallmentAnticipationWithRelations[]>> {
-	try {
-		const user = await getUser();
-
-		// Validar seriesId
-		const validatedSeriesId = uuidSchema("Série").parse(seriesId);
-
-		// Usar query builder ao invés de db.query para evitar problemas de tipagem
-		const anticipations = await db
-			.select({
-				id: installmentAnticipations.id,
-				seriesId: installmentAnticipations.seriesId,
-				anticipationPeriod: installmentAnticipations.anticipationPeriod,
-				anticipationDate: installmentAnticipations.anticipationDate,
-				anticipatedInstallmentIds:
-					installmentAnticipations.anticipatedInstallmentIds,
-				totalAmount: installmentAnticipations.totalAmount,
-				installmentCount: installmentAnticipations.installmentCount,
-				discount: installmentAnticipations.discount,
-				transactionId: installmentAnticipations.transactionId,
-				payerId: installmentAnticipations.payerId,
-				categoryId: installmentAnticipations.categoryId,
-				note: installmentAnticipations.note,
-				userId: installmentAnticipations.userId,
-				createdAt: installmentAnticipations.createdAt,
-				// Joins
-				transaction: transactions,
-				payer: payers,
-				category: categories,
-			})
-			.from(installmentAnticipations)
-			.leftJoin(
-				transactions,
-				eq(installmentAnticipations.transactionId, transactions.id),
-			)
-			.leftJoin(payers, eq(installmentAnticipations.payerId, payers.id))
-			.leftJoin(
-				categories,
-				eq(installmentAnticipations.categoryId, categories.id),
-			)
-			.where(
-				and(
-					eq(installmentAnticipations.seriesId, validatedSeriesId),
-					eq(installmentAnticipations.userId, user.id),
-				),
-			)
-			.orderBy(desc(installmentAnticipations.createdAt));
-
-		return {
-			success: true,
-			message: "Antecipações carregadas.",
-			data: anticipations,
-		};
-	} catch (error) {
-		return handleActionError(error) as ActionResult<
-			InstallmentAnticipationWithRelations[]
-		>;
-	}
-}
-
-/**
  * Cancela uma antecipação de parcelas
  * Remove o lançamento de antecipação e restaura as parcelas originais
  */
@@ -501,48 +435,5 @@ export async function cancelInstallmentAnticipationAction(
 		};
 	} catch (error) {
 		return handleActionError(error);
-	}
-}
-
-/**
- * Busca detalhes de uma antecipação específica
- */
-export async function getAnticipationDetailsAction(
-	anticipationId: string,
-): Promise<ActionResult<InstallmentAnticipationWithRelations>> {
-	try {
-		const user = await getUser();
-
-		// Validar anticipationId
-		const validatedId = uuidSchema("Antecipação").parse(anticipationId);
-
-		const anticipation = await db.query.installmentAnticipations.findFirst({
-			where: and(
-				eq(installmentAnticipations.id, validatedId),
-				eq(installmentAnticipations.userId, user.id),
-			),
-			with: {
-				transaction: true,
-				payer: true,
-				category: true,
-			},
-		});
-
-		if (!anticipation) {
-			return {
-				success: false,
-				error: "Antecipação não encontrada.",
-			};
-		}
-
-		return {
-			success: true,
-			message: "Detalhes da antecipação carregados.",
-			data: anticipation,
-		};
-	} catch (error) {
-		return handleActionError(
-			error,
-		) as ActionResult<InstallmentAnticipationWithRelations>;
 	}
 }

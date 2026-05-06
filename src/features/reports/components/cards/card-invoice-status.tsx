@@ -1,7 +1,7 @@
 "use client";
 
 import { RiCalendarCheckLine } from "@remixicon/react";
-import type { CardDetailData } from "@/features/reports/cards-report-queries";
+import type { CardDetailData } from "@/features/reports/lib/cards-report-queries";
 import {
 	Card,
 	CardContent,

@@ -3,7 +3,7 @@ import {
 	RiBarChart2Line,
 	RiShieldCheckLine,
 } from "@remixicon/react";
-import { Logo } from "@/shared/components/logo";
+import { Logo } from "@/shared/components/brand/logo";
 import { DotPattern } from "@/shared/components/ui/dot-pattern";
 import { AuthSidebarInvoicesMock } from "./auth-sidebar-invoices-mock";
 

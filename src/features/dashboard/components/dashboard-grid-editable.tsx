@@ -40,8 +40,8 @@ import {
 } from "@/features/dashboard/widget-registry/widget-config";
 import { NoteDialog } from "@/features/notes/components/note-dialog";
 import { TransactionDialog } from "@/features/transactions/components/dialogs/transaction-dialog/transaction-dialog";
-import { ExpandableWidgetCard } from "@/shared/components/expandable-widget-card";
 import { Button } from "@/shared/components/ui/button";
+import { ExpandableWidgetCard } from "@/shared/components/widgets/expandable-widget-card";
 
 type DashboardGridEditableProps = {
 	data: DashboardData;

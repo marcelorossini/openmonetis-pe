@@ -3,7 +3,7 @@ import { type Category, categories } from "@/db/schema";
 import type { CategoryType } from "@/shared/lib/categories/constants";
 import { db } from "@/shared/lib/db";
 
-export type CategoryData = {
+type CategoryData = {
 	id: string;
 	name: string;
 	type: CategoryType;

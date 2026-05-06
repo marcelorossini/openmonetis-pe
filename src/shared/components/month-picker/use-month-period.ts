@@ -41,5 +41,3 @@ export function useMonthPeriod() {
 		buildHref,
 	};
 }
-
-export { PERIOD_PARAM as MONTH_PERIOD_PARAM };

@@ -1,15 +1,15 @@
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import type { Category } from "@/db/schema";
-import { fetchCategoryChartData } from "@/features/reports/category-chart-queries";
-import { fetchCategoryReport } from "@/features/reports/category-report-queries";
-import { fetchUserCategories } from "@/features/reports/category-trends-queries";
 import { CategoryReportPage } from "@/features/reports/components/category-report-page";
 import type {
 	CategoryOption,
 	FilterState,
 } from "@/features/reports/components/types";
-import { validateDateRange } from "@/features/reports/utils";
+import { fetchCategoryChartData } from "@/features/reports/lib/category-chart-queries";
+import { fetchCategoryReport } from "@/features/reports/lib/category-report-queries";
+import { fetchUserCategories } from "@/features/reports/lib/category-trends-queries";
+import { validateDateRange } from "@/features/reports/lib/utils";
 import { getUserId } from "@/shared/lib/auth/server";
 import type { CategoryReportFilters } from "@/shared/lib/types/reports";
 import { addMonthsToPeriod, getCurrentPeriod } from "@/shared/utils/period";

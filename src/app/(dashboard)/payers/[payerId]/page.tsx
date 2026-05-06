@@ -8,7 +8,7 @@ import { connection } from "next/server";
 import { PayerCardUsageCard } from "@/features/payers/components/details/payer-card-usage-card";
 import { PayerHeaderCard } from "@/features/payers/components/details/payer-header-card";
 import { PayerHistoryCard } from "@/features/payers/components/details/payer-history-card";
-import { PagadorInfoCard } from "@/features/payers/components/details/payer-info-card";
+import { PayerInfoCard } from "@/features/payers/components/details/payer-info-card";
 import { PayerLeaveShareCard } from "@/features/payers/components/details/payer-leave-share-card";
 import { PayerMonthlySummaryCard } from "@/features/payers/components/details/payer-monthly-summary-card";
 import {
@@ -16,12 +16,12 @@ import {
 	PayerPaymentStatusCard,
 } from "@/features/payers/components/details/payer-payment-method-cards";
 import { PayerSharingCard } from "@/features/payers/components/details/payer-sharing-card";
+import { buildReadOnlyOptionSets } from "@/features/payers/lib/build-readonly-option-sets";
 import {
 	fetchCurrentUserShare,
-	fetchPagadorLancamentos,
 	fetchPayerShares,
-} from "@/features/payers/detail-queries";
-import { buildReadOnlyOptionSets } from "@/features/payers/lib/build-readonly-option-sets";
+	fetchPayerTransactions,
+} from "@/features/payers/lib/detail-queries";
 import { fetchUserPreferences } from "@/features/settings/queries";
 import { TransactionsPage as LancamentosSection } from "@/features/transactions/components/page/transactions-page";
 import {
@@ -36,13 +36,12 @@ import {
 	type SluggedFilters,
 	type SlugMaps,
 	type TransactionSearchFilters,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import {
 	fetchRecentEstablishments,
 	fetchTransactionFilterSources,
 } from "@/features/transactions/queries";
 import { LogoPrefetchProvider } from "@/shared/components/entity-avatar";
-import { ExpandableWidgetCard } from "@/shared/components/expandable-widget-card";
 import MonthNavigation from "@/shared/components/month-picker/month-navigation";
 import {
 	Tabs,
@@ -50,16 +49,17 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@/shared/components/ui/tabs";
+import { ExpandableWidgetCard } from "@/shared/components/widgets/expandable-widget-card";
 import { getUserId } from "@/shared/lib/auth/server";
 import { prefetchLogoMappings } from "@/shared/lib/logo/prefetch-server";
 import { getPayerAccess } from "@/shared/lib/payers/access";
 import {
-	fetchPagadorBoletoItems,
-	fetchPagadorBoletoStats,
-	fetchPagadorCardUsage,
-	fetchPagadorPaymentStatus,
+	fetchPayerBoletoItems,
+	fetchPayerBoletoStats,
+	fetchPayerCardUsage,
 	fetchPayerHistory,
 	fetchPayerMonthlyBreakdown,
+	fetchPayerPaymentStatus,
 	type PayerCardUsageItem,
 } from "@/shared/lib/payers/details";
 import { parsePeriodParam } from "@/shared/utils/period";
@@ -182,7 +182,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 		estabelecimentos,
 		userPreferences,
 	] = await Promise.all([
-		fetchPagadorLancamentos(filters),
+		fetchPayerTransactions(filters),
 		fetchPayerMonthlyBreakdown({
 			userId: dataOwnerId,
 			payerId: pagador.id,
@@ -193,22 +193,22 @@ export default async function Page({ params, searchParams }: PageProps) {
 			payerId: pagador.id,
 			period: selectedPeriod,
 		}),
-		fetchPagadorCardUsage({
+		fetchPayerCardUsage({
 			userId: dataOwnerId,
 			payerId: pagador.id,
 			period: selectedPeriod,
 		}),
-		fetchPagadorBoletoStats({
+		fetchPayerBoletoStats({
 			userId: dataOwnerId,
 			payerId: pagador.id,
 			period: selectedPeriod,
 		}),
-		fetchPagadorBoletoItems({
+		fetchPayerBoletoItems({
 			userId: dataOwnerId,
 			payerId: pagador.id,
 			period: selectedPeriod,
 		}),
-		fetchPagadorPaymentStatus({
+		fetchPayerPaymentStatus({
 			userId: dataOwnerId,
 			payerId: pagador.id,
 			period: selectedPeriod,
@@ -333,7 +333,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 					/>
 
 					<TabsContent value="profile" className="space-y-4">
-						<PagadorInfoCard payer={payerData} />
+						<PayerInfoCard payer={payerData} />
 						{canEdit && payerData.shareCode ? (
 							<PayerSharingCard
 								payerId={pagador.id}

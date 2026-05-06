@@ -1,6 +1,6 @@
 import { RiTodoLine } from "@remixicon/react";
 import type { Note } from "@/features/notes/components/types";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 import { NoteListItem } from "./note-list-item";
 
 type NotesListProps = {

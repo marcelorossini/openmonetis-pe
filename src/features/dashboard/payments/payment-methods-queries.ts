@@ -1,4 +1,4 @@
-export type PaymentMethodSummary = {
+type PaymentMethodSummary = {
 	paymentMethod: string;
 	amount: number;
 	percentage: number;

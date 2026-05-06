@@ -2,13 +2,13 @@ import { desc, eq } from "drizzle-orm";
 import { apiTokens } from "@/db/schema";
 import { db, schema } from "@/shared/lib/db";
 
-export interface UserPreferences {
+interface UserPreferences {
 	statementNoteAsColumn: boolean;
 	transactionsColumnOrder: string[] | null;
 	attachmentMaxSizeMb: number;
 }
 
-export interface ApiToken {
+interface ApiToken {
 	id: string;
 	name: string;
 	tokenPrefix: string;
@@ -19,7 +19,7 @@ export interface ApiToken {
 	revokedAt: Date | null;
 }
 
-export async function fetchAuthProvider(userId: string): Promise<string> {
+async function fetchAuthProvider(userId: string): Promise<string> {
 	const userAccount = await db.query.account.findFirst({
 		where: eq(schema.account.userId, userId),
 	});
@@ -44,7 +44,7 @@ export async function fetchUserPreferences(
 	return result[0];
 }
 
-export async function fetchApiTokens(userId: string): Promise<ApiToken[]> {
+async function fetchApiTokens(userId: string): Promise<ApiToken[]> {
 	return db
 		.select({
 			id: apiTokens.id,

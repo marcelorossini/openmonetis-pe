@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
 	experimental: {
 		prefetchInlining: true,
 		turbopackFileSystemCacheForDev: true,
+		optimizePackageImports: ["@remixicon/react"],
 	},
 
 	// Headers for Safari compatibility

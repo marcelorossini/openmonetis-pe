@@ -9,8 +9,8 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import { exportTransactionsDataAction } from "@/features/transactions/actions";
-import type { TransactionsExportContext } from "@/features/transactions/export-types";
-import { formatCurrency } from "@/features/transactions/formatting-helpers";
+import type { TransactionsExportContext } from "@/features/transactions/lib/export-types";
+import { formatCurrency } from "@/features/transactions/lib/formatting-helpers";
 import { Button } from "@/shared/components/ui/button";
 import {
 	DropdownMenu,
@@ -26,7 +26,7 @@ import {
 import { displayPeriod } from "@/shared/utils/period";
 import type { TransactionItem } from "./types";
 
-interface LancamentosExportProps {
+interface TransactionsExportProps {
 	lancamentos: TransactionItem[];
 	period: string;
 	exportContext?: TransactionsExportContext;
@@ -47,7 +47,7 @@ export function TransactionsExport({
 	lancamentos,
 	period,
 	exportContext,
-}: LancamentosExportProps) {
+}: TransactionsExportProps) {
 	const [isExporting, setIsExporting] = useState(false);
 
 	const getFileName = (extension: string) => {

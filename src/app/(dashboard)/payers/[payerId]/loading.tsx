@@ -4,7 +4,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
  * Loading state para a página de detalhes do pagador.
  * Layout: navegação mensal + tabs com card compartilhado do pagador.
  */
-export default function PagadorDetailsLoading() {
+export default function PayerDetailsLoading() {
 	return (
 		<main className="flex flex-col gap-6">
 			<div className="h-[60px] animate-pulse rounded-md bg-foreground/10" />

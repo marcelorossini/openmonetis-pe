@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchInstallmentAnticipations } from "@/features/transactions/anticipation-queries";
+import { fetchInstallmentAnticipations } from "@/features/transactions/lib/anticipation-queries";
 import { getOptionalUserSession } from "@/shared/lib/auth/server";
 
 const PRIVATE_RESPONSE_HEADERS = {

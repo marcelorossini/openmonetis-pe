@@ -14,8 +14,8 @@ import type {
 	InvoicePaymentAccountOption,
 } from "@/features/dashboard/invoices/invoices-queries";
 import { AccountCardSelectContent } from "@/features/transactions/components/select-items";
+import { PaymentSuccess } from "@/shared/components/feedback/payment-success";
 import MoneyValues from "@/shared/components/money-values";
-import { PaymentSuccess } from "@/shared/components/payment-success";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";

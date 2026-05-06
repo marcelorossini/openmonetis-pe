@@ -2,7 +2,7 @@ import { RiRefreshLine } from "@remixicon/react";
 import type { RecurringExpensesData } from "@/features/dashboard/expenses/recurring-expenses-queries";
 import { EstablishmentLogo } from "@/shared/components/entity-avatar";
 import MoneyValues from "@/shared/components/money-values";
-import { WidgetEmptyState } from "@/shared/components/widget-empty-state";
+import { WidgetEmptyState } from "@/shared/components/widgets/widget-empty-state";
 
 type RecurringExpensesWidgetProps = {
 	data: RecurringExpensesData;

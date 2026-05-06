@@ -8,7 +8,7 @@ import {
 import { db } from "@/shared/lib/db";
 import { uuidSchema } from "@/shared/lib/schemas/common";
 
-export type InstallmentAnticipationListItem = {
+type InstallmentAnticipationListItem = {
 	id: string;
 	anticipationPeriod: string;
 	anticipationDate: string;

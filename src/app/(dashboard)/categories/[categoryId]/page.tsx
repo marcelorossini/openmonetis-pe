@@ -7,7 +7,7 @@ import { TransactionsPage } from "@/features/transactions/components/page/transa
 import {
 	buildOptionSets,
 	buildSluggedFilters,
-} from "@/features/transactions/page-helpers";
+} from "@/features/transactions/lib/page-helpers";
 import {
 	fetchRecentEstablishments,
 	fetchTransactionFilterSources,

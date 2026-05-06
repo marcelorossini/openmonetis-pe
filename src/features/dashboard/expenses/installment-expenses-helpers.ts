@@ -4,7 +4,7 @@ import {
 	formatLastInstallmentDate,
 } from "@/shared/lib/installments/utils";
 
-export type InstallmentExpenseDisplay = {
+type InstallmentExpenseDisplay = {
 	compactLabel: string | null;
 	isLast: boolean;
 	remainingInstallments: number;
@@ -13,7 +13,7 @@ export type InstallmentExpenseDisplay = {
 	progress: number;
 };
 
-export const buildInstallmentCompactLabel = (
+const buildInstallmentCompactLabel = (
 	currentInstallment: number | null,
 	installmentCount: number | null,
 ) => {
@@ -24,7 +24,7 @@ export const buildInstallmentCompactLabel = (
 	return null;
 };
 
-export const isInstallmentLast = (
+const isInstallmentLast = (
 	currentInstallment: number | null,
 	installmentCount: number | null,
 ) => {
@@ -35,7 +35,7 @@ export const isInstallmentLast = (
 	return currentInstallment === installmentCount && installmentCount > 1;
 };
 
-export const calculateInstallmentRemainingCount = (
+const calculateInstallmentRemainingCount = (
 	currentInstallment: number | null,
 	installmentCount: number | null,
 ) => {
@@ -46,7 +46,7 @@ export const calculateInstallmentRemainingCount = (
 	return Math.max(0, installmentCount - currentInstallment);
 };
 
-export const calculateInstallmentRemainingAmount = (
+const calculateInstallmentRemainingAmount = (
 	amount: number,
 	currentInstallment: number | null,
 	installmentCount: number | null,
@@ -54,7 +54,7 @@ export const calculateInstallmentRemainingAmount = (
 	amount *
 	calculateInstallmentRemainingCount(currentInstallment, installmentCount);
 
-export const formatInstallmentEndDate = (
+const formatInstallmentEndDate = (
 	period: string,
 	currentInstallment: number | null,
 	installmentCount: number | null,
@@ -72,7 +72,7 @@ export const formatInstallmentEndDate = (
 	return formatLastInstallmentDate(lastDate);
 };
 
-export const buildInstallmentProgress = (
+const buildInstallmentProgress = (
 	currentInstallment: number | null,
 	installmentCount: number | null,
 ) => {

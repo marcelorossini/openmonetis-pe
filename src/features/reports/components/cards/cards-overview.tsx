@@ -4,7 +4,7 @@ import { RiBankCard2Line } from "@remixicon/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import type { CartoesReportData } from "@/features/reports/cards-report-queries";
+import type { CartoesReportData } from "@/features/reports/lib/cards-report-queries";
 import MoneyValues from "@/shared/components/money-values";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";

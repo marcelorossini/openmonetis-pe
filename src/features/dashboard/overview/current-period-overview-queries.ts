@@ -13,11 +13,11 @@ import type {
 	TopExpense,
 	TopExpensesData,
 } from "@/features/dashboard/expenses/top-expenses-queries";
+import type { TopEstablishmentsData } from "@/features/dashboard/lib/top-establishments-queries";
+import { excludeTransactionsFromExcludedAccounts } from "@/features/dashboard/lib/transaction-filters";
 import type { PaymentConditionsData } from "@/features/dashboard/payments/payment-conditions-queries";
 import type { PaymentMethodsData } from "@/features/dashboard/payments/payment-methods-queries";
 import type { PaymentStatusData } from "@/features/dashboard/payments/payment-status-queries";
-import type { TopEstablishmentsData } from "@/features/dashboard/top-establishments-queries";
-import { excludeTransactionsFromExcludedAccounts } from "@/features/dashboard/transaction-filters";
 import {
 	ACCOUNT_AUTO_INVOICE_NOTE_PREFIX,
 	INITIAL_BALANCE_NOTE,

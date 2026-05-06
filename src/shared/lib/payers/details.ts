@@ -47,7 +47,7 @@ export type PayerCardUsageItem = {
 	amount: number;
 };
 
-export type PayerBoletoStats = {
+type PayerBoletoStats = {
 	totalAmount: number;
 	paidAmount: number;
 	pendingAmount: number;
@@ -196,7 +196,7 @@ export async function fetchPayerHistory({
 	}));
 }
 
-export async function fetchPagadorCardUsage({
+export async function fetchPayerCardUsage({
 	userId,
 	payerId,
 	period,
@@ -239,7 +239,7 @@ export async function fetchPagadorCardUsage({
 	return items.sort((a, b) => b.amount - a.amount);
 }
 
-export async function fetchPagadorBoletoStats({
+export async function fetchPayerBoletoStats({
 	userId,
 	payerId,
 	period,
@@ -288,7 +288,7 @@ export async function fetchPagadorBoletoStats({
 	};
 }
 
-export async function fetchPagadorBoletoItems({
+export async function fetchPayerBoletoItems({
 	userId,
 	payerId,
 	period,
@@ -330,7 +330,7 @@ export async function fetchPagadorBoletoItems({
 	return items;
 }
 
-export async function fetchPagadorPaymentStatus({
+export async function fetchPayerPaymentStatus({
 	userId,
 	payerId,
 	period,

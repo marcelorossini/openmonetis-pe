@@ -12,7 +12,7 @@ import {
 	formatCondition,
 	formatDate,
 	formatPeriod,
-} from "@/features/transactions/formatting-helpers";
+} from "@/features/transactions/lib/formatting-helpers";
 import { TransactionTypeBadge } from "@/shared/components/transaction-type-badge";
 import {
 	Avatar,

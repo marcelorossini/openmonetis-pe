@@ -1,6 +1,6 @@
 "use client";
 
-import StatusDot from "@/shared/components/status-dot";
+import StatusDot from "@/shared/components/feedback/status-dot";
 
 export function TypeSelectContent({ label }: { label: string }) {
 	const isReceita = label === "Receita";
