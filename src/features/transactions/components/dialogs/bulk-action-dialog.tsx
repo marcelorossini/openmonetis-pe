@@ -119,7 +119,8 @@ export function BulkActionDialog({
 									{`Todas as pessoas desta parcela (${currentNumber}/${totalCount})`}
 								</Label>
 								<p className="text-xs text-muted-foreground">
-									Aplica a alteração para todas as pessoas que dividem esta parcela
+									Aplica a alteração para todas as pessoas que dividem esta
+									parcela
 								</p>
 								{scope === "period" && actionType === "edit" && (
 									<div className="mt-1.5 flex items-start gap-1.5 rounded-md bg-amber-50 px-2 py-1.5 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
