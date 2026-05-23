@@ -23,7 +23,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { useControlledState } from "@/shared/hooks/use-controlled-state";
 import { useFormState } from "@/shared/hooks/use-form-state";
-import { deriveNameFromLogo, normalizeLogo } from "@/shared/lib/logo";
+import { getLogoDisplayName, normalizeLogo } from "@/shared/lib/logo";
 import {
 	formatInitialBalanceInput,
 	normalizeDecimalInput,
@@ -66,7 +66,7 @@ const buildInitialValues = ({
 }): AccountFormValues => {
 	const fallbackLogo = logoOptions[0] ?? "";
 	const selectedLogo = normalizeLogo(account?.logo) || fallbackLogo;
-	const derivedName = deriveNameFromLogo(selectedLogo);
+	const derivedName = getLogoDisplayName(selectedLogo);
 
 	return {
 		name: account?.name ?? derivedName,

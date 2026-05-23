@@ -1,8 +1,33 @@
+import { logoDisplayNames } from "./display-names";
+
 /**
  * Normalizes logo path to get just the filename
  */
 export const normalizeLogo = (logo?: string | null) =>
 	logo?.split("/").filter(Boolean).pop() ?? "";
+
+/**
+ * Normalizes a string for accent-insensitive search.
+ * Removes diacritics and converts to lowercase.
+ */
+export const normalizeForSearch = (text: string): string =>
+	text
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "");
+
+/**
+ * Gets the display name for a logo, using a manual dictionary first
+ * and falling back to deriveNameFromLogo for unknown logos.
+ */
+export const getLogoDisplayName = (logo?: string | null): string => {
+	if (!logo) return "";
+
+	const fileName = normalizeLogo(logo);
+	if (!fileName) return "";
+
+	return logoDisplayNames[fileName.toLowerCase()] ?? deriveNameFromLogo(logo);
+};
 
 /**
  * Derives a display name from a logo filename

@@ -10,7 +10,11 @@ import {
 	DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { Input } from "@/shared/components/ui/input";
-import { deriveNameFromLogo, resolveLogoSrc } from "@/shared/lib/logo";
+import {
+	getLogoDisplayName,
+	normalizeForSearch,
+	resolveLogoSrc,
+} from "@/shared/lib/logo";
 import { cn } from "@/shared/utils/ui";
 
 const DEFAULT_BASE_PATH = "/logos";
@@ -35,7 +39,7 @@ export function LogoPickerTrigger({
 	className,
 }: LogoPickerTriggerProps) {
 	const hasLogo = Boolean(selectedLogo);
-	const selectedLogoLabel = deriveNameFromLogo(selectedLogo);
+	const selectedLogoLabel = getLogoDisplayName(selectedLogo);
 	const selectedLogoPath =
 		hasLogo && selectedLogo ? resolveLogoSrc(selectedLogo, { basePath }) : null;
 
@@ -102,8 +106,8 @@ export function LogoPickerDialog({
 
 	const filteredLogos = logos.filter((logo) => {
 		if (!search.trim()) return true;
-		const logoLabel = deriveNameFromLogo(logo).toLowerCase();
-		return logoLabel.includes(search.toLowerCase().trim());
+		const logoLabel = getLogoDisplayName(logo);
+		return normalizeForSearch(logoLabel).includes(normalizeForSearch(search));
 	});
 
 	const handleOpenChange = (isOpen: boolean) => {
@@ -145,7 +149,7 @@ export function LogoPickerDialog({
 					<div className="grid max-h-custom-height-card grid-cols-4 gap-2 overflow-y-auto p-1 md:grid-cols-5">
 						{filteredLogos.map((logo) => {
 							const isActive = value === logo;
-							const logoLabel = deriveNameFromLogo(logo);
+							const logoLabel = getLogoDisplayName(logo);
 
 							return (
 								<button

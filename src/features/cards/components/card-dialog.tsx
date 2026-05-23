@@ -24,7 +24,7 @@ import {
 	DEFAULT_CARD_BRANDS,
 	DEFAULT_CARD_STATUS,
 } from "@/shared/lib/cards/constants";
-import { deriveNameFromLogo, normalizeLogo } from "@/shared/lib/logo";
+import { getLogoDisplayName, normalizeLogo } from "@/shared/lib/logo";
 import {
 	formatLimitInput,
 	normalizeDecimalInput,
@@ -59,7 +59,7 @@ const buildInitialValues = ({
 }): CardFormValues => {
 	const fallbackLogo = logoOptions[0] ?? "";
 	const selectedLogo = normalizeLogo(card?.logo) || fallbackLogo;
-	const derivedName = deriveNameFromLogo(selectedLogo);
+	const derivedName = getLogoDisplayName(selectedLogo);
 
 	return {
 		name: card?.name ?? derivedName,
