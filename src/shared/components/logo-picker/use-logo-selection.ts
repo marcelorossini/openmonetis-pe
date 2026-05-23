@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { deriveNameFromLogo } from "@/shared/lib/logo";
+import { getLogoDisplayName } from "@/shared/lib/logo";
 
 interface UseLogoSelectionProps {
 	mode: "create" | "update";
@@ -37,8 +37,8 @@ export function useLogoSelection({
 }: UseLogoSelectionProps) {
 	const handleLogoSelection = useCallback(
 		(newLogo: string) => {
-			const derived = deriveNameFromLogo(newLogo);
-			const previousDerived = deriveNameFromLogo(currentLogo);
+			const derived = getLogoDisplayName(newLogo);
+			const previousDerived = getLogoDisplayName(currentLogo);
 
 			const shouldUpdateName =
 				mode === "create" ||
