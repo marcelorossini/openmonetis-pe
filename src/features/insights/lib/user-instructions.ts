@@ -1,0 +1,1 @@
+export const USER_INSTRUCTIONS_MAX_LENGTH = 1000;

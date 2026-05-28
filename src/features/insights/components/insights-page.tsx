@@ -1,15 +1,18 @@
 "use client";
 
 import {
-	RiAlertLine,
 	RiDeleteBinLine,
+	RiEyeLine,
+	RiFlashlightLine,
+	RiLightbulbLine,
+	RiLoader4Line,
+	RiRocketLine,
 	RiSaveLine,
-	RiSparklingLine,
 } from "@remixicon/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import {
 	deleteSavedInsightsAction,
@@ -21,8 +24,6 @@ import {
 	savedInsightsQueryKey,
 	useSavedInsights,
 } from "@/features/insights/hooks/use-saved-insights";
-import { EmptyState } from "@/shared/components/feedback/empty-state";
-import { Alert, AlertDescription } from "@/shared/components/ui/alert";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/shared/components/ui/card";
 import { Skeleton } from "@/shared/components/ui/skeleton";
@@ -47,6 +48,9 @@ export function InsightsPage({ period, onAnalyze }: InsightsPageProps) {
 		string | null
 	>(null);
 	const [error, setError] = useState<string | null>(null);
+	const [userInstructions, setUserInstructions] = useState("");
+	const [shouldScrollToAnalysis, setShouldScrollToAnalysis] = useState(false);
+	const analysisAreaRef = useRef<HTMLDivElement>(null);
 	const savedInsights = savedInsightsQuery.data ?? null;
 	const insights = draftInsights ?? savedInsights?.insights ?? null;
 	const selectedModel =
@@ -59,20 +63,45 @@ export function InsightsPage({ period, onAnalyze }: InsightsPageProps) {
 		draftInsights === null && savedInsightsQuery.error instanceof Error
 			? savedInsightsQuery.error.message
 			: null;
+	const shouldShowAnalysisArea = Boolean(
+		isPending ||
+			isLoadingSavedInsights ||
+			insights ||
+			error ||
+			savedInsightsError,
+	);
 
 	useEffect(() => {
 		void period;
 		setDraftInsights(null);
 		setSelectedModelOverride(null);
 		setError(null);
+		setShouldScrollToAnalysis(false);
 	}, [period]);
+
+	useEffect(() => {
+		if (!shouldScrollToAnalysis || !shouldShowAnalysisArea) return;
+
+		requestAnimationFrame(() => {
+			analysisAreaRef.current?.scrollIntoView({
+				behavior: "smooth",
+				block: "start",
+			});
+		});
+		setShouldScrollToAnalysis(false);
+	}, [shouldScrollToAnalysis, shouldShowAnalysisArea]);
 
 	const handleAnalyze = () => {
 		setError(null);
+		setShouldScrollToAnalysis(true);
 		onAnalyze?.();
 		startTransition(async () => {
 			try {
-				const result = await generateInsightsAction(period, selectedModel);
+				const result = await generateInsightsAction(
+					period,
+					selectedModel,
+					userInstructions,
+				);
 
 				if (result.success) {
 					setDraftInsights(result.data);
@@ -145,145 +174,173 @@ export function InsightsPage({ period, onAnalyze }: InsightsPageProps) {
 
 	return (
 		<div className="flex flex-col gap-6">
-			{/* Privacy Warning */}
-			<Alert className="border-none bg-primary/10">
-				<RiAlertLine className="size-4" color="red" />
-				<AlertDescription className="text-sm text-card-foreground">
-					<strong>Aviso de privacidade:</strong> Ao gerar insights, seus dados
-					financeiros serão enviados para o provedor de IA selecionado
-					(Anthropic, OpenAI, Google, MiniMax ou OpenRouter) para processamento.
-					Certifique-se de que você confia no provedor escolhido antes de
-					prosseguir.
-				</AlertDescription>
-			</Alert>
-
-			{/* Model Selector */}
 			<ModelSelector
 				value={selectedModel}
 				onValueChange={setSelectedModelOverride}
+				period={period}
+				onAnalyze={handleAnalyze}
+				userInstructions={userInstructions}
+				onUserInstructionsChange={setUserInstructions}
+				onCancel={() => {
+					setSelectedModelOverride(null);
+					setError(null);
+				}}
 				disabled={isPending}
+				isLoadingSavedInsights={isLoadingSavedInsights}
 			/>
 
-			{/* Analyze Button */}
-			<div className="flex items-center gap-3 flex-wrap">
-				<Button
-					onClick={handleAnalyze}
-					disabled={isPending || isLoadingSavedInsights}
-					className="bg-linear-to-r from-primary via-violet-400 to-cyan-400 dark:from-primary-dark dark:to-cyan-600"
-				>
-					<RiSparklingLine className="mr-2 size-5" aria-hidden="true" />
-					{isPending ? "Analisando..." : "Gerar análise inteligente"}
-				</Button>
-
-				{insights && !error && (
-					<Button
-						onClick={isSaved ? handleDelete : handleSave}
-						disabled={isSaving || isPending || isLoadingSavedInsights}
-						variant={isSaved ? "destructive" : "outline"}
-					>
-						{isSaved ? (
-							<>
-								<RiDeleteBinLine className="mr-2 size-4" />
-								{isSaving ? "Removendo..." : "Remover análise"}
-							</>
-						) : (
-							<>
-								<RiSaveLine className="mr-2 size-4" />
-								{isSaving ? "Salvando..." : "Salvar análise"}
-							</>
-						)}
-					</Button>
-				)}
-
-				{isSaved && savedDate && (
-					<span className="text-sm text-muted-foreground">
-						Salva em{" "}
-						{format(new Date(savedDate), "dd/MM/yyyy 'às' HH:mm", {
-							locale: ptBR,
-						})}
-					</span>
-				)}
-			</div>
-
-			{/* Content Area */}
-			<div className="min-h-[400px]">
-				{(isPending || isLoadingSavedInsights) && <LoadingState />}
-				{!isPending &&
-					!isLoadingSavedInsights &&
-					!insights &&
-					!error &&
-					!savedInsightsError && (
-						<Card className="flex min-h-[50vh] w-full items-center justify-center py-12">
-							<EmptyState
-								media={<RiSparklingLine className="size-6 text-primary" />}
-								title="Nenhuma análise realizada"
-								description="Clique no botão acima para gerar insights inteligentes sobre seus
-          dados financeiros do mês selecionado."
-							/>
-						</Card>
-					)}
-				{!isPending && !isLoadingSavedInsights && error && (
-					<ErrorState
-						title="Erro ao gerar insights"
-						error={error}
-						onRetry={handleAnalyze}
-					/>
-				)}
-				{!isPending &&
-					!isLoadingSavedInsights &&
-					!error &&
-					savedInsightsError && (
+			{shouldShowAnalysisArea && (
+				<div className="min-h-[320px] scroll-mt-6" ref={analysisAreaRef}>
+					{(isPending || isLoadingSavedInsights) && <LoadingState />}
+					{!isPending && !isLoadingSavedInsights && error && (
 						<ErrorState
-							title="Erro ao carregar insights salvos"
-							error={savedInsightsError}
-							onRetry={() => void savedInsightsQuery.refetch()}
+							title="Erro ao gerar insights"
+							error={error}
+							onRetry={handleAnalyze}
 						/>
 					)}
-				{!isPending &&
-					!isLoadingSavedInsights &&
-					insights &&
-					!error &&
-					!savedInsightsError && <InsightsGrid insights={insights} />}
-			</div>
+					{!isPending &&
+						!isLoadingSavedInsights &&
+						!error &&
+						savedInsightsError && (
+							<ErrorState
+								title="Erro ao carregar insights salvos"
+								error={savedInsightsError}
+								onRetry={() => void savedInsightsQuery.refetch()}
+							/>
+						)}
+					{!isPending &&
+						!isLoadingSavedInsights &&
+						insights &&
+						!error &&
+						!savedInsightsError && (
+							<InsightsGrid
+								insights={insights}
+								action={
+									<div className="flex flex-col items-start sm:items-end">
+										<Button
+											onClick={isSaved ? handleDelete : handleSave}
+											disabled={isSaving || isPending || isLoadingSavedInsights}
+											variant={isSaved ? "destructive" : "secondary"}
+										>
+											{isSaved ? (
+												<>
+													<RiDeleteBinLine className="mr-2 size-4" />
+													{isSaving ? "Removendo..." : "Remover análise"}
+												</>
+											) : (
+												<>
+													<RiSaveLine className="mr-2 size-4" />
+													{isSaving ? "Salvando..." : "Salvar análise"}
+												</>
+											)}
+										</Button>
+										{isSaved && savedDate && (
+											<span className="text-muted-foreground text-xs">
+												Salva em{" "}
+												{format(new Date(savedDate), "dd/MM/yyyy 'às' HH:mm", {
+													locale: ptBR,
+												})}
+											</span>
+										)}
+									</div>
+								}
+							/>
+						)}
+				</div>
+			)}
 		</div>
 	);
 }
 
 function LoadingState() {
-	return (
-		<div className="space-y-6">
-			{/* Intro text skeleton */}
-			<div className="space-y-2 px-1">
-				<Skeleton className="h-5 w-full max-w-2xl" />
-				<Skeleton className="h-5 w-full max-w-md" />
-			</div>
+	const categories = [
+		{
+			label: "Comportamentos",
+			icon: RiEyeLine,
+			color: "text-orange-600 dark:text-orange-400",
+		},
+		{
+			label: "Gatilhos",
+			icon: RiFlashlightLine,
+			color: "text-amber-600 dark:text-amber-400",
+		},
+		{
+			label: "Recomendações",
+			icon: RiLightbulbLine,
+			color: "text-sky-600 dark:text-sky-400",
+		},
+		{
+			label: "Melhorias",
+			icon: RiRocketLine,
+			color: "text-emerald-600 dark:text-emerald-400",
+		},
+	];
 
-			{/* Grid de Cards */}
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-				{Array.from({ length: 4 }).map((_, i) => (
-					<Card key={i} className="relative overflow-hidden">
-						<CardHeader>
-							<div className="flex items-center gap-2">
-								<Skeleton className="size-5 rounded" />
-								<Skeleton className="h-5 w-32" />
+	return (
+		<div className="space-y-4">
+			<Card className="overflow-hidden border-primary/10 bg-linear-to-br from-primary/10 via-card to-card">
+				<CardContent className="px-4 py-1">
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+						<div className="flex gap-3">
+							<div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+								<RiLoader4Line className="size-5 animate-spin" />
 							</div>
-						</CardHeader>
-						<CardContent>
-							{Array.from({ length: 4 }).map((_, j) => (
-								<div
-									key={j}
-									className="flex flex-1 border-b border-dashed py-2.5 gap-2 items-start last:border-0"
-								>
-									<Skeleton className="size-4 shrink-0 rounded" />
-									<div className="flex-1 space-y-2">
-										<Skeleton className="h-4 w-full" />
-										<Skeleton className="h-4 w-3/4" />
-									</div>
+							<div className="space-y-2">
+								<div className="space-y-1">
+									<p className="font-semibold text-lg tracking-tight">
+										Preparando sua análise
+									</p>
+									<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed">
+										Estamos consolidando os dados do período e organizando os
+										achados em comportamentos, gatilhos, recomendações e
+										melhorias.
+									</p>
 								</div>
-							))}
-						</CardContent>
-					</Card>
-				))}
+							</div>
+						</div>
+					</div>
+				</CardContent>
+			</Card>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+				{categories.map((category) => {
+					const Icon = category.icon;
+
+					return (
+						<Card
+							key={category.label}
+							className="relative min-h-[390px] overflow-hidden"
+						>
+							<CardHeader className="pb-3">
+								<div className="flex items-center gap-2">
+									<Icon className={`size-5 ${category.color}`} />
+									<span className={`font-semibold ${category.color}`}>
+										{category.label}
+									</span>
+								</div>
+							</CardHeader>
+							<CardContent className="pt-0">
+								<div className="space-y-4">
+									{Array.from({ length: 5 }).map((_, index) => (
+										<div className="space-y-2" key={index}>
+											<div className="flex items-start gap-2">
+												<Skeleton className="mt-0.5 size-4 shrink-0 rounded-full" />
+												<div className="flex-1 space-y-2">
+													<Skeleton className="h-3.5 w-full" />
+													<Skeleton className="h-3.5 w-[82%]" />
+												</div>
+											</div>
+											{(index === 1 || index === 3) && (
+												<Skeleton className="ml-6 h-10 w-[72%] rounded-xl" />
+											)}
+										</div>
+									))}
+								</div>
+							</CardContent>
+						</Card>
+					);
+				})}
 			</div>
 		</div>
 	);

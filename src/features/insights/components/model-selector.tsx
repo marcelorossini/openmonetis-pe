@@ -1,97 +1,96 @@
 "use client";
 
-import { RiExternalLinkLine } from "@remixicon/react";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import {
 	type AIProvider,
 	AVAILABLE_MODELS,
 	DEFAULT_PROVIDER,
-	PROVIDERS,
 } from "@/features/insights/constants";
-import { Card } from "@/shared/components/ui/card";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/shared/components/ui/select";
+import { AnalysisSummaryCard } from "./analysis-summary-card";
+import { CUSTOM_MODEL_VALUE, ModelSelectionCard } from "./model-selection-card";
+import { ProviderSelectionCard } from "./provider-selection-card";
 
 interface ModelSelectorProps {
 	value: string;
 	onValueChange: (value: string) => void;
+	period: string;
+	onAnalyze: () => void;
+	userInstructions: string;
+	onUserInstructionsChange: (value: string) => void;
+	onCancel?: () => void;
 	disabled?: boolean;
+	isLoadingSavedInsights?: boolean;
 }
 
-const PROVIDER_ICON_PATHS: Record<
-	AIProvider,
-	{ light: string; dark?: string }
-> = {
-	openai: {
-		light: "/providers/chatgpt.svg",
-		dark: "/providers/chatgpt_dark_mode.svg",
-	},
-	anthropic: {
-		light: "/providers/claude.svg",
-	},
-	google: {
-		light: "/providers/gemini.svg",
-	},
-	minimax: {
-		light: "/providers/minimax.svg",
-	},
-	openrouter: {
-		light: "/providers/openrouter_light.svg",
-		dark: "/providers/openrouter_dark.svg",
-	},
-};
+const CUSTOM_MODEL_PROVIDERS = ["openrouter", "ollama"] as const;
+
+function isCustomModelProvider(
+	provider: AIProvider,
+): provider is (typeof CUSTOM_MODEL_PROVIDERS)[number] {
+	return CUSTOM_MODEL_PROVIDERS.includes(
+		provider as (typeof CUSTOM_MODEL_PROVIDERS)[number],
+	);
+}
+
+function getProviderFromValue(value: string): AIProvider | null {
+	if (value.startsWith("openrouter:")) {
+		return "openrouter";
+	}
+
+	if (value.startsWith("ollama:")) {
+		return "ollama";
+	}
+
+	if (value.includes("/")) {
+		return "openrouter";
+	}
+
+	return AVAILABLE_MODELS.find((model) => model.id === value)?.provider ?? null;
+}
+
+function stripCustomProviderPrefix(value: string, provider: AIProvider) {
+	if (!isCustomModelProvider(provider)) {
+		return value;
+	}
+
+	return value.startsWith(`${provider}:`)
+		? value.slice(`${provider}:`.length)
+		: value;
+}
+
+function getModelLabel(modelId: string) {
+	const model = AVAILABLE_MODELS.find((item) => item.id === modelId);
+	if (model) return model.name;
+
+	const provider = getProviderFromValue(modelId);
+	return provider ? stripCustomProviderPrefix(modelId, provider) : modelId;
+}
 
 export function ModelSelector({
 	value,
 	onValueChange,
+	period,
+	onAnalyze,
+	userInstructions,
+	onUserInstructionsChange,
+	onCancel,
 	disabled,
+	isLoadingSavedInsights,
 }: ModelSelectorProps) {
-	// Estado para armazenar o provider selecionado manualmente
-	const [selectedProvider, setSelectedProvider] = useState<AIProvider | null>(
-		null,
-	);
 	const [customModel, setCustomModel] = useState(value);
 
-	// Sincronizar customModel quando value mudar (importante para pré-carregamento)
 	useEffect(() => {
-		// Se o value tem "/" é um modelo OpenRouter customizado
-		if (value.includes("/") || selectedProvider === "openrouter") {
-			setCustomModel(value);
-			setSelectedProvider("openrouter");
-		} else {
-			setCustomModel(value);
-			// Limpar selectedProvider para deixar o useMemo detectar automaticamente
-			setSelectedProvider(null);
-		}
-	}, [value, selectedProvider]);
-
-	// Determinar provider atual baseado no modelo selecionado ou provider manual
-	const currentProvider = useMemo(() => {
-		// Se há um provider selecionado manualmente, use-o
-		if (selectedProvider) {
-			return selectedProvider;
+		const detectedProvider = getProviderFromValue(value);
+		if (detectedProvider && isCustomModelProvider(detectedProvider)) {
+			setCustomModel(stripCustomProviderPrefix(value, detectedProvider));
+			return;
 		}
 
-		// Se o modelo tem "/" é OpenRouter
-		if (value.includes("/")) {
-			return "openrouter";
-		}
+		setCustomModel(value);
+	}, [value]);
 
-		// Caso contrário, tente detectar baseado no modelo
-		const model = AVAILABLE_MODELS.find((m) => m.id === value);
-		return model?.provider ?? DEFAULT_PROVIDER;
-	}, [value, selectedProvider]);
+	const currentProvider = getProviderFromValue(value) ?? DEFAULT_PROVIDER;
 
-	// Agrupar modelos por provider
 	const modelsByProvider = useMemo(() => {
 		const grouped: Record<
 			AIProvider,
@@ -102,6 +101,7 @@ export function ModelSelector({
 			google: [],
 			minimax: [],
 			openrouter: [],
+			ollama: [],
 		};
 
 		AVAILABLE_MODELS.forEach((model) => {
@@ -111,130 +111,88 @@ export function ModelSelector({
 		return grouped;
 	}, []);
 
-	// Atualizar provider (seleciona primeiro modelo daquele provider)
-	const handleProviderChange = (newProvider: AIProvider) => {
-		setSelectedProvider(newProvider);
+	const providerModels = modelsByProvider[currentProvider];
+	const selectedModelIsKnown = providerModels.some(
+		(model) => model.id === value,
+	);
+	const selectValue = selectedModelIsKnown ? value : CUSTOM_MODEL_VALUE;
+	const isCustomModelActive =
+		isCustomModelProvider(currentProvider) && !selectedModelIsKnown;
+	const selectedModelLabel = getModelLabel(value);
+	const canAnalyze =
+		!disabled &&
+		!isLoadingSavedInsights &&
+		selectedModelLabel.trim().length > 0;
 
+	const handleProviderChange = (newProvider: AIProvider) => {
 		if (newProvider === "openrouter") {
-			// Para OpenRouter, usa o modelo customizado ou limpa o valor
-			onValueChange(customModel || "");
+			setCustomModel("");
+			onValueChange("openrouter:");
 			return;
 		}
 
 		const firstModel = modelsByProvider[newProvider][0];
 		if (firstModel) {
 			onValueChange(firstModel.id);
+			return;
+		}
+
+		if (isCustomModelProvider(newProvider)) {
+			onValueChange(
+				customModel ? `${newProvider}:${customModel}` : `${newProvider}:`,
+			);
 		}
 	};
 
-	// Atualizar modelo customizado do OpenRouter
+	const handleModelSelect = (modelId: string) => {
+		if (modelId === CUSTOM_MODEL_VALUE) {
+			setCustomModel("");
+			onValueChange(`${currentProvider}:`);
+			return;
+		}
+
+		onValueChange(modelId);
+	};
+
 	const handleCustomModelChange = (modelName: string) => {
 		setCustomModel(modelName);
-		onValueChange(modelName);
+		onValueChange(`${currentProvider}:${modelName}`);
 	};
 
 	return (
-		<Card className="grid grid-cols-1 lg:grid-cols-[1fr,auto] gap-6 items-start p-6">
-			{/* Descrição */}
-			<div className="space-y-2">
-				<h3 className="text-lg font-semibold">Definir modelo de análise</h3>
-				<p className="text-sm text-muted-foreground leading-relaxed">
-					Escolha o provedor de IA e o modelo específico que será utilizado para
-					gerar insights sobre seus dados financeiros. <br />
-					Diferentes modelos podem oferecer perspectivas variadas na análise.
-				</p>
-			</div>
-
-			{/* Seletor */}
-			<div className="flex flex-col gap-4 min-w-xs">
-				<RadioGroup
-					value={currentProvider}
-					onValueChange={(v) => handleProviderChange(v as AIProvider)}
-					disabled={disabled}
-					className="gap-3"
-				>
-					{(Object.keys(PROVIDERS) as AIProvider[]).map((providerId) => {
-						const provider = PROVIDERS[providerId];
-						const iconPaths = PROVIDER_ICON_PATHS[providerId];
-
-						return (
-							<div key={providerId} className="flex items-center gap-3">
-								<RadioGroupItem
-									value={providerId}
-									id={`provider-${providerId}`}
-									disabled={disabled}
-								/>
-								<div className="size-6 relative">
-									<Image
-										src={iconPaths.light}
-										alt={provider.name}
-										width={22}
-										height={22}
-										className={iconPaths.dark ? "dark:hidden" : ""}
-									/>
-									{iconPaths.dark && (
-										<Image
-											src={iconPaths.dark}
-											alt={provider.name}
-											width={22}
-											height={22}
-											className="hidden dark:block"
-										/>
-									)}
-								</div>
-								<Label
-									htmlFor={`provider-${providerId}`}
-									className="text-sm font-medium cursor-pointer flex-1"
-								>
-									{provider.name}
-								</Label>
-							</div>
-						);
-					})}
-				</RadioGroup>
-
-				{/* Seletor de Modelo */}
-				{currentProvider === "openrouter" ? (
-					<div className="space-y-2">
-						<Input
-							value={customModel}
-							onChange={(e) => handleCustomModelChange(e.target.value)}
-							placeholder="Ex: anthropic/claude-3.5-sonnet"
-							disabled={disabled}
-							className="border-none bg-neutral-200 dark:bg-neutral-800"
-						/>
-						<a
-							href="https://openrouter.ai/models"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-						>
-							<RiExternalLinkLine className="h-3 w-3" />
-							Ver modelos disponíveis no OpenRouter
-						</a>
-					</div>
-				) : (
-					<Select
-						value={value}
-						onValueChange={onValueChange}
+		<section className="space-y-4">
+			<div className="grid items-stretch gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
+				<div className="space-y-4">
+					<ProviderSelectionCard
+						currentProvider={currentProvider}
 						disabled={disabled}
-					>
-						<SelectTrigger
-							disabled={disabled}
-							className="border-none bg-neutral-200 dark:bg-neutral-800"
-						>
-							<SelectValue placeholder="Selecione um modelo" />
-						</SelectTrigger>
-						<SelectContent>
-							{modelsByProvider[currentProvider].map((model) => (
-								<SelectItem key={model.id} value={model.id}>
-									{model.name}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
-				)}
+						onProviderChange={handleProviderChange}
+					/>
+
+					<ModelSelectionCard
+						currentProvider={currentProvider}
+						providerModels={providerModels}
+						selectValue={selectValue}
+						customModel={customModel}
+						isCustomModelActive={isCustomModelActive}
+						canUseCustomModel={isCustomModelProvider(currentProvider)}
+						canAnalyze={canAnalyze}
+						disabled={disabled}
+						onModelSelect={handleModelSelect}
+						onCustomModelChange={handleCustomModelChange}
+						onCancel={onCancel}
+						onAnalyze={onAnalyze}
+					/>
+				</div>
+
+				<AnalysisSummaryCard
+					period={period}
+					currentProvider={currentProvider}
+					selectedModelLabel={selectedModelLabel}
+					userInstructions={userInstructions}
+					onUserInstructionsChange={onUserInstructionsChange}
+				/>
 			</div>
-		</Card>
+		</section>
 	);
 }

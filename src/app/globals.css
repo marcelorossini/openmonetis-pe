@@ -90,7 +90,7 @@
 
 .dark {
   --background: oklch(18% 0.004 55);
-  --foreground: oklch(93% 0.008 80);
+  --foreground: #feefe1;
   --card: oklch(21.531% 0.00369 48.293);
   --card-foreground: var(--foreground);
   --popover: oklch(24% 0.004 55);

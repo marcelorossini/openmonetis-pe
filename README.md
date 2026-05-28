@@ -72,7 +72,7 @@ A ideia é simples: ter um lugar onde consigo ver todas as minhas contas, cartõ
 
 💸 **Parcelamentos avançados** — Séries de parcelas, antecipação com cálculo de desconto, análise consolidada.
 
-🤖 **Insights com IA** — Análises geradas por Claude, GPT, Gemini, MiniMax ou OpenRouter. Insights personalizados e histórico salvo.
+🤖 **Insights com IA** — Análises geradas por Claude, GPT, Gemini, MiniMax, OpenRouter ou modelos locais via Ollama. Insights personalizados e histórico salvo.
 
 👥 **Gestão colaborativa** — Pagadores com permissões (admin/viewer), notificações automáticas por e-mail, códigos de compartilhamento.
 
@@ -96,7 +96,7 @@ A ideia é simples: ter um lugar onde consigo ver todas as minhas contas, cartõ
 - **shadcn/ui** (Radix UI) + **Tailwind CSS**
 - **Docker** (multi-stage build)
 - **Biome** (linting + formatting)
-- **Vercel AI SDK** (Claude, GPT, Gemini, MiniMax, OpenRouter)
+- **Vercel AI SDK** (Claude, GPT, Gemini, MiniMax, OpenRouter, Ollama)
 
 ---
 
@@ -474,12 +474,33 @@ OPENAI_API_KEY=
 GOOGLE_GENERATIVE_AI_API_KEY=
 MINIMAX_API_KEY=
 OPENROUTER_API_KEY=
+OLLAMA_BASE_URL=http://localhost:11434/v1
+OLLAMA_API_KEY=
 
 # Logo.dev (opcional, necessário para logos automáticos de estabelecimentos)
 # Ambas as variáveis são runtime — basta definir no host; nenhum build arg necessário.
 LOGO_DEV_TOKEN=
 LOGO_DEV_SECRET_KEY=
 ```
+
+### IA local com Ollama
+
+O provider Ollama permite gerar insights usando modelos locais. Instale e suba o Ollama no host onde o modelo ficará disponível:
+
+```bash
+ollama pull llama3.2
+ollama serve
+```
+
+Configure a URL OpenAI-compatible no `.env`:
+
+```env
+OLLAMA_BASE_URL=http://localhost:11434/v1
+# Opcional; normalmente o Ollama local não exige chave.
+OLLAMA_API_KEY=
+```
+
+Se o OpenMonetis estiver rodando dentro de um container Docker e o Ollama estiver no host, `localhost` aponta para o próprio container. Nesse caso, use uma URL acessível a partir do container, como `http://host.docker.internal:11434/v1` quando disponível, ou o endereço da rede Docker/host configurado no seu ambiente.
 
 ---
 

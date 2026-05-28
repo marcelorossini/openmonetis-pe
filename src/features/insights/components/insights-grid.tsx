@@ -5,7 +5,9 @@ import {
 	RiFlashlightLine,
 	RiLightbulbLine,
 	RiRocketLine,
+	RiSparklingLine,
 } from "@remixicon/react";
+import type React from "react";
 import {
 	Card,
 	CardContent,
@@ -22,6 +24,7 @@ import { cn } from "@/shared/utils/ui";
 
 interface InsightsGridProps {
 	insights: InsightsResponse;
+	action?: React.ReactNode;
 }
 
 const CATEGORY_ICONS: Record<InsightCategoryId, RemixiconComponentType> = {
@@ -53,21 +56,34 @@ const CATEGORY_COLORS: Record<
 	},
 };
 
-export function InsightsGrid({ insights }: InsightsGridProps) {
+export function InsightsGrid({ insights, action }: InsightsGridProps) {
 	const formattedPeriod = displayPeriod(insights.month);
 
 	return (
 		<div className="space-y-6">
-			<div className="space-y-2 px-1 text-muted-foreground">
-				<p>
-					No período selecionado ({formattedPeriod}), identificamos os
-					principais comportamentos e gatilhos que impactaram seu padrão de
-					consumo.
-				</p>
-				<p>Segue um panorama prático com recomendações acionáveis.</p>
-			</div>
+			<Card className="overflow-hidden border-primary/10 bg-linear-to-br from-primary/10 via-card to-card">
+				<CardContent className="px-4 py-1">
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+						<div className="flex gap-3">
+							<div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+								<RiSparklingLine className="size-5" />
+							</div>
+							<div className="space-y-1">
+								<p className="font-semibold text-lg tracking-tight">
+									Análise pronta para {formattedPeriod}
+								</p>
+								<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed">
+									Organizamos os sinais mais relevantes do período em quatro
+									blocos: comportamentos, gatilhos, recomendações e
+									oportunidades de melhoria.
+								</p>
+							</div>
+						</div>
+						{action && <div className="shrink-0">{action}</div>}
+					</div>
+				</CardContent>
+			</Card>
 
-			{/* Grid de Cards */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 				{insights.categories.map((categoryData) => {
 					const categoryConfig = INSIGHT_CATEGORIES[categoryData.category];

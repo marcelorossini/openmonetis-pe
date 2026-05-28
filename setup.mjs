@@ -231,6 +231,8 @@ let openaiKey = "";
 let googleAiKey = "";
 let minimaxKey = "";
 let openrouterKey = "";
+let ollamaBaseUrl = "";
+let ollamaApiKey = "";
 if (await askYesNo("  Insights com IA (Claude, GPT, Gemini, MiniMax, OpenRouter)?")) {
   console.log(`  ${c.dim}Deixe em branco o que não for usar${c.reset}`);
   anthropicKey = await ask("  ANTHROPIC_API_KEY: ");
@@ -238,6 +240,10 @@ if (await askYesNo("  Insights com IA (Claude, GPT, Gemini, MiniMax, OpenRouter)
   googleAiKey = await ask("  GOOGLE_GENERATIVE_AI_API_KEY: ");
   minimaxKey = await ask("  MINIMAX_API_KEY: ");
   openrouterKey = await ask("  OPENROUTER_API_KEY: ");
+}
+if (await askYesNo("  Insights locais com Ollama?")) {
+  ollamaBaseUrl = await askDefault("  OLLAMA_BASE_URL", "http://localhost:11434/v1");
+  ollamaApiKey = await ask("  OLLAMA_API_KEY (opcional): ");
 }
 
 // Domínio público
@@ -317,6 +323,8 @@ const envContent = [
   opt("GOOGLE_GENERATIVE_AI_API_KEY", googleAiKey),
   opt("MINIMAX_API_KEY", minimaxKey),
   opt("OPENROUTER_API_KEY", openrouterKey),
+  opt("OLLAMA_BASE_URL", ollamaBaseUrl),
+  opt("OLLAMA_API_KEY", ollamaApiKey),
 ].join("\n");
 
 writeFileSync(join(targetDir, ".env"), envContent);

@@ -7,14 +7,16 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [2.7.0] - 2026-05-28
 
-Esta versão melhora o uso diário do OpenMonetis em várias frentes: sessões mais confortáveis em dispositivos pessoais, novos recursos de IA com MiniMax, registro rápido de rendimentos no extrato e uma divisão de lançamentos mais completa para despesas compartilhadas. Também há polimentos importantes em filtros, relatórios, dashboard e telas de detalhe para deixar a leitura das informações financeiras mais direta.
+Esta versão amplia o OpenMonetis para quem usa o app todos os dias e para quem prefere mais controle sobre os próprios dados. Os Insights ganham novas opções de IA, incluindo modelos locais via Ollama, enquanto a autenticação fica mais confortável em dispositivos pessoais. Também entram melhorias práticas em contas, lançamentos compartilhados, filtros, relatórios e dashboard, deixando os fluxos financeiros mais completos e fáceis de revisar.
 
 ### Adicionado
 - Autenticação: a tela de login agora tem a opção "Manter conectado neste dispositivo", usando a persistência nativa do Better Auth para evitar novo login ao reabrir o navegador ou PWA.
 - Autenticação: novas variáveis `AUTH_SESSION_EXPIRES_IN_DAYS` e `AUTH_SESSION_UPDATE_AGE_HOURS` para configurar, em ambientes self-hosted, a duração e a renovação de sessões persistentes.
 - Contas: o extrato de uma conta agora tem um atalho "Adicionar rendimento" ao lado de "Ajustar saldo", abrindo um modal simples com valor e data para criar uma receita paga na conta atual, com categoria `Rendimentos`, forma de pagamento `Transferência bancária` e pessoa admin.
 - Insights: adicionado suporte ao provider MiniMax via `vercel-minimax-ai-provider`, incluindo os modelos M2.7, M2.7 Highspeed, M2.5, M2.5 Highspeed, M2.1, M2.1 Highspeed e M2.
-- Configuração: adicionada a variável `MINIMAX_API_KEY` aos exemplos de ambiente e ao assistente de setup.
+- Insights: adicionado suporte ao provider Ollama via endpoint OpenAI-compatible, com modelos sugeridos `llama3.2`, `llama3.1`, `qwen2.5` e `mistral`, além de input para qualquer modelo instalado localmente.
+- Configuração: adicionadas as variáveis `MINIMAX_API_KEY`, `OLLAMA_BASE_URL` e `OLLAMA_API_KEY` aos exemplos de ambiente, ao assistente de setup e à documentação.
+- Dependências: adicionada `@ai-sdk/openai-compatible` para integrar provedores compatíveis com a API da OpenAI, incluindo Ollama.
 - Lançamentos: o campo "Dividir com" agora permite selecionar múltiplas pessoas e exibe um campo de valor para cada participante escolhido.
 - Lançamentos: o modal de criação e edição agora exibe um card compacto de resumo da operação abaixo dos anexos, incluindo forma de pagamento, destino, categoria, pessoas, valores divididos e quantidade de lançamentos que serão criados.
 
@@ -22,6 +24,8 @@ Esta versão melhora o uso diário do OpenMonetis em várias frentes: sessões m
 - Contas: o modal "Adicionar rendimento" usa o mesmo seletor de data do modal de lançamentos e os botões de rendimento e ajuste de saldo agora exibem tooltip.
 - Categorias: o header de `/categories/[categoryId]` agora usa três blocos de métrica alinhados para total do mês selecionado, total do mês anterior e variação.
 - Dashboard: o botão expansível dos widgets passou de "Ver tudo" para "Expandir", com visual secundário e gradiente inferior mais compacto para diferenciar melhor a ação de abrir o modal dos links que navegam para páginas completas.
+- Insights: a resolução de modelos foi centralizada em `model-provider.ts`, reduzindo ramificações na action de geração e preservando OpenAI, Anthropic, Google, MiniMax e OpenRouter.
+- Insights: o aviso de privacidade agora diferencia providers externos de providers locais como Ollama.
 - Lançamentos: o filtro de categorias agora separa as opções em grupos de `Despesas` e `Receitas`, preservando ícones e busca dentro do seletor.
 - Lançamentos: a configuração de divisão foi movida para um modal dedicado e minimalista, com seleção direta de participantes, divisão igual e conferência do total distribuído.
 - Lançamentos: a validação de divisão agora aceita uma lista de participações, exige pessoas distintas e confere se a soma dos valores bate com o total do lançamento.

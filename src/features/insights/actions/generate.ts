@@ -1,17 +1,14 @@
 "use server";
 
-import { anthropic } from "@ai-sdk/anthropic";
-import { google } from "@ai-sdk/google";
-import { openai } from "@ai-sdk/openai";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateObject } from "ai";
-import { minimax } from "vercel-minimax-ai-provider";
 import { getUser } from "@/shared/lib/auth/server";
 import {
 	type InsightsResponse,
 	InsightsResponseSchema,
 } from "@/shared/lib/schemas/insights";
-import { AVAILABLE_MODELS, INSIGHTS_SYSTEM_PROMPT } from "../constants";
+import { INSIGHTS_SYSTEM_PROMPT } from "../constants";
+import { resolveInsightsModel } from "../lib/model-provider";
+import { USER_INSTRUCTIONS_MAX_LENGTH } from "../lib/user-instructions";
 import { aggregateMonthData } from "./aggregate";
 import type { ActionResult } from "./types";
 
@@ -20,6 +17,7 @@ const PERIOD_REGEX = /^\d{4}-\d{2}$/;
 export async function generateInsightsAction(
 	period: string,
 	modelId: string,
+	userInstructions?: string,
 ): Promise<ActionResult<InsightsResponse>> {
 	try {
 		const user = await getUser();
@@ -31,52 +29,23 @@ export async function generateInsightsAction(
 			};
 		}
 
-		const selectedModel = AVAILABLE_MODELS.find((m) => m.id === modelId);
-		const isOpenRouterFormat = /^[a-zA-Z0-9_-]+\/[a-zA-Z0-9._-]+$/.test(
-			modelId,
-		);
-		if (!selectedModel && !isOpenRouterFormat) {
+		const normalizedUserInstructions = userInstructions?.trim() ?? "";
+		if (normalizedUserInstructions.length > USER_INSTRUCTIONS_MAX_LENGTH) {
 			return {
 				success: false,
-				error: "Modelo inválido.",
+				error: `As orientações devem ter no máximo ${USER_INSTRUCTIONS_MAX_LENGTH} caracteres.`,
 			};
+		}
+
+		const resolvedModel = resolveInsightsModel(modelId);
+		if (!resolvedModel.success) {
+			return resolvedModel;
 		}
 
 		const aggregatedData = await aggregateMonthData(user.id, period);
 
-		let model: ReturnType<typeof google>;
-
-		if (isOpenRouterFormat && !selectedModel) {
-			const apiKey = process.env.OPENROUTER_API_KEY;
-			if (!apiKey) {
-				return {
-					success: false,
-					error:
-						"OPENROUTER_API_KEY não configurada. Adicione a chave no arquivo .env",
-				};
-			}
-
-			const openrouter = createOpenRouter({
-				apiKey,
-			});
-			model = openrouter.chat(modelId);
-		} else if (selectedModel?.provider === "openai") {
-			model = openai(modelId);
-		} else if (selectedModel?.provider === "anthropic") {
-			model = anthropic(modelId);
-		} else if (selectedModel?.provider === "google") {
-			model = google(modelId);
-		} else if (selectedModel?.provider === "minimax") {
-			model = minimax(modelId);
-		} else {
-			return {
-				success: false,
-				error: "Provider de modelo não suportado.",
-			};
-		}
-
 		const result = await generateObject({
-			model,
+			model: resolvedModel.model,
 			schema: InsightsResponseSchema,
 			system: INSIGHTS_SYSTEM_PROMPT,
 			prompt: `Analise os seguintes dados financeiros agregados do período ${period}.
@@ -100,6 +69,11 @@ DADOS IMPORTANTES PARA SUA ANÁLISE:
 - ${aggregatedData.installments.currentMonthInstallments} parcelas ativas no mês
 - Comprometimento futuro de R$ ${aggregatedData.installments.futureCommitment.toFixed(2)}
 - Use isso para alertas sobre comprometimento de renda futura
+
+ORIENTAÇÕES DO USUÁRIO PARA ESTA ANÁLISE:
+${normalizedUserInstructions || "Nenhuma orientação adicional."}
+
+Use as orientações do usuário apenas para priorizar achados, ajustar foco e calibrar o tom da análise. Não ignore o schema obrigatório, não invente dados que não estejam nos agregados e não execute ações ou alterações no sistema.
 
 Organize suas observações nas 4 categories especificadas no prompt do sistema:
 1. Comportamentos Observados (behaviors): 3-6 itens

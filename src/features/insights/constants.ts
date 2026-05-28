@@ -6,7 +6,8 @@ export type AIProvider =
 	| "anthropic"
 	| "google"
 	| "minimax"
-	| "openrouter";
+	| "openrouter"
+	| "ollama";
 
 /**
  * Metadados dos providers
@@ -15,27 +16,26 @@ export const PROVIDERS = {
 	openai: {
 		id: "openai" as const,
 		name: "ChatGPT",
-		icon: "RiOpenaiLine",
 	},
 	anthropic: {
 		id: "anthropic" as const,
 		name: "Claude AI",
-		icon: "RiRobot2Line",
 	},
 	google: {
 		id: "google" as const,
 		name: "Gemini",
-		icon: "RiGoogleLine",
 	},
 	minimax: {
 		id: "minimax" as const,
 		name: "MiniMax",
-		icon: "RiRobot2Line",
 	},
 	openrouter: {
 		id: "openrouter" as const,
 		name: "OpenRouter",
-		icon: "RiRouterLine",
+	},
+	ollama: {
+		id: "ollama" as const,
+		name: "Ollama",
 	},
 } as const;
 
@@ -52,8 +52,8 @@ export const AVAILABLE_MODELS = [
 
 	// Anthropic
 	{
-		id: "claude-opus-4-7",
-		name: "Claude Opus 4.7",
+		id: "claude-opus-4-8",
+		name: "Claude Opus 4.8",
 		provider: "anthropic" as const,
 	},
 	{
@@ -120,6 +120,12 @@ export const AVAILABLE_MODELS = [
 		name: "MiniMax M2",
 		provider: "minimax" as const,
 	},
+
+	// Ollama
+	{ id: "ollama:llama3.2", name: "Llama 3.2", provider: "ollama" as const },
+	{ id: "ollama:llama3.1", name: "Llama 3.1", provider: "ollama" as const },
+	{ id: "ollama:qwen2.5", name: "Qwen 2.5", provider: "ollama" as const },
+	{ id: "ollama:mistral", name: "Mistral", provider: "ollama" as const },
 ] as const;
 
 export const DEFAULT_MODEL = "gpt-5.5";
