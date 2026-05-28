@@ -41,6 +41,9 @@ const PROVIDER_ICON_PATHS: Record<
 	google: {
 		light: "/providers/gemini.svg",
 	},
+	minimax: {
+		light: "/providers/minimax.svg",
+	},
 	openrouter: {
 		light: "/providers/openrouter_light.svg",
 		dark: "/providers/openrouter_dark.svg",
@@ -61,7 +64,7 @@ export function ModelSelector({
 	// Sincronizar customModel quando value mudar (importante para pré-carregamento)
 	useEffect(() => {
 		// Se o value tem "/" é um modelo OpenRouter customizado
-		if (value.includes("/")) {
+		if (value.includes("/") || selectedProvider === "openrouter") {
 			setCustomModel(value);
 			setSelectedProvider("openrouter");
 		} else {
@@ -69,7 +72,7 @@ export function ModelSelector({
 			// Limpar selectedProvider para deixar o useMemo detectar automaticamente
 			setSelectedProvider(null);
 		}
-	}, [value]);
+	}, [value, selectedProvider]);
 
 	// Determinar provider atual baseado no modelo selecionado ou provider manual
 	const currentProvider = useMemo(() => {
@@ -97,6 +100,7 @@ export function ModelSelector({
 			openai: [],
 			anthropic: [],
 			google: [],
+			minimax: [],
 			openrouter: [],
 		};
 

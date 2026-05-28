@@ -5,6 +5,7 @@ import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateObject } from "ai";
+import { minimax } from "vercel-minimax-ai-provider";
 import { getUser } from "@/shared/lib/auth/server";
 import {
 	type InsightsResponse,
@@ -65,6 +66,8 @@ export async function generateInsightsAction(
 			model = anthropic(modelId);
 		} else if (selectedModel?.provider === "google") {
 			model = google(modelId);
+		} else if (selectedModel?.provider === "minimax") {
+			model = minimax(modelId);
 		} else {
 			return {
 				success: false,

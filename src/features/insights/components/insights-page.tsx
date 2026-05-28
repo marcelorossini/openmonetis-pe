@@ -146,12 +146,12 @@ export function InsightsPage({ period, onAnalyze }: InsightsPageProps) {
 	return (
 		<div className="flex flex-col gap-6">
 			{/* Privacy Warning */}
-			<Alert className="border-none bg-primary/15">
+			<Alert className="border-none bg-primary/10">
 				<RiAlertLine className="size-4" color="red" />
 				<AlertDescription className="text-sm text-card-foreground">
 					<strong>Aviso de privacidade:</strong> Ao gerar insights, seus dados
 					financeiros serão enviados para o provedor de IA selecionado
-					(Anthropic, OpenAI, Google ou OpenRouter) para processamento.
+					(Anthropic, OpenAI, Google, MiniMax ou OpenRouter) para processamento.
 					Certifique-se de que você confia no provedor escolhido antes de
 					prosseguir.
 				</AlertDescription>

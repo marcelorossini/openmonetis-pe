@@ -1,7 +1,12 @@
 /**
  * Tipos de providers disponíveis
  */
-export type AIProvider = "openai" | "anthropic" | "google" | "openrouter";
+export type AIProvider =
+	| "openai"
+	| "anthropic"
+	| "google"
+	| "minimax"
+	| "openrouter";
 
 /**
  * Metadados dos providers
@@ -21,6 +26,11 @@ export const PROVIDERS = {
 		id: "google" as const,
 		name: "Gemini",
 		icon: "RiGoogleLine",
+	},
+	minimax: {
+		id: "minimax" as const,
+		name: "MiniMax",
+		icon: "RiRobot2Line",
 	},
 	openrouter: {
 		id: "openrouter" as const,
@@ -72,6 +82,43 @@ export const AVAILABLE_MODELS = [
 		id: "gemini-3.1-flash-lite-preview",
 		name: "Gemini 3.1 Flash Lite",
 		provider: "google" as const,
+	},
+
+	// MiniMax
+	{
+		id: "MiniMax-M2.7",
+		name: "MiniMax M2.7",
+		provider: "minimax" as const,
+	},
+	{
+		id: "MiniMax-M2.7-highspeed",
+		name: "MiniMax M2.7 Highspeed",
+		provider: "minimax" as const,
+	},
+	{
+		id: "MiniMax-M2.5",
+		name: "MiniMax M2.5",
+		provider: "minimax" as const,
+	},
+	{
+		id: "MiniMax-M2.5-highspeed",
+		name: "MiniMax M2.5 Highspeed",
+		provider: "minimax" as const,
+	},
+	{
+		id: "MiniMax-M2.1",
+		name: "MiniMax M2.1",
+		provider: "minimax" as const,
+	},
+	{
+		id: "MiniMax-M2.1-highspeed",
+		name: "MiniMax M2.1 Highspeed",
+		provider: "minimax" as const,
+	},
+	{
+		id: "MiniMax-M2",
+		name: "MiniMax M2",
+		provider: "minimax" as const,
 	},
 ] as const;
 
