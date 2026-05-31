@@ -1,0 +1,1 @@
+ALTER TABLE "preferencias_usuario" ADD COLUMN "mostrar_resumo_lancamento" boolean DEFAULT true NOT NULL;

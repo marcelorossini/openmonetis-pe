@@ -154,6 +154,9 @@ export const userPreferences = pgTable("preferencias_usuario", {
 		string[] | null
 	>(),
 	attachmentMaxSizeMb: integer("attachment_max_size_mb").notNull().default(50),
+	showTransactionSummary: boolean("mostrar_resumo_lancamento")
+		.notNull()
+		.default(true),
 	dashboardWidgets: jsonb("dashboard_widgets").$type<{
 		order: string[];
 		hidden: string[];
@@ -495,7 +498,7 @@ export const inboxItems = pgTable(
 			withTimezone: true,
 		}).notNull(),
 
-		// Dados parseados (editáveis pelo usuário antes de processar)
+		// Dados parseados (editáveis pelo usuário antes de lançar)
 		parsedName: text("parsed_name"), // Nome do estabelecimento
 		parsedAmount: numeric("parsed_amount", { precision: 12, scale: 2 }),
 

@@ -42,6 +42,7 @@ interface PreferencesFormProps {
 	statementNoteAsColumn: boolean;
 	transactionsColumnOrder: string[] | null;
 	attachmentMaxSizeMb: number;
+	showTransactionSummary: boolean;
 }
 
 function SortableColumnItem({ id }: { id: string }) {
@@ -85,6 +86,7 @@ export function PreferencesForm({
 	statementNoteAsColumn: initialExtratoNoteAsColumn,
 	transactionsColumnOrder: initialColumnOrder,
 	attachmentMaxSizeMb: initialAttachmentMaxSizeMb,
+	showTransactionSummary: initialShowTransactionSummary,
 }: PreferencesFormProps) {
 	const router = useRouter();
 	const [isPending, startTransition] = useTransition();
@@ -104,6 +106,9 @@ export function PreferencesForm({
 				? initialAttachmentMaxSizeMb
 				: 50) as AttachmentSizeOption,
 		);
+	const [showTransactionSummary, setShowTransactionSummary] = useState(
+		initialShowTransactionSummary,
+	);
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -129,6 +134,7 @@ export function PreferencesForm({
 				statementNoteAsColumn,
 				transactionsColumnOrder: columnOrder,
 				attachmentMaxSizeMb,
+				showTransactionSummary,
 			});
 
 			if (result.success) {
@@ -166,6 +172,26 @@ export function PreferencesForm({
 						id="extrato-note-column"
 						checked={statementNoteAsColumn}
 						onCheckedChange={setExtratoNoteAsColumn}
+						disabled={isPending}
+					/>
+				</section>
+
+				<Separator />
+
+				<section className="flex items-center justify-between max-w-md">
+					<div className="space-y-2">
+						<Label htmlFor="show-transaction-summary" className="text-sm">
+							Resumo da operação
+						</Label>
+						<p className="text-sm text-muted-foreground">
+							Exibe um resumo dos dados preenchidos no final do modal de
+							lançamento.
+						</p>
+					</div>
+					<Switch
+						id="show-transaction-summary"
+						checked={showTransactionSummary}
+						onCheckedChange={setShowTransactionSummary}
 						disabled={isPending}
 					/>
 				</section>

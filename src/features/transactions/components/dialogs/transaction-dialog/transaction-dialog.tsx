@@ -17,6 +17,7 @@ import {
 	buildTransactionInitialState,
 	deriveCreditCardPeriod,
 } from "@/features/transactions/lib/form-helpers";
+import { useAppPreferences } from "@/shared/components/providers/app-preferences-provider";
 import { Button } from "@/shared/components/ui/button";
 import {
 	Collapsible,
@@ -104,6 +105,7 @@ export function TransactionDialog({
 	const [pendingUploadFiles, setPendingUploadFiles] = useState<File[]>([]);
 	const [extrasOpen, setExtrasOpen] = useState(false);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const { showTransactionSummary } = useAppPreferences();
 
 	useEffect(() => {
 		if (dialogOpen) {
@@ -730,15 +732,17 @@ export function TransactionDialog({
 							</Collapsible>
 						)}
 
-						<div className="mt-3">
-							<TransactionSummaryCard
-								formState={formState}
-								payerOptions={payerOptions}
-								accountOptions={accountOptions}
-								cardOptions={cardOptions}
-								categoryOptions={categoryOptions}
-							/>
-						</div>
+						{showTransactionSummary ? (
+							<div className="mt-3">
+								<TransactionSummaryCard
+									formState={formState}
+									payerOptions={payerOptions}
+									accountOptions={accountOptions}
+									cardOptions={cardOptions}
+									categoryOptions={categoryOptions}
+								/>
+							</div>
+						) : null}
 					</div>
 
 					{errorMessage ? (

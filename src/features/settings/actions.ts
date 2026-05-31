@@ -68,6 +68,7 @@ const updatePreferencesSchema = z.object({
 	statementNoteAsColumn: z.boolean(),
 	transactionsColumnOrder: z.array(z.string()).nullable(),
 	attachmentMaxSizeMb: z.number().int().min(1).max(100),
+	showTransactionSummary: z.boolean(),
 });
 
 type ResettableUser = {
@@ -582,6 +583,7 @@ export async function updatePreferencesAction(
 					statementNoteAsColumn: validated.statementNoteAsColumn,
 					transactionsColumnOrder: validated.transactionsColumnOrder,
 					attachmentMaxSizeMb: validated.attachmentMaxSizeMb,
+					showTransactionSummary: validated.showTransactionSummary,
 					updatedAt: new Date(),
 				})
 				.where(eq(schema.userPreferences.userId, session.user.id));
@@ -592,6 +594,7 @@ export async function updatePreferencesAction(
 				statementNoteAsColumn: validated.statementNoteAsColumn,
 				transactionsColumnOrder: validated.transactionsColumnOrder,
 				attachmentMaxSizeMb: validated.attachmentMaxSizeMb,
+				showTransactionSummary: validated.showTransactionSummary,
 			});
 		}
 
