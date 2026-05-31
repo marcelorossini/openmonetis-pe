@@ -5,6 +5,33 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [2.7.1] - 2026-05-30
+
+Esta versão melhora a clareza dos fluxos de lançamento e a experiência do dashboard. Boletos de receita agora diferenciam pagamentos de recebimentos, a navegação mensal ficou mais direta e o painel ganhou atalhos mais úteis com personalização simplificada.
+
+### Adicionado
+- Preferências: nova opção para exibir ou ocultar o card `Resumo da operação` no modal de lançamento.
+- Navegação mensal: ao passar o mouse, focar ou clicar no período selecionado, agora é possível abrir um seletor e ir diretamente para outro mês.
+
+### Alterado
+- Documentação: o guia visual foi reescrito com os tokens, temas, componentes e práticas de acessibilidade atuais; o README agora apresenta a identidade visual e as preferências disponíveis.
+- Dashboard: os cards de receitas e despesas agora oferecem um atalho discreto para abrir os lançamentos da pessoa principal filtrados pelo tipo e período.
+- Dashboard: a configuração e a reordenação de widgets agora partem de uma única ação `Personalizar`, com controle de visibilidade durante a edição.
+- Dashboard: em telas pequenas, os atalhos para receita, despesa e anotação foram agrupados no menu `Adicionar`.
+- Dashboard: os títulos dos widgets agora usam sentence case para reduzir ruído visual.
+- Dashboard: os widgets receberam uma revisão ampla de UX, com hierarquia visual mais clara, listas compactas, textos mais diretos, estados acessíveis e navegação interna consistente.
+- Dashboard: o widget `Comportamento de pagamento` foi renomeado para `Distribuição de despesas`.
+- Dashboard: limites de orçamento agora aparecem apenas no widget de despesas por categoria.
+- Dashboard: o widget `Panorama de gastos` agora exibe todos os lançamentos sem filtro adicional por cartão.
+- Navegação: o menu de finanças agora oferece submenus para abrir diretamente as faturas dos cartões e os extratos das contas ativas.
+- Lançamentos: ao passar o mouse sobre `Filtros`, os filtros ativos agora aparecem em um painel compacto com remoção individual e ação para limpar todos de uma vez.
+
+### Corrigido
+- Dashboard: o saldo consolidado do widget `Minhas contas` não inclui mais contas inativas.
+- Boletos: lançamentos de receita agora exibem ações e status como `Receber`, `Recebido` e `Recebido em`, enquanto despesas continuam usando `Pagar`, `Pago` e `Pago em`.
+- Dashboard: o modal de baixa de boleto agora usa textos de recebimento e conta de destino para receitas.
+- Calendário e pessoas: os detalhes de boletos de receita agora preservam a nomenclatura de recebimento.
+
 ## [2.7.0] - 2026-05-28
 
 Esta versão amplia o OpenMonetis para quem usa o app todos os dias e para quem prefere mais controle sobre os próprios dados. Os Insights ganham novas opções de IA, incluindo modelos locais via Ollama, enquanto a autenticação fica mais confortável em dispositivos pessoais. Também entram melhorias práticas em contas, lançamentos compartilhados, filtros, relatórios e dashboard, deixando os fluxos financeiros mais completos e fáceis de revisar.

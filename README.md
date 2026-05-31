@@ -8,7 +8,7 @@
 
 > **⚠️ Não há versão online hospedada.** Você precisa clonar o repositório e rodar localmente ou no seu próprio servidor.
 
-[![Version](https://img.shields.io/badge/version-2.7.0-blue?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.7.1-blue?style=flat-square)](CHANGELOG.md)
 [![Next.js](https://img.shields.io/badge/Next.js-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
@@ -36,6 +36,7 @@
 - [Backup](#-backup)
 - [Storage S3 Compatível](#-storage-s3-compatível)
 - [Variáveis de Ambiente](#-variáveis-de-ambiente)
+- [Design System](#-design-system)
 - [Arquitetura](#-arquitetura)
 - [Contribuindo](#-contribuindo)
 - [Apoie o Projeto](#-apoie-o-projeto)
@@ -64,7 +65,7 @@ A ideia é simples: ter um lugar onde consigo ver todas as minhas contas, cartõ
 
 💰 **Contas e transações** — Contas bancárias, cartões, dinheiro. Receitas, despesas, rendimentos e transferências. Categorização, divisão de lançamentos entre várias pessoas, filtros combináveis com intervalo de datas, extratos detalhados e importação de extratos OFX e XLS/XLSX com detecção automática de categoria.
 
-📊 **Dashboard e relatórios** — Widgets interativos de métricas, gráficos de evolução, comparativos por categoria, tendências, uso de cartões, top estabelecimentos. Exportação em PDF e Excel.
+📊 **Dashboard e relatórios** — Widgets personalizáveis, métricas com atalhos para lançamentos, gráficos de evolução, comparativos por categoria, tendências, uso de cartões, top estabelecimentos e navegação direta entre meses pelo seletor de período. Exportação em PDF e Excel.
 
 💳 **Faturas de cartão** — Acompanhe faturas por período, controle limites e vencimentos.
 
@@ -86,7 +87,7 @@ A ideia é simples: ter um lugar onde consigo ver todas as minhas contas, cartõ
   <img src="./public/images/companion-preview-light.webp" alt="OpenMonetis Companion" width="300" height="600" />
 </p>
 
-⚙️ **Personalização** — Tema dark/light, modo privacidade e changelog visual para acompanhar as novidades do app.
+⚙️ **Personalização** — Tema dark/light, modo privacidade, ordem das colunas, exibição de anotações, tamanho máximo de anexos, resumo opcional no modal de lançamento e changelog visual para acompanhar as novidades do app.
 
 ### Stack técnica
 
@@ -94,6 +95,7 @@ A ideia é simples: ter um lugar onde consigo ver todas as minhas contas, cartõ
 - **PostgreSQL** + **Drizzle ORM**
 - **Better Auth** (email/senha, OAuth, Passkeys/WebAuthn)
 - **shadcn/ui** (Radix UI) + **Tailwind CSS**
+- **Bricolage Grotesque** via `next/font`
 - **Docker** (multi-stage build)
 - **Biome** (linting + formatting)
 - **Vercel AI SDK** (Claude, GPT, Gemini, MiniMax, OpenRouter, Ollama)
@@ -501,6 +503,19 @@ OLLAMA_API_KEY=
 ```
 
 Se o OpenMonetis estiver rodando dentro de um container Docker e o Ollama estiver no host, `localhost` aponta para o próprio container. Nesse caso, use uma URL acessível a partir do container, como `http://host.docker.internal:11434/v1` quando disponível, ou o endereço da rede Docker/host configurado no seu ambiente.
+
+---
+
+## 🎨 Design System
+
+O OpenMonetis usa uma identidade visual própria com superfícies quentes, laranja
+como cor de destaque, temas claro e escuro e tipografia Bricolage Grotesque. A
+interface é construída com tokens semânticos em OKLCH, Tailwind CSS 4 e
+componentes compartilhados baseados em shadcn/ui e Radix UI.
+
+As regras de cores, tipografia, componentes, responsividade e acessibilidade
+estão documentadas no [`DESIGN.md`](DESIGN.md). Use esse guia como referência ao
+criar telas ou alterar componentes visuais.
 
 ---
 
