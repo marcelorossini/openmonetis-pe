@@ -5,6 +5,18 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [2.7.8] - 2026-06-21
+
+Esta versão deixa documentos e comprovantes mais fáceis de guardar e encontrar sem tirar o foco da rotina financeira. Agora é possível manter arquivos junto às notas, consultar a galeria por pessoa com identificação visual e abrir uma categoria diretamente das tendências do dashboard, sempre preservando o contexto do período selecionado.
+
+### Adicionado
+- Anotações: itens do tipo `Nota` agora aceitam anexos PDF, JPEG, PNG e WebP na criação e na edição, com consulta e download nos detalhes e respeito ao limite configurado pelo usuário.
+- Anexos: a galeria agora oferece filtro por pessoa, incluindo a pessoa principal, pessoas específicas e uma visão consolidada de todas as pessoas.
+
+### Alterado
+- Anexos: os cards da galeria agora identificam a pessoa vinculada ao lançamento e o filtro exibe os respectivos avatares, preservando o contexto quando vários responsáveis são exibidos.
+- Dashboard: os nomes no widget `Tendências de categorias` agora levam aos detalhes da categoria mantendo o período selecionado.
+
 ## [2.7.7] - 2026-06-20
 
 Esta versão faz ajustes pontuais de leitura nos resumos financeiros e no dashboard, reforçando a identidade visual de cartões e contas e deixando as listas dos widgets mais consistentes sem alterar a estrutura de navegação das páginas.
