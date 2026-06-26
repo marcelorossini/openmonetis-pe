@@ -30,7 +30,7 @@ export function buildReadOnlyOptionSets(
 	const contaOptionsMap = new Map<string, SelectOption>();
 	const cartaoOptionsMap = new Map<string, SelectOption>();
 	const categoriaOptionsMap = new Map<string, SelectOption>();
-	const clientOptionsMap = new Map<string, SelectOption>();
+	const partyOptionsMap = new Map<string, SelectOption>();
 
 	items.forEach((item) => {
 		if (item.accountId && !contaOptionsMap.has(item.accountId)) {
@@ -56,11 +56,12 @@ export function buildReadOnlyOptionSets(
 				icon: item.categoriaIcon,
 			});
 		}
-		if (item.clientId && !clientOptionsMap.has(item.clientId)) {
-			clientOptionsMap.set(item.clientId, {
-				value: item.clientId,
-				label: normalizeOptionLabel(item.clientName, "Cliente"),
-				slug: item.clientId,
+		if (item.partyId && !partyOptionsMap.has(item.partyId)) {
+			partyOptionsMap.set(item.partyId, {
+				value: item.partyId,
+				label: normalizeOptionLabel(item.partyName, "Cliente/Fornecedor"),
+				group: item.partyKind,
+				slug: item.partyId,
 			});
 		}
 	});
@@ -68,7 +69,7 @@ export function buildReadOnlyOptionSets(
 	const accountOptions = Array.from(contaOptionsMap.values());
 	const cardOptions = Array.from(cartaoOptionsMap.values());
 	const categoryOptions = Array.from(categoriaOptionsMap.values());
-	const clientOptions = Array.from(clientOptionsMap.values());
+	const partyOptions = Array.from(partyOptionsMap.values());
 
 	const payerFilterOptions: TransactionFilterOption[] = [
 		{ slug: payer.id, label: pagadorLabel },
@@ -83,7 +84,7 @@ export function buildReadOnlyOptionSets(
 		}),
 	);
 
-	const clientFilterOptions: TransactionFilterOption[] = clientOptions.map(
+	const partyFilterOptions: TransactionFilterOption[] = partyOptions.map(
 		(option) => ({
 			slug: option.value,
 			label: option.label,
@@ -107,12 +108,12 @@ export function buildReadOnlyOptionSets(
 		payerOptions,
 		splitPayerOptions: [],
 		defaultPayerId: payer.id,
-		clientOptions,
+		partyOptions,
 		accountOptions,
 		cardOptions,
 		categoryOptions,
 		payerFilterOptions,
-		clientFilterOptions,
+		partyFilterOptions,
 		categoryFilterOptions,
 		accountCardFilterOptions,
 	};

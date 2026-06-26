@@ -70,12 +70,12 @@ interface TransactionsPageProps {
 	payerOptions: SelectOption[];
 	splitPayerOptions: SelectOption[];
 	defaultPayerId: string | null;
-	clientOptions: SelectOption[];
+	partyOptions: SelectOption[];
 	accountOptions: SelectOption[];
 	cardOptions: SelectOption[];
 	categoryOptions: SelectOption[];
 	payerFilterOptions: TransactionFilterOption[];
-	clientFilterOptions: TransactionFilterOption[];
+	partyFilterOptions: TransactionFilterOption[];
 	categoryFilterOptions: TransactionFilterOption[];
 	accountCardFilterOptions: AccountCardFilterOption[];
 	selectedPeriod: string;
@@ -95,7 +95,7 @@ interface TransactionsPageProps {
 	importPayerOptions?: SelectOption[];
 	importSplitPayerOptions?: SelectOption[];
 	importDefaultPayerId?: string | null;
-	importClientOptions?: SelectOption[];
+	importPartyOptions?: SelectOption[];
 	importAccountOptions?: SelectOption[];
 	importCardOptions?: SelectOption[];
 	importCategoryOptions?: SelectOption[];
@@ -110,12 +110,12 @@ export function TransactionsPage({
 	payerOptions,
 	splitPayerOptions,
 	defaultPayerId,
-	clientOptions,
+	partyOptions,
 	accountOptions,
 	cardOptions,
 	categoryOptions,
 	payerFilterOptions,
-	clientFilterOptions,
+	partyFilterOptions,
 	categoryFilterOptions,
 	accountCardFilterOptions,
 	selectedPeriod,
@@ -134,7 +134,7 @@ export function TransactionsPage({
 	importPayerOptions,
 	importSplitPayerOptions,
 	importDefaultPayerId,
-	importClientOptions,
+	importPartyOptions,
 	importAccountOptions,
 	importCardOptions,
 	importCategoryOptions,
@@ -168,7 +168,7 @@ export function TransactionsPage({
 		condition: string;
 		paymentMethod: string;
 		payerId: string | undefined;
-		clientId: string | undefined;
+		partyId: string | undefined;
 		accountId: string | undefined;
 		cardId: string | undefined;
 		categoryId: string | undefined;
@@ -185,7 +185,7 @@ export function TransactionsPage({
 		period: string;
 		name: string;
 		categoryId: string | undefined;
-		clientId: string | undefined;
+		partyId: string | undefined;
 		note: string;
 		payerId: string | undefined;
 		accountId: string | undefined;
@@ -319,7 +319,7 @@ export function TransactionsPage({
 		period: string;
 		name: string;
 		categoryId: string | undefined;
-		clientId: string | undefined;
+		partyId: string | undefined;
 		note: string;
 		payerId: string | undefined;
 		accountId: string | undefined;
@@ -355,7 +355,7 @@ export function TransactionsPage({
 			period: pendingEditData.period,
 			name: pendingEditData.name,
 			categoryId: pendingEditData.categoryId,
-			clientId: pendingEditData.clientId,
+			partyId: pendingEditData.partyId,
 			note: pendingEditData.note,
 			payerId: pendingEditData.payerId,
 			accountId: pendingEditData.accountId,
@@ -483,7 +483,7 @@ export function TransactionsPage({
 				typeof updateTransactionAction
 			>[0]["paymentMethod"],
 			payerId: pendingSplitEditData.payerId ?? null,
-			clientId: pendingSplitEditData.clientId ?? null,
+			partyId: pendingSplitEditData.partyId ?? null,
 			accountId: pendingSplitEditData.accountId ?? null,
 			cardId: pendingSplitEditData.cardId ?? null,
 			categoryId: pendingSplitEditData.categoryId ?? null,
@@ -703,7 +703,7 @@ export function TransactionsPage({
 				payerOptions={payerOptions}
 				splitPayerOptions={splitPayerOptions}
 				defaultPayerId={defaultPayerId}
-				clientOptions={clientOptions}
+				partyOptions={partyOptions}
 				accountOptions={accountOptions}
 				cardOptions={cardOptions}
 				categoryOptions={categoryOptions}
@@ -728,7 +728,7 @@ export function TransactionsPage({
 				payerOptions={payerOptions}
 				splitPayerOptions={splitPayerOptions}
 				defaultPayerId={defaultPayerId}
-				clientOptions={clientOptions}
+				partyOptions={partyOptions}
 				accountOptions={accountOptions}
 				cardOptions={cardOptions}
 				categoryOptions={categoryOptions}
@@ -759,7 +759,7 @@ export function TransactionsPage({
 				noteAsColumn={noteAsColumn}
 				columnOrder={columnOrder}
 				payerFilterOptions={payerFilterOptions}
-				clientFilterOptions={clientFilterOptions}
+				partyFilterOptions={partyFilterOptions}
 				categoryFilterOptions={categoryFilterOptions}
 				accountCardFilterOptions={accountCardFilterOptions}
 				selectedPeriod={selectedPeriod}
@@ -795,7 +795,7 @@ export function TransactionsPage({
 				payerOptions={payerOptions}
 				splitPayerOptions={splitPayerOptions}
 				defaultPayerId={defaultPayerId}
-				clientOptions={clientOptions}
+				partyOptions={partyOptions}
 				accountOptions={accountOptions}
 				cardOptions={cardOptions}
 				categoryOptions={categoryOptions}
@@ -818,7 +818,7 @@ export function TransactionsPage({
 				payerOptions={importPayerOptions ?? payerOptions}
 				splitPayerOptions={importSplitPayerOptions ?? splitPayerOptions}
 				defaultPayerId={importDefaultPayerId ?? defaultPayerId}
-				clientOptions={importClientOptions ?? clientOptions}
+				partyOptions={importPartyOptions ?? partyOptions}
 				accountOptions={importAccountOptions ?? accountOptions}
 				cardOptions={importCardOptions ?? cardOptions}
 				categoryOptions={importCategoryOptions ?? categoryOptions}
@@ -848,7 +848,7 @@ export function TransactionsPage({
 				payerOptions={payerOptions}
 				splitPayerOptions={splitPayerOptions}
 				defaultPayerId={defaultPayerId}
-				clientOptions={clientOptions}
+				partyOptions={partyOptions}
 				accountOptions={accountOptions}
 				cardOptions={cardOptions}
 				categoryOptions={categoryOptions}

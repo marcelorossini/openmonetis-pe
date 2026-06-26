@@ -403,7 +403,7 @@ function MultiSelectFilter({
 
 interface TransactionsFiltersProps {
 	payerOptions: TransactionFilterOption[];
-	clientOptions: TransactionFilterOption[];
+	partyOptions: TransactionFilterOption[];
 	categoryOptions: TransactionFilterOption[];
 	accountCardOptions: AccountCardFilterOption[];
 	className?: string;
@@ -413,7 +413,7 @@ interface TransactionsFiltersProps {
 
 export function TransactionsFilters({
 	payerOptions,
-	clientOptions,
+	partyOptions,
 	categoryOptions,
 	accountCardOptions,
 	className,
@@ -571,14 +571,14 @@ export function TransactionsFilters({
 		[payerOptions],
 	);
 
-	const clientMultiOptions = useMemo<MultiOption[]>(
+	const partyMultiOptions = useMemo<MultiOption[]>(
 		() =>
-			clientOptions.map((option) => ({
+			partyOptions.map((option) => ({
 				value: option.slug,
 				label: option.label,
 				render: <ClientAvatarLabel name={option.label} size="sm" />,
 			})),
-		[clientOptions],
+		[partyOptions],
 	);
 
 	const categoryMultiOptions = useMemo<MultiOption[]>(
@@ -623,7 +623,7 @@ export function TransactionsFilters({
 		searchParams.getAll("condition").length > 0,
 		searchParams.getAll("payment").length > 0,
 		searchParams.getAll("payer").length > 0,
-		searchParams.getAll("client").length > 0,
+		searchParams.getAll("party").length > 0,
 		searchParams.getAll("category").length > 0,
 		searchParams.getAll("accountCard").length > 0,
 		Boolean(searchParams.get("settled")),
@@ -720,7 +720,7 @@ export function TransactionsFilters({
 	addMultiValueChips("condition", "Condição", conditionOptions);
 	addMultiValueChips("payment", "Pagamento", paymentOptions);
 	addMultiValueChips("payer", "Pessoa", payerMultiOptions);
-	addMultiValueChips("client", "Cliente", clientMultiOptions);
+	addMultiValueChips("party", "Cliente/Fornecedor", partyMultiOptions);
 	addMultiValueChips("category", "Categoria", categoryMultiOptions);
 	addMultiValueChips("accountCard", "Conta/cartão", accountCardMultiOptions);
 
@@ -976,18 +976,18 @@ export function TransactionsFilters({
 
 											<div className="space-y-1.5">
 												<label className="text-xs font-medium text-muted-foreground">
-													Cliente
+													Cliente/Fornecedor
 												</label>
 												<MultiSelectFilter
 													placeholder="Todos"
-													options={clientMultiOptions}
-													selected={getParamValues("client")}
+													options={partyMultiOptions}
+													selected={getParamValues("party")}
 													onChange={(values) =>
-														handleMultiFilterChange("client", values)
+														handleMultiFilterChange("party", values)
 													}
 													disabled={isPending}
 													searchable
-													searchPlaceholder="Buscar cliente..."
+													searchPlaceholder="Buscar cliente ou fornecedor..."
 												/>
 											</div>
 

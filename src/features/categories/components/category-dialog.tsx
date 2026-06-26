@@ -49,6 +49,7 @@ const buildInitialValues = ({
 		name: category?.name ?? "",
 		type: initialType,
 		icon,
+		partyKind: category?.partyKind ?? null,
 	};
 };
 
@@ -113,6 +114,7 @@ export function CategoryDialog({
 			name: formState.name.trim(),
 			type: formState.type,
 			icon: formState.icon.trim(),
+			partyKind: formState.partyKind,
 		};
 
 		startTransition(async () => {

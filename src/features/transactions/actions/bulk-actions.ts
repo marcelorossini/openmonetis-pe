@@ -34,7 +34,7 @@ import {
 	isInitialBalanceTransaction,
 	type MassAddInput,
 	massAddSchema,
-	resolveClientForTransaction,
+	resolvePartyForTransaction,
 	resolvePeriod,
 	resolveUserLabel,
 	revalidate,
@@ -213,19 +213,19 @@ export async function updateTransactionBulkAction(
 			};
 		}
 
-		const client = await resolveClientForTransaction(user.id, {
+		const party = await resolvePartyForTransaction(user.id, {
 			transactionType: existing.transactionType,
 			categoryId: data.categoryId,
-			clientId: data.clientId,
+			partyId: data.partyId,
 		});
-		if (!client.ok) {
-			return { success: false, error: client.error };
+		if (!party.ok) {
+			return { success: false, error: party.error };
 		}
 
 		const ownershipError = await validateAllOwnership(user.id, {
 			payerId: data.payerId,
 			categoryId: data.categoryId,
-			clientId: client.clientId,
+			partyId: party.partyId,
 			accountId: data.accountId,
 			cardId: data.cardId,
 		});
@@ -236,7 +236,7 @@ export async function updateTransactionBulkAction(
 		const baseUpdatePayload: Record<string, unknown> = {
 			name: data.name,
 			categoryId: data.categoryId ?? null,
-			clientId: client.clientId,
+			partyId: party.partyId,
 			note: data.note ?? null,
 			// "period" atualiza todos os pagadores do mês — preserva o payerId de cada linha
 			...(data.scope !== "period" && { payerId: data.payerId ?? null }),

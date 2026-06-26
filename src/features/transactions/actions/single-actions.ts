@@ -40,8 +40,8 @@ import {
 	formatPaidInvoicePeriods,
 	getPaidInvoicePeriods,
 	isInitialBalanceTransaction,
-	isOwnedFreelanceIncomeCategoryId,
-	resolveClientForTransaction,
+	resolveCategoryPartyKind,
+	resolvePartyForTransaction,
 	resolvePeriod,
 	resolveUserLabel,
 	revalidate,
@@ -59,9 +59,9 @@ export async function createTransactionAction(
 	try {
 		const user = await getUser();
 		const data = createSchema.parse(input);
-		const client = await resolveClientForTransaction(user.id, data);
-		if (!client.ok) {
-			return { success: false, error: client.error };
+		const party = await resolvePartyForTransaction(user.id, data);
+		if (!party.ok) {
+			return { success: false, error: party.error };
 		}
 
 		const ownershipError = await validateAllOwnership(user.id, {
@@ -69,7 +69,7 @@ export async function createTransactionAction(
 			secondaryPayerId: data.secondaryPayerId,
 			splitPayerIds: data.splitShares?.map((share) => share.payerId),
 			categoryId: data.categoryId,
-			clientId: client.clientId,
+			partyId: party.partyId,
 			accountId: data.accountId,
 			cardId: data.cardId,
 		});
@@ -121,7 +121,7 @@ export async function createTransactionAction(
 			shouldNullifySettled,
 			boletoPaymentDate,
 			seriesId,
-			isFreelanceIncomeCategory: client.isFreelanceIncomeCategory,
+			categoryPartyKind: party.categoryPartyKind,
 		});
 
 		if (!records.length) {
@@ -218,9 +218,9 @@ export async function updateTransactionAction(
 	try {
 		const user = await getUser();
 		const data = updateSchema.parse(input);
-		const client = await resolveClientForTransaction(user.id, data);
-		if (!client.ok) {
-			return { success: false, error: client.error };
+		const party = await resolvePartyForTransaction(user.id, data);
+		if (!party.ok) {
+			return { success: false, error: party.error };
 		}
 
 		const ownershipError = await validateAllOwnership(user.id, {
@@ -228,7 +228,7 @@ export async function updateTransactionAction(
 			secondaryPayerId: data.secondaryPayerId,
 			splitPayerIds: data.splitShares?.map((share) => share.payerId),
 			categoryId: data.categoryId,
-			clientId: client.clientId,
+			partyId: party.partyId,
 			accountId: data.accountId,
 			cardId: data.cardId,
 		});
@@ -345,7 +345,7 @@ export async function updateTransactionAction(
 				condition: data.condition,
 				paymentMethod: data.paymentMethod,
 				payerId: data.payerId ?? null,
-				clientId: client.clientId,
+				partyId: party.partyId,
 				accountId: data.accountId ?? null,
 				cardId: data.cardId ?? null,
 				categoryId: data.categoryId ?? null,
@@ -550,9 +550,10 @@ export async function convertTransactionToInstallmentAction(
 		const amountSign: 1 | -1 = existing.transactionType === "Despesa" ? -1 : 1;
 		const totalCents = Math.round(Math.abs(Number(existing.amount)) * 100);
 		const seriesId = randomUUID();
-		const isFreelanceIncomeCategory =
-			existing.transactionType === "Receita" &&
-			(await isOwnedFreelanceIncomeCategoryId(user.id, existing.categoryId));
+		const categoryPartyKind = await resolveCategoryPartyKind(
+			user.id,
+			existing.categoryId,
+		);
 		const records = buildTransactionRecords({
 			data: {
 				purchaseDate: existing.purchaseDate.toISOString().slice(0, 10),
@@ -563,7 +564,7 @@ export async function convertTransactionToInstallmentAction(
 				condition: "Parcelado",
 				paymentMethod: "Cartão de crédito",
 				payerId: existing.payerId,
-				clientId: existing.clientId,
+				partyId: existing.partyId,
 				isSplit: false,
 				accountId: null,
 				cardId: existing.cardId,
@@ -583,7 +584,7 @@ export async function convertTransactionToInstallmentAction(
 			amountSign,
 			shouldNullifySettled: true,
 			seriesId,
-			isFreelanceIncomeCategory,
+			categoryPartyKind,
 		}).map((record) => ({
 			...record,
 			importBatchId: existing.importBatchId,
@@ -641,7 +642,7 @@ export async function convertTransactionToInstallmentAction(
 					recurrenceCount: null,
 					period: currentRow.period,
 					dueDate: currentRow.dueDate,
-					clientId: currentRow.clientId,
+					partyId: currentRow.partyId,
 					isSettled: null,
 					seriesId,
 				})
@@ -721,9 +722,10 @@ export async function convertTransactionToRecurringAction(
 		const totalCents = Math.round(Math.abs(Number(existing.amount)) * 100);
 		const seriesId = randomUUID();
 		const isCreditCard = existing.paymentMethod === "Cartão de crédito";
-		const isFreelanceIncomeCategory =
-			existing.transactionType === "Receita" &&
-			(await isOwnedFreelanceIncomeCategoryId(user.id, existing.categoryId));
+		const categoryPartyKind = await resolveCategoryPartyKind(
+			user.id,
+			existing.categoryId,
+		);
 		const records = buildTransactionRecords({
 			data: {
 				purchaseDate: existing.purchaseDate.toISOString().slice(0, 10),
@@ -741,7 +743,7 @@ export async function convertTransactionToRecurringAction(
 					| "Pré-Pago | VR/VA"
 					| "Transferência bancária",
 				payerId: existing.payerId,
-				clientId: existing.clientId,
+				partyId: existing.partyId,
 				isSplit: false,
 				accountId: isCreditCard ? null : existing.accountId,
 				cardId: isCreditCard ? existing.cardId : null,
@@ -763,7 +765,7 @@ export async function convertTransactionToRecurringAction(
 			amountSign,
 			shouldNullifySettled: isCreditCard,
 			seriesId,
-			isFreelanceIncomeCategory,
+			categoryPartyKind,
 		}).map((record) => ({
 			...record,
 			importBatchId: existing.importBatchId,
@@ -824,7 +826,7 @@ export async function convertTransactionToRecurringAction(
 					period: currentRow.period,
 					purchaseDate: currentRow.purchaseDate,
 					dueDate: currentRow.dueDate,
-					clientId: currentRow.clientId,
+					partyId: currentRow.partyId,
 					isSettled: currentRow.isSettled,
 					boletoPaymentDate: currentRow.boletoPaymentDate,
 					seriesId,
@@ -859,16 +861,16 @@ export async function updateTransactionSplitPairAction(
 	try {
 		const user = await getUser();
 		const data = updateSchema.parse(input);
-		const client = await resolveClientForTransaction(user.id, data);
-		if (!client.ok) {
-			return { success: false, error: client.error };
+		const party = await resolvePartyForTransaction(user.id, data);
+		if (!party.ok) {
+			return { success: false, error: party.error };
 		}
 
 		const ownershipError = await validateAllOwnership(user.id, {
 			payerId: data.payerId,
 			splitPayerIds: data.splitShares?.map((share) => share.payerId),
 			categoryId: data.categoryId,
-			clientId: client.clientId,
+			partyId: party.partyId,
 			accountId: data.accountId,
 			cardId: data.cardId,
 		});
@@ -945,7 +947,7 @@ export async function updateTransactionSplitPairAction(
 			accountId: data.accountId ?? null,
 			cardId: data.cardId ?? null,
 			categoryId: data.categoryId ?? null,
-			clientId: client.clientId,
+			partyId: party.partyId,
 			note: data.note ?? null,
 			dueDate,
 			period,

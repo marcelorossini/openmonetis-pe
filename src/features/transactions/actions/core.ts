@@ -4,9 +4,9 @@ import { z } from "zod";
 import {
 	cards,
 	categories,
-	clients,
 	financialAccounts,
 	invoices,
+	parties,
 	payers,
 	transactions,
 } from "@/db/schema";
@@ -22,7 +22,10 @@ import {
 	INITIAL_BALANCE_TRANSACTION_TYPE,
 } from "@/shared/lib/accounts/constants";
 import { revalidateForEntity } from "@/shared/lib/actions/helpers";
-import { isFreelanceIncomeCategory } from "@/shared/lib/categories/freelance";
+import {
+	canCategoryLinkParty,
+	normalizeCategoryPartyKind,
+} from "@/shared/lib/categories/party-kind";
 import { db } from "@/shared/lib/db";
 import { INVOICE_PAYMENT_STATUS } from "@/shared/lib/invoices";
 import { noteSchema, uuidSchema } from "@/shared/lib/schemas/common";
@@ -71,37 +74,21 @@ export async function fetchOwnedCategoryIds(
 	return new Set(rows.map((row) => row.id));
 }
 
-export async function fetchOwnedClientIds(
+export async function fetchOwnedPartyIds(
 	userId: string,
-	clientIds: Array<string | null | undefined>,
+	partyIds: Array<string | null | undefined>,
 ): Promise<Set<string>> {
-	const ids = normalizeIds(clientIds);
+	const ids = normalizeIds(partyIds);
 	if (ids.length === 0) {
 		return new Set();
 	}
 
 	const rows = await db
-		.select({ id: clients.id })
-		.from(clients)
-		.where(and(eq(clients.userId, userId), inArray(clients.id, ids)));
+		.select({ id: parties.id })
+		.from(parties)
+		.where(and(eq(parties.userId, userId), inArray(parties.id, ids)));
 
 	return new Set(rows.map((row) => row.id));
-}
-
-export async function isOwnedFreelanceIncomeCategoryId(
-	userId: string,
-	categoryId: string | null | undefined,
-): Promise<boolean> {
-	if (!categoryId) {
-		return false;
-	}
-
-	const category = await db.query.categories.findFirst({
-		columns: { name: true, type: true },
-		where: and(eq(categories.id, categoryId), eq(categories.userId, userId)),
-	});
-
-	return isFreelanceIncomeCategory(category);
 }
 
 export async function validateContaOwnership(
@@ -179,7 +166,7 @@ export async function validateAllOwnership(
 		secondaryPayerId?: string | null;
 		splitPayerIds?: Array<string | null | undefined>;
 		categoryId?: string | null;
-		clientId?: string | null;
+		partyId?: string | null;
 		accountId?: string | null;
 		cardId?: string | null;
 	},
@@ -192,13 +179,13 @@ export async function validateAllOwnership(
 	const [
 		ownedPayerIds,
 		ownedCategoryIds,
-		ownedClientIds,
+		ownedPartyIds,
 		ownedAccountIds,
 		ownedCardIds,
 	] = await Promise.all([
 		fetchOwnedPayerIds(userId, payerIds),
 		fetchOwnedCategoryIds(userId, [fields.categoryId]),
-		fetchOwnedClientIds(userId, [fields.clientId]),
+		fetchOwnedPartyIds(userId, [fields.partyId]),
 		fetchOwnedAccountIds(userId, [fields.accountId]),
 		fetchOwnedCardIds(userId, [fields.cardId]),
 	]);
@@ -208,7 +195,7 @@ export async function validateAllOwnership(
 		!fields.secondaryPayerId || ownedPayerIds.has(fields.secondaryPayerId),
 		(fields.splitPayerIds ?? []).every((id) => !id || ownedPayerIds.has(id)),
 		!fields.categoryId || ownedCategoryIds.has(fields.categoryId),
-		!fields.clientId || ownedClientIds.has(fields.clientId),
+		!fields.partyId || ownedPartyIds.has(fields.partyId),
 		!fields.accountId || ownedAccountIds.has(fields.accountId),
 		!fields.cardId || ownedCardIds.has(fields.cardId),
 	];
@@ -218,7 +205,7 @@ export async function validateAllOwnership(
 		"Pessoa secundária não encontrada ou sem permissão.",
 		"Uma das pessoas selecionadas não foi encontrada ou está sem permissão.",
 		"Categoria não encontrada.",
-		"Cliente não encontrado.",
+		"Cliente/fornecedor não encontrado.",
 		"Conta não encontrada.",
 		"Cartão não encontrado.",
 	];
@@ -360,7 +347,7 @@ const baseFields = z.object({
 		message: "Selecione uma forma de pagamento válida.",
 	}),
 	payerId: uuidSchema("Payer").nullable().optional(),
-	clientId: uuidSchema("Cliente").nullable().optional(),
+	partyId: uuidSchema("Cliente/Fornecedor").nullable().optional(),
 	secondaryPayerId: uuidSchema("Payer secundário").optional(),
 	splitShares: z
 		.array(
@@ -529,15 +516,6 @@ const refineLancamento = (
 			}
 		}
 	}
-
-	if (data.clientId && data.transactionType !== "Receita") {
-		ctx.addIssue({
-			code: z.ZodIssueCode.custom,
-			path: ["clientId"],
-			message:
-				"Clientes podem ser vinculados apenas a receitas de serviços prestados.",
-		});
-	}
 };
 
 export const createSchema = baseFields
@@ -618,42 +596,78 @@ type InitialCandidate = {
 	paymentMethod: string | null;
 };
 
-export const normalizeClientIdForTransaction = (data: {
-	transactionType: string;
-	clientId?: string | null;
-	isFreelanceIncomeCategory?: boolean;
+export const normalizePartyIdForTransaction = (data: {
+	categoryPartyKind?: string | null;
+	partyId?: string | null;
 }) =>
-	data.transactionType === "Receita" && data.isFreelanceIncomeCategory
-		? (data.clientId ?? null)
+	normalizeCategoryPartyKind(data.categoryPartyKind)
+		? (data.partyId ?? null)
 		: null;
 
-export const CLIENT_FREELANCE_ONLY_ERROR =
-	"Clientes podem ser vinculados apenas a receitas de serviços prestados.";
+export async function resolveCategoryPartyKind(
+	userId: string,
+	categoryId: string | null | undefined,
+): Promise<string | null> {
+	if (!categoryId) {
+		return null;
+	}
 
-export async function resolveClientForTransaction(
+	const category = await db.query.categories.findFirst({
+		columns: { partyKind: true },
+		where: and(eq(categories.id, categoryId), eq(categories.userId, userId)),
+	});
+
+	return normalizeCategoryPartyKind(category?.partyKind);
+}
+
+export const PARTY_KIND_MISMATCH_ERROR =
+	"O cliente/fornecedor selecionado não é compatível com a categoria.";
+
+export async function resolvePartyForTransaction(
 	userId: string,
 	data: {
 		transactionType: string;
 		categoryId?: string | null;
-		clientId?: string | null;
+		partyId?: string | null;
 	},
 ): Promise<
-	| { ok: true; clientId: string | null; isFreelanceIncomeCategory: boolean }
+	| { ok: true; partyId: string | null; categoryPartyKind: string | null }
 	| { ok: false; error: string }
 > {
-	const isFreelanceIncomeCategory =
-		data.transactionType === "Receita" &&
-		(await isOwnedFreelanceIncomeCategoryId(userId, data.categoryId));
-	const clientId = normalizeClientIdForTransaction({
-		...data,
-		isFreelanceIncomeCategory,
+	const category = data.categoryId
+		? await db.query.categories.findFirst({
+				columns: { id: true, partyKind: true },
+				where: and(
+					eq(categories.id, data.categoryId),
+					eq(categories.userId, userId),
+				),
+			})
+		: null;
+	const categoryPartyKind = normalizeCategoryPartyKind(category?.partyKind);
+	const partyId = normalizePartyIdForTransaction({
+		partyId: data.partyId,
+		categoryPartyKind,
 	});
 
-	if (data.clientId && !isFreelanceIncomeCategory) {
-		return { ok: false, error: CLIENT_FREELANCE_ONLY_ERROR };
+	if (data.partyId && !categoryPartyKind) {
+		return { ok: false, error: PARTY_KIND_MISMATCH_ERROR };
 	}
 
-	return { ok: true, clientId, isFreelanceIncomeCategory };
+	if (data.partyId) {
+		const party = await db.query.parties.findFirst({
+			columns: { id: true, kind: true },
+			where: and(eq(parties.id, data.partyId), eq(parties.userId, userId)),
+		});
+
+		if (
+			!party ||
+			!canCategoryLinkParty({ partyKind: categoryPartyKind }, party)
+		) {
+			return { ok: false, error: PARTY_KIND_MISMATCH_ERROR };
+		}
+	}
+
+	return { ok: true, partyId, categoryPartyKind };
 }
 
 export const isInitialBalanceTransaction = (record?: InitialCandidate | null) =>
@@ -780,7 +794,7 @@ type BuildTransactionRecordsParams = {
 	amountSign: 1 | -1;
 	shouldNullifySettled: boolean;
 	seriesId: string | null;
-	isFreelanceIncomeCategory: boolean;
+	categoryPartyKind: string | null;
 };
 
 export type TransactionInsert = typeof transactions.$inferInsert;
@@ -796,7 +810,7 @@ export const buildTransactionRecords = ({
 	amountSign,
 	shouldNullifySettled,
 	seriesId,
-	isFreelanceIncomeCategory,
+	categoryPartyKind,
 }: BuildTransactionRecordsParams): TransactionInsert[] => {
 	const records: TransactionInsert[] = [];
 	const isSplit = (data.isSplit ?? false) && shares.length > 1;
@@ -810,9 +824,9 @@ export const buildTransactionRecords = ({
 		accountId: data.accountId ?? null,
 		cardId: data.cardId ?? null,
 		categoryId: data.categoryId ?? null,
-		clientId: normalizeClientIdForTransaction({
-			...data,
-			isFreelanceIncomeCategory,
+		partyId: normalizePartyIdForTransaction({
+			partyId: data.partyId,
+			categoryPartyKind,
 		}),
 		recurrenceCount: null as number | null,
 		installmentCount: null as number | null,
@@ -1006,7 +1020,7 @@ export const updateBulkSchema = z.object({
 		.trim()
 		.min(1, "Informe o estabelecimento."),
 	categoryId: uuidSchema("Category").nullable().optional(),
-	clientId: uuidSchema("Cliente").nullable().optional(),
+	partyId: uuidSchema("Cliente/Fornecedor").nullable().optional(),
 	note: noteSchema,
 	payerId: uuidSchema("Payer").nullable().optional(),
 	accountId: uuidSchema("FinancialAccount").nullable().optional(),

@@ -7,14 +7,15 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não lançado]
 
-Esta próxima versão adiciona uma organização leve para receitas de serviços prestados, permitindo acompanhar lançamentos por cliente sem transformar o OpenMonetis em uma ferramenta de vendas.
+Esta próxima versão amplia o vínculo de lançamentos com contatos externos: categorias passam a definir quando pedem cliente ou fornecedor, sem prender a funcionalidade a uma única categoria de receita.
 
 ### Adicionado
-- Clientes: nova área em `/clients` para cadastrar clientes ativos e inativos com anotação opcional.
-- Lançamentos: receitas agora podem ser vinculadas opcionalmente a um cliente, com coluna e filtro dedicados na lista de lançamentos.
+- Clientes e fornecedores: nova área em `/parties` para cadastrar contatos ativos e inativos com tipo, documento, email, telefone e anotação opcional.
+- Categorias: novo campo de vínculo no lançamento para escolher nenhum, cliente ou fornecedor.
+- Lançamentos: o campo Cliente/Fornecedor aparece conforme a categoria selecionada, com coluna e filtro dedicados na lista de lançamentos.
 
-### Corrigido
-- Lançamentos: o campo Cliente agora fica restrito a receitas da categoria `Serviços Prestados`, mantendo compatibilidade com a categoria legada `Freelance` quando houver conflito manual na migração.
+### Alterado
+- Clientes: a rota antiga `/clients` redireciona para `/parties`.
 
 ## [2.7.9] - 2026-06-21
 

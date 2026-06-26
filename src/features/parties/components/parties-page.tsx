@@ -1,13 +1,18 @@
 "use client";
 
 import { RiAddFill, RiDeleteBin5Line, RiPencilLine } from "@remixicon/react";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { deleteClientAction } from "@/features/clients/actions";
-import type { Client, ClientStatus } from "@/features/clients/types";
-import { CLIENT_STATUS_OPTIONS } from "@/features/clients/types";
+import { deletePartyAction } from "@/features/parties/actions";
+import {
+	PARTY_STATUS_OPTIONS,
+	type Party,
+	type PartyStatus,
+} from "@/features/parties/types";
 import { ConfirmActionDialog } from "@/shared/components/confirm-action-dialog";
 import { ClientAvatarLabel } from "@/shared/components/entity-avatar";
+import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import {
@@ -24,69 +29,90 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@/shared/components/ui/tabs";
-import { ClientDialog } from "./client-dialog";
+import { CATEGORY_PARTY_KIND_LABEL } from "@/shared/lib/categories/party-kind";
+import { PartyDialog } from "./party-dialog";
 
-interface ClientsPageProps {
-	clients: Client[];
+interface PartiesPageProps {
+	parties: Party[];
+	selectedPartyId?: string | null;
 }
 
-export function ClientsPage({ clients }: ClientsPageProps) {
-	const [activeStatus, setActiveStatus] = useState<ClientStatus>(
-		CLIENT_STATUS_OPTIONS[0],
+export function PartiesPage({ parties, selectedPartyId }: PartiesPageProps) {
+	const router = useRouter();
+	const [activeStatus, setActiveStatus] = useState<PartyStatus>(
+		PARTY_STATUS_OPTIONS[0],
 	);
 	const [editOpen, setEditOpen] = useState(false);
-	const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+	const [selectedParty, setSelectedParty] = useState<Party | null>(null);
 	const [removeOpen, setRemoveOpen] = useState(false);
-	const [clientToRemove, setClientToRemove] = useState<Client | null>(null);
+	const [partyToRemove, setPartyToRemove] = useState<Party | null>(null);
 
-	const clientsByStatus = useMemo(() => {
+	const partiesByStatus = useMemo(() => {
 		const base = Object.fromEntries(
-			CLIENT_STATUS_OPTIONS.map((status) => [status, [] as Client[]]),
-		) as Record<ClientStatus, Client[]>;
+			PARTY_STATUS_OPTIONS.map((status) => [status, [] as Party[]]),
+		) as Record<PartyStatus, Party[]>;
 
-		clients.forEach((client) => {
-			base[client.status]?.push(client);
+		parties.forEach((party) => {
+			base[party.status]?.push(party);
 		});
 
-		CLIENT_STATUS_OPTIONS.forEach((status) => {
+		PARTY_STATUS_OPTIONS.forEach((status) => {
 			base[status].sort((a, b) =>
 				a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }),
 			);
 		});
 
 		return base;
-	}, [clients]);
+	}, [parties]);
 
-	const handleEdit = (client: Client) => {
-		setSelectedClient(client);
+	useEffect(() => {
+		if (!selectedPartyId) {
+			return;
+		}
+
+		const party = parties.find((item) => item.id === selectedPartyId);
+		if (!party) {
+			return;
+		}
+
+		setSelectedParty(party);
+		setActiveStatus(party.status);
+		setEditOpen(true);
+	}, [parties, selectedPartyId]);
+
+	const handleEdit = (party: Party) => {
+		setSelectedParty(party);
 		setEditOpen(true);
 	};
 
 	const handleEditOpenChange = (open: boolean) => {
 		setEditOpen(open);
 		if (!open) {
-			setSelectedClient(null);
+			setSelectedParty(null);
+			if (selectedPartyId) {
+				router.replace("/parties", { scroll: false });
+			}
 		}
 	};
 
-	const handleRemoveRequest = (client: Client) => {
-		setClientToRemove(client);
+	const handleRemoveRequest = (party: Party) => {
+		setPartyToRemove(party);
 		setRemoveOpen(true);
 	};
 
 	const handleRemoveOpenChange = (open: boolean) => {
 		setRemoveOpen(open);
 		if (!open) {
-			setClientToRemove(null);
+			setPartyToRemove(null);
 		}
 	};
 
 	const handleRemoveConfirm = async () => {
-		if (!clientToRemove) {
+		if (!partyToRemove) {
 			return;
 		}
 
-		const result = await deleteClientAction({ id: clientToRemove.id });
+		const result = await deletePartyAction({ id: partyToRemove.id });
 
 		if (result.success) {
 			toast.success(result.message);
@@ -97,20 +123,20 @@ export function ClientsPage({ clients }: ClientsPageProps) {
 		throw new Error(result.error);
 	};
 
-	const removeTitle = clientToRemove
-		? `Remover cliente "${clientToRemove.name}"?`
-		: "Remover cliente?";
+	const removeTitle = partyToRemove
+		? `Remover "${partyToRemove.name}"?`
+		: "Remover cadastro?";
 
 	return (
 		<>
 			<div className="flex w-full flex-col gap-6">
 				<div className="flex">
-					<ClientDialog
+					<PartyDialog
 						mode="create"
 						trigger={
 							<Button className="w-full sm:w-auto">
 								<RiAddFill className="size-4" />
-								Novo cliente
+								Novo cliente/fornecedor
 							</Button>
 						}
 					/>
@@ -118,22 +144,22 @@ export function ClientsPage({ clients }: ClientsPageProps) {
 
 				<Tabs
 					value={activeStatus}
-					onValueChange={(value) => setActiveStatus(value as ClientStatus)}
+					onValueChange={(value) => setActiveStatus(value as PartyStatus)}
 					className="w-full"
 				>
 					<TabsList>
-						{CLIENT_STATUS_OPTIONS.map((status) => (
+						{PARTY_STATUS_OPTIONS.map((status) => (
 							<TabsTrigger key={status} value={status}>
 								{status}s
 							</TabsTrigger>
 						))}
 					</TabsList>
 
-					{CLIENT_STATUS_OPTIONS.map((status) => (
+					{PARTY_STATUS_OPTIONS.map((status) => (
 						<TabsContent key={status} value={status} className="mt-4">
-							{clientsByStatus[status].length === 0 ? (
+							{partiesByStatus[status].length === 0 ? (
 								<div className="flex min-h-[280px] items-center justify-center rounded-lg border border-dashed bg-muted/10 p-10 text-center text-sm text-muted-foreground">
-									Ainda não há clientes {status.toLowerCase()}s.
+									Ainda não há clientes ou fornecedores {status.toLowerCase()}s.
 								</div>
 							) : (
 								<Card className="py-2">
@@ -142,30 +168,49 @@ export function ClientsPage({ clients }: ClientsPageProps) {
 											<TableHeader>
 												<TableRow>
 													<TableHead>Nome</TableHead>
+													<TableHead>Tipo</TableHead>
+													<TableHead>Contato</TableHead>
 													<TableHead>Anotação</TableHead>
 													<TableHead className="text-right">Ações</TableHead>
 												</TableRow>
 											</TableHeader>
 											<TableBody>
-												{clientsByStatus[status].map((client) => (
-													<TableRow key={client.id}>
+												{partiesByStatus[status].map((party) => (
+													<TableRow key={party.id}>
 														<TableCell className="font-medium">
 															<ClientAvatarLabel
-																name={client.name}
+																name={party.name}
 																size="md"
 																labelClassName="font-medium"
 															/>
+															{party.document ? (
+																<div className="mt-1 text-xs text-muted-foreground">
+																	{party.document}
+																</div>
+															) : null}
 														</TableCell>
-														<TableCell className="max-w-[360px] text-muted-foreground">
+														<TableCell>
+															<Badge variant="secondary">
+																{CATEGORY_PARTY_KIND_LABEL[party.kind]}
+															</Badge>
+														</TableCell>
+														<TableCell className="max-w-[260px] text-muted-foreground">
 															<span className="line-clamp-2">
-																{client.note?.trim() || "—"}
+																{[party.email, party.phone]
+																	.filter(Boolean)
+																	.join(" · ") || "—"}
+															</span>
+														</TableCell>
+														<TableCell className="max-w-[320px] text-muted-foreground">
+															<span className="line-clamp-2">
+																{party.note?.trim() || "—"}
 															</span>
 														</TableCell>
 														<TableCell>
 															<div className="flex items-center justify-end gap-3 text-sm">
 																<button
 																	type="button"
-																	onClick={() => handleEdit(client)}
+																	onClick={() => handleEdit(party)}
 																	className="flex items-center gap-1 font-medium text-primary transition-opacity hover:opacity-80"
 																>
 																	<RiPencilLine
@@ -176,7 +221,7 @@ export function ClientsPage({ clients }: ClientsPageProps) {
 																</button>
 																<button
 																	type="button"
-																	onClick={() => handleRemoveRequest(client)}
+																	onClick={() => handleRemoveRequest(party)}
 																	className="flex items-center gap-1 font-medium text-destructive transition-opacity hover:opacity-80"
 																>
 																	<RiDeleteBin5Line
@@ -199,18 +244,18 @@ export function ClientsPage({ clients }: ClientsPageProps) {
 				</Tabs>
 			</div>
 
-			<ClientDialog
+			<PartyDialog
 				mode="update"
-				client={selectedClient ?? undefined}
-				open={editOpen && !!selectedClient}
+				party={selectedParty ?? undefined}
+				open={editOpen && !!selectedParty}
 				onOpenChange={handleEditOpenChange}
 			/>
 
 			<ConfirmActionDialog
-				open={removeOpen && !!clientToRemove}
+				open={removeOpen && !!partyToRemove}
 				onOpenChange={handleRemoveOpenChange}
 				title={removeTitle}
-				description="Ao remover este cliente, as receitas vinculadas ficarão sem cliente."
+				description="Ao remover este cadastro, os lançamentos vinculados ficarão sem cliente/fornecedor."
 				confirmLabel="Remover"
 				pendingLabel="Removendo..."
 				confirmVariant="destructive"

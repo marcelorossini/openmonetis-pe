@@ -13,8 +13,8 @@ import {
 import {
 	cards,
 	categories,
-	clients,
 	financialAccounts,
+	parties,
 	payers,
 	transactionAttachments,
 	transactions,
@@ -76,7 +76,7 @@ const mapTransactionRows = (
 		financialAccount: typeof financialAccounts.$inferSelect | null;
 		card: typeof cards.$inferSelect | null;
 		category: typeof categories.$inferSelect | null;
-		client: typeof clients.$inferSelect | null;
+		party: typeof parties.$inferSelect | null;
 		hasAttachments: boolean;
 	}[],
 ) =>
@@ -86,7 +86,7 @@ const mapTransactionRows = (
 		financialAccount: row.financialAccount,
 		card: row.card,
 		category: row.category,
-		client: row.client,
+		party: row.party,
 		hasAttachments: row.hasAttachments,
 	}));
 
@@ -104,7 +104,7 @@ async function selectTransactionsWithRelations({
 			financialAccount: financialAccounts,
 			card: cards,
 			category: categories,
-			client: clients,
+			party: parties,
 			hasAttachments: sql<boolean>`EXISTS (
 				SELECT 1 FROM ${transactionAttachments}
 				WHERE ${transactionAttachments.transactionId} = ${transactions.id}
@@ -118,7 +118,7 @@ async function selectTransactionsWithRelations({
 		)
 		.leftJoin(cards, eq(transactions.cardId, cards.id))
 		.leftJoin(categories, eq(transactions.categoryId, categories.id))
-		.leftJoin(clients, eq(transactions.clientId, clients.id))
+		.leftJoin(parties, eq(transactions.partyId, parties.id))
 		.where(
 			buildTransactionsWhere({
 				filters,
@@ -137,7 +137,7 @@ async function selectTransactionsWithRelations({
 }
 
 export async function fetchTransactionFilterSources(userId: string) {
-	const [payerRows, accountRows, cardRows, categoryRows, clientRows] =
+	const [payerRows, accountRows, cardRows, categoryRows, partyRows] =
 		await Promise.all([
 			db.query.payers.findMany({
 				where: eq(payers.userId, userId),
@@ -154,12 +154,12 @@ export async function fetchTransactionFilterSources(userId: string) {
 			db.query.categories.findMany({
 				where: eq(categories.userId, userId),
 			}),
-			db.query.clients.findMany({
-				where: eq(clients.userId, userId),
+			db.query.parties.findMany({
+				where: eq(parties.userId, userId),
 			}),
 		]);
 
-	return { payerRows, accountRows, cardRows, categoryRows, clientRows };
+	return { payerRows, accountRows, cardRows, categoryRows, partyRows };
 }
 
 export async function fetchTransactionsWithRelations(

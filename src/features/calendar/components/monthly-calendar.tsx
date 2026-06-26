@@ -100,7 +100,7 @@ export function MonthlyCalendar({
 				payerOptions={formOptions.payerOptions}
 				splitPayerOptions={formOptions.splitPayerOptions}
 				defaultPayerId={formOptions.defaultPayerId}
-				clientOptions={formOptions.clientOptions}
+				partyOptions={formOptions.partyOptions}
 				accountOptions={formOptions.accountOptions}
 				cardOptions={formOptions.cardOptions}
 				categoryOptions={formOptions.categoryOptions}

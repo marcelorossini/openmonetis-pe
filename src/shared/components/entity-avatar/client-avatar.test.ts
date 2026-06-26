@@ -31,7 +31,7 @@ const usageFiles = [
 		import.meta.url,
 	),
 	new URL(
-		"../../../features/transactions/components/dialogs/transaction-dialog/client-section.tsx",
+		"../../../features/transactions/components/dialogs/transaction-dialog/party-section.tsx",
 		import.meta.url,
 	),
 	new URL(
@@ -43,7 +43,7 @@ const usageFiles = [
 		import.meta.url,
 	),
 	new URL(
-		"../../../features/clients/components/clients-page.tsx",
+		"../../../features/parties/components/parties-page.tsx",
 		import.meta.url,
 	),
 ];
@@ -70,15 +70,15 @@ assert.match(
 	"Cliente na tabela de lançamentos deve usar avatar do mesmo porte de Pessoa/Categoria.",
 );
 
-const clientsPageSource = readFileSync(
+const partiesPageSource = readFileSync(
 	new URL(
-		"../../../features/clients/components/clients-page.tsx",
+		"../../../features/parties/components/parties-page.tsx",
 		import.meta.url,
 	),
 	"utf8",
 );
 assert.match(
-	clientsPageSource,
+	partiesPageSource,
 	/ClientAvatarLabel[\s\S]*size="md"/u,
-	"Cliente na listagem de clientes deve usar avatar de listagem, não avatar compacto de select.",
+	"Cliente/Fornecedor na listagem deve usar avatar de listagem, não avatar compacto de select.",
 );

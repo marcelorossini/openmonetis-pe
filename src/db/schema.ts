@@ -231,6 +231,7 @@ export const categories = pgTable(
 		name: text("nome").notNull(),
 		type: text("tipo").notNull(),
 		icon: text("icone"),
+		partyKind: text("tipo_vinculo"),
 		createdAt: timestamp("created_at", {
 			mode: "date",
 			withTimezone: true,
@@ -282,11 +283,15 @@ export const payers = pgTable(
 	}),
 );
 
-export const clients = pgTable(
-	"clientes",
+export const parties = pgTable(
+	"clientes_fornecedores",
 	{
 		id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+		kind: text("tipo").notNull(),
 		name: text("nome").notNull(),
+		document: text("documento"),
+		email: text("email"),
+		phone: text("telefone"),
 		note: text("anotacao"),
 		status: text("status").notNull(),
 		createdAt: timestamp("created_at", {
@@ -300,8 +305,9 @@ export const clients = pgTable(
 			.references(() => user.id, { onDelete: "cascade" }),
 	},
 	(table) => ({
-		userIdStatusIdx: index("clientes_user_id_status_idx").on(
+		userIdKindStatusIdx: index("clientes_fornecedores_user_tipo_status_idx").on(
 			table.userId,
+			table.kind,
 			table.status,
 		),
 	}),
@@ -718,7 +724,7 @@ export const transactions = pgTable(
 			onDelete: "cascade",
 			onUpdate: "cascade",
 		}),
-		clientId: uuid("cliente_id").references(() => clients.id, {
+		partyId: uuid("cliente_fornecedor_id").references(() => parties.id, {
 			onDelete: "set null",
 			onUpdate: "cascade",
 		}),
@@ -776,7 +782,9 @@ export const transactions = pgTable(
 		// FK indexes: evitam seq scan em deletes/updates nas tabelas pai
 		accountIdIdx: index("lancamentos_conta_id_idx").on(table.accountId),
 		categoryIdIdx: index("lancamentos_categoria_id_idx").on(table.categoryId),
-		clientIdIdx: index("lancamentos_cliente_id_idx").on(table.clientId),
+		partyIdIdx: index("lancamentos_cliente_fornecedor_id_idx").on(
+			table.partyId,
+		),
 		anticipationIdIdx: index("lancamentos_antecipacao_id_idx").on(
 			table.anticipationId,
 		),
@@ -798,7 +806,7 @@ export const userRelations = relations(user, ({ many, one }) => ({
 	transactions: many(transactions),
 	budgets: many(budgets),
 	payers: many(payers),
-	clients: many(clients),
+	parties: many(parties),
 	installmentAnticipations: many(installmentAnticipations),
 	apiTokens: many(apiTokens),
 	inboxItems: many(inboxItems),
@@ -849,9 +857,9 @@ export const payersRelations = relations(payers, ({ one, many }) => ({
 	shares: many(payerShares),
 }));
 
-export const clientsRelations = relations(clients, ({ one, many }) => ({
+export const partiesRelations = relations(parties, ({ one, many }) => ({
 	user: one(user, {
-		fields: [clients.userId],
+		fields: [parties.userId],
 		references: [user.id],
 	}),
 	transactions: many(transactions),
@@ -963,9 +971,9 @@ export const transactionsRelations = relations(
 			fields: [transactions.payerId],
 			references: [payers.id],
 		}),
-		client: one(clients, {
-			fields: [transactions.clientId],
-			references: [clients.id],
+		party: one(parties, {
+			fields: [transactions.partyId],
+			references: [parties.id],
 		}),
 		anticipation: one(installmentAnticipations, {
 			fields: [transactions.anticipationId],

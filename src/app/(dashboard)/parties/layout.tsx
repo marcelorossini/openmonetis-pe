@@ -2,7 +2,7 @@ import { RiContactsBookLine } from "@remixicon/react";
 import PageDescription from "@/shared/components/page-description";
 
 export const metadata = {
-	title: "Clientes",
+	title: "Clientes e fornecedores",
 };
 
 export default function RootLayout({
@@ -14,8 +14,8 @@ export default function RootLayout({
 		<section className="space-y-6">
 			<PageDescription
 				icon={<RiContactsBookLine />}
-				title="Clientes"
-				subtitle="Organize receitas de serviços prestados por cliente."
+				title="Clientes e fornecedores"
+				subtitle="Organize os contatos que podem ser vinculados aos lançamentos por categoria."
 			/>
 			{children}
 		</section>

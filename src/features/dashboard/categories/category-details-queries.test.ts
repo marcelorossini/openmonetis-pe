@@ -8,6 +8,6 @@ const source = readFileSync(
 
 assert.match(
 	source,
-	/with:\s*\{[\s\S]*\bclient:\s*true[\s\S]*\}/u,
-	"fetchCategoryDetails deve carregar a relação client para exibir Cliente na lista de lançamentos da categoria.",
+	/with:\s*\{[\s\S]*\bparty:\s*true[\s\S]*\}/u,
+	"fetchCategoryDetails deve carregar a relação party para exibir Cliente/Fornecedor na lista de lançamentos da categoria.",
 );

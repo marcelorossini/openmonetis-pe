@@ -13,8 +13,8 @@ import {
 import {
 	cards,
 	type categories,
-	type clients,
 	financialAccounts,
+	type parties,
 	type payers,
 	transactionAttachments,
 	transactions,
@@ -48,7 +48,7 @@ type PayerRow = typeof payers.$inferSelect;
 type AccountRow = typeof financialAccounts.$inferSelect;
 type CardRow = typeof cards.$inferSelect;
 type CategoryRow = typeof categories.$inferSelect;
-type ClientRow = typeof clients.$inferSelect;
+type PartyRow = typeof parties.$inferSelect;
 
 export type ResolvedSearchParams =
 	| Record<string, string | string[] | undefined>
@@ -62,7 +62,7 @@ export type TransactionSearchFilters = {
 	conditionFilters: string[];
 	paymentFilters: string[];
 	payerFilters: string[];
-	clientFilters: string[];
+	partyFilters: string[];
 	categoryFilters: string[];
 	accountCardFilters: string[];
 	searchFilter: string | null;
@@ -89,9 +89,12 @@ type PayerSluggedOption = BaseSluggedOption & {
 type CategorySluggedOption = BaseSluggedOption & {
 	type: string | null;
 	icon: string | null;
+	partyKind: string | null;
 };
 
-type ClientSluggedOption = BaseSluggedOption;
+type PartySluggedOption = BaseSluggedOption & {
+	kind: string | null;
+};
 
 type AccountSluggedOption = BaseSluggedOption & {
 	kind: "conta";
@@ -108,7 +111,7 @@ type CardSluggedOption = BaseSluggedOption & {
 
 export type SluggedFilters = {
 	payerFiltersRaw: PayerSluggedOption[];
-	clientFiltersRaw: ClientSluggedOption[];
+	partyFiltersRaw: PartySluggedOption[];
 	categoryFiltersRaw: CategorySluggedOption[];
 	accountFiltersRaw: AccountSluggedOption[];
 	cardFiltersRaw: CardSluggedOption[];
@@ -116,7 +119,7 @@ export type SluggedFilters = {
 
 export type SlugMaps = {
 	payer: Map<string, string>;
-	client: Map<string, string>;
+	party: Map<string, string>;
 	category: Map<string, string>;
 	financialAccount: Map<string, string>;
 	card: Map<string, string>;
@@ -138,12 +141,12 @@ type TransactionOptionSets = {
 	payerOptions: SelectOption[];
 	splitPayerOptions: SelectOption[];
 	defaultPayerId: string | null;
-	clientOptions: SelectOption[];
+	partyOptions: SelectOption[];
 	accountOptions: SelectOption[];
 	cardOptions: SelectOption[];
 	categoryOptions: SelectOption[];
 	payerFilterOptions: FilterOption[];
-	clientFilterOptions: FilterOption[];
+	partyFilterOptions: FilterOption[];
 	categoryFilterOptions: FilterOption[];
 	accountCardFilterOptions: AccountCardFilterOption[];
 };
@@ -190,7 +193,7 @@ export const extractTransactionSearchFilters = (
 	conditionFilters: getMultiParam(params, "condition"),
 	paymentFilters: getMultiParam(params, "payment"),
 	payerFilters: getMultiParam(params, "payer"),
-	clientFilters: getMultiParam(params, "client"),
+	partyFilters: getMultiParam(params, "party"),
 	categoryFilters: getMultiParam(params, "category"),
 	accountCardFilters: getMultiParam(params, "accountCard"),
 	searchFilter: getSingleParam(params, "q"),
@@ -269,6 +272,7 @@ const toOption = (
 	accountType?: string | null,
 	closingDay?: string | null,
 	dueDay?: string | null,
+	partyKind?: string | null,
 ): SelectOption => ({
 	value,
 	label: normalizeLabel(label),
@@ -281,23 +285,24 @@ const toOption = (
 	accountType: accountType ?? null,
 	closingDay: closingDay ?? null,
 	dueDay: dueDay ?? null,
+	partyKind: partyKind ?? null,
 });
 
 export const buildSluggedFilters = ({
 	payerRows,
-	clientRows,
+	partyRows,
 	categoryRows,
 	accountRows,
 	cardRows,
 }: {
 	payerRows: PayerRow[];
-	clientRows: ClientRow[];
+	partyRows: PartyRow[];
 	categoryRows: CategoryRow[];
 	accountRows: AccountRow[];
 	cardRows: CardRow[];
 }): SluggedFilters => {
 	const payerSlugger = createSlugGenerator();
-	const clientSlugger = createSlugGenerator();
+	const partySlugger = createSlugGenerator();
 	const categorySlugger = createSlugGenerator();
 	const accountCardSlugger = createSlugGenerator();
 
@@ -320,15 +325,17 @@ export const buildSluggedFilters = ({
 			slug: categorySlugger(label),
 			type: category.type ?? null,
 			icon: category.icon ?? null,
+			partyKind: category.partyKind ?? null,
 		};
 	});
 
-	const clientFiltersRaw = clientRows.map((client) => {
-		const label = normalizeLabel(client.name);
+	const partyFiltersRaw = partyRows.map((party) => {
+		const label = normalizeLabel(party.name);
 		return {
-			id: client.id,
+			id: party.id,
 			label,
-			slug: clientSlugger(label),
+			slug: partySlugger(label),
+			kind: party.kind ?? null,
 		};
 	});
 
@@ -359,7 +366,7 @@ export const buildSluggedFilters = ({
 
 	return {
 		payerFiltersRaw,
-		clientFiltersRaw,
+		partyFiltersRaw,
 		categoryFiltersRaw,
 		accountFiltersRaw,
 		cardFiltersRaw,
@@ -368,13 +375,13 @@ export const buildSluggedFilters = ({
 
 export const buildSlugMaps = ({
 	payerFiltersRaw,
-	clientFiltersRaw,
+	partyFiltersRaw,
 	categoryFiltersRaw,
 	accountFiltersRaw,
 	cardFiltersRaw,
 }: SluggedFilters): SlugMaps => ({
 	payer: new Map(payerFiltersRaw.map(({ slug, id }) => [slug, id])),
-	client: new Map(clientFiltersRaw.map(({ slug, id }) => [slug, id])),
+	party: new Map(partyFiltersRaw.map(({ slug, id }) => [slug, id])),
 	category: new Map(categoryFiltersRaw.map(({ slug, id }) => [slug, id])),
 	financialAccount: new Map(
 		accountFiltersRaw.map(({ slug, id }) => [slug, id]),
@@ -482,12 +489,12 @@ export const buildTransactionWhere = ({
 		}
 	}
 
-	if (filters.clientFilters.length > 0) {
-		const ids = filters.clientFilters
-			.map((slug) => slugMaps.client.get(slug))
+	if (filters.partyFilters.length > 0) {
+		const ids = filters.partyFilters
+			.map((slug) => slugMaps.party.get(slug))
 			.filter((id): id is string => Boolean(id));
 		if (ids.length > 0) {
-			where.push(inArray(transactions.clientId, ids));
+			where.push(inArray(transactions.partyId, ids));
 		}
 	}
 
@@ -581,7 +588,7 @@ type TransactionRowWithRelations = Partial<typeof transactions.$inferSelect> & {
 	financialAccount?: AccountRow | null;
 	card?: CardRow | null;
 	category?: CategoryRow | null;
-	client?: ClientRow | null;
+	party?: PartyRow | null;
 	hasAttachments?: boolean;
 };
 
@@ -610,8 +617,9 @@ export const mapTransactionsData = (rows: TransactionRowWithRelations[]) =>
 		categoriaName: item.category?.name ?? null,
 		categoriaType: item.category?.type ?? null,
 		categoriaIcon: item.category?.icon ?? null,
-		clientId: item.clientId ?? null,
-		clientName: item.client?.name ?? null,
+		partyId: item.partyId ?? null,
+		partyName: item.party?.name ?? null,
+		partyKind: item.party?.kind ?? null,
 		installmentCount: item.installmentCount ?? null,
 		recurrenceCount: item.recurrenceCount ?? null,
 		currentInstallment: item.currentInstallment ?? null,
@@ -642,7 +650,7 @@ const sortByLabel = <T extends { label: string }>(items: T[]) =>
 
 export const buildOptionSets = ({
 	payerFiltersRaw,
-	clientFiltersRaw,
+	partyFiltersRaw,
 	categoryFiltersRaw,
 	accountFiltersRaw,
 	cardFiltersRaw,
@@ -668,14 +676,14 @@ export const buildOptionSets = ({
 		})),
 	);
 
-	const clientOptions = sortByLabel(
-		clientFiltersRaw.map(({ id, label, slug }) =>
-			toOption(id, label, undefined, undefined, slug),
+	const partyOptions = sortByLabel(
+		partyFiltersRaw.map(({ id, label, slug, kind }) =>
+			toOption(id, label, undefined, kind, slug),
 		),
 	);
 
-	const clientFilterOptions = sortByLabel(
-		clientFiltersRaw.map(({ slug, label }) => ({
+	const partyFilterOptions = sortByLabel(
+		partyFiltersRaw.map(({ slug, label }) => ({
 			slug,
 			label,
 		})),
@@ -731,8 +739,21 @@ export const buildOptionSets = ({
 	);
 
 	const categoryOptions = sortByLabel(
-		categoryFiltersRaw.map(({ id, label, type, slug, icon }) =>
-			toOption(id, label, undefined, type, slug, undefined, undefined, icon),
+		categoryFiltersRaw.map(({ id, label, type, slug, icon, partyKind }) =>
+			toOption(
+				id,
+				label,
+				undefined,
+				type,
+				slug,
+				undefined,
+				undefined,
+				icon,
+				undefined,
+				undefined,
+				undefined,
+				partyKind,
+			),
 		),
 	);
 
@@ -763,12 +784,12 @@ export const buildOptionSets = ({
 		payerOptions,
 		splitPayerOptions,
 		defaultPayerId,
-		clientOptions,
+		partyOptions,
 		accountOptions,
 		cardOptions,
 		categoryOptions,
 		payerFilterOptions,
-		clientFilterOptions,
+		partyFilterOptions,
 		categoryFilterOptions,
 		accountCardFilterOptions,
 	};

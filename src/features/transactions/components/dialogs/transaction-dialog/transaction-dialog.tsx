@@ -35,16 +35,16 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Label } from "@/shared/components/ui/label";
 import { useControlledState } from "@/shared/hooks/use-controlled-state";
-import { isFreelanceIncomeCategory } from "@/shared/lib/categories/freelance";
+import { normalizeCategoryPartyKind } from "@/shared/lib/categories/party-kind";
 import { AttachmentFilePicker } from "../../attachments/attachment-file-picker";
 import { AttachmentSection } from "../../attachments/attachment-section";
 import type { SelectOption } from "../../types";
 import { BasicFieldsSection } from "./basic-fields-section";
 import { BoletoFieldsSection } from "./boleto-fields-section";
 import { CategorySection } from "./category-section";
-import { ClientSection } from "./client-section";
 import { ConditionSection } from "./condition-section";
 import { NoteSection } from "./note-section";
+import { PartySection } from "./party-section";
 import { PayerSection } from "./payer-section";
 import { PaymentMethodSection } from "./payment-method-section";
 import type {
@@ -53,31 +53,44 @@ import type {
 } from "./transaction-dialog-types";
 import { TransactionSummaryCard } from "./transaction-summary-card";
 
-function shouldShowClientField(
+function shouldShowPartyField(
 	state: FormState,
 	categoryOptions: SelectOption[],
 ) {
-	if (state.transactionType !== "Receita") {
-		return false;
-	}
-
 	const selectedCategory = categoryOptions.find(
 		(option) => option.value === state.categoryId,
 	);
 
-	return isFreelanceIncomeCategory({
-		name: selectedCategory?.label,
-		group: selectedCategory?.group,
-	});
+	return Boolean(normalizeCategoryPartyKind(selectedCategory?.partyKind));
 }
 
-function clearClientWhenHidden(
+function clearPartyWhenHidden(
 	state: FormState,
 	categoryOptions: SelectOption[],
+	partyOptions: SelectOption[],
 ): FormState {
-	return shouldShowClientField(state, categoryOptions)
+	const selectedCategory = categoryOptions.find(
+		(option) => option.value === state.categoryId,
+	);
+	const categoryPartyKind = normalizeCategoryPartyKind(
+		selectedCategory?.partyKind,
+	);
+
+	if (!categoryPartyKind) {
+		return { ...state, partyId: undefined };
+	}
+
+	if (!state.partyId) {
+		return state;
+	}
+
+	const selectedParty = partyOptions.find(
+		(option) => option.value === state.partyId,
+	);
+
+	return selectedParty?.group === categoryPartyKind
 		? state
-		: { ...state, clientId: undefined };
+		: { ...state, partyId: undefined };
 }
 
 export function TransactionDialog({
@@ -88,7 +101,7 @@ export function TransactionDialog({
 	payerOptions,
 	splitPayerOptions,
 	defaultPayerId,
-	clientOptions,
+	partyOptions,
 	accountOptions,
 	cardOptions,
 	categoryOptions,
@@ -173,7 +186,9 @@ export function TransactionDialog({
 				}
 			}
 
-			setFormState(clearClientWhenHidden(initial, categoryOptions));
+			setFormState(
+				clearPartyWhenHidden(initial, categoryOptions, partyOptions),
+			);
 			setErrorMessage(null);
 			setPendingFiles([]);
 			setPendingDetachIds([]);
@@ -194,6 +209,7 @@ export function TransactionDialog({
 		defaultTransactionType,
 		isImporting,
 		categoryOptions,
+		partyOptions,
 		cardOptions,
 		mode,
 	]);
@@ -241,7 +257,7 @@ export function TransactionDialog({
 				...dependencies,
 			};
 
-			return clearClientWhenHidden(nextState, categoryOptions);
+			return clearPartyWhenHidden(nextState, categoryOptions, partyOptions);
 		});
 	}
 
@@ -295,9 +311,9 @@ export function TransactionDialog({
 		}
 
 		const sanitizedAmount = Math.abs(amountValue);
-		const showClientField = shouldShowClientField(formState, categoryOptions);
-		const normalizedClientId = showClientField
-			? (formState.clientId ?? null)
+		const showPartyField = shouldShowPartyField(formState, categoryOptions);
+		const normalizedPartyId = showPartyField
+			? (formState.partyId ?? null)
 			: null;
 		const normalizedSplitShares = formState.isSplit
 			? [
@@ -370,7 +386,7 @@ export function TransactionDialog({
 			paymentMethod:
 				formState.paymentMethod as CreateTransactionInput["paymentMethod"],
 			payerId: formState.payerId ?? null,
-			clientId: normalizedClientId,
+			partyId: normalizedPartyId,
 			splitShares: normalizedSplitShares,
 			isSplit: formState.isSplit,
 			primarySplitAmount: formState.isSplit
@@ -474,7 +490,7 @@ export function TransactionDialog({
 					period: formState.period,
 					name: formState.name.trim(),
 					categoryId: formState.categoryId,
-					clientId: normalizedClientId ?? undefined,
+					partyId: normalizedPartyId ?? undefined,
 					note: formState.note.trim() || "",
 					payerId: formState.payerId,
 					accountId: formState.accountId,
@@ -509,7 +525,7 @@ export function TransactionDialog({
 					condition: formState.condition,
 					paymentMethod: formState.paymentMethod,
 					categoryId: formState.categoryId,
-					clientId: normalizedClientId ?? undefined,
+					partyId: normalizedPartyId ?? undefined,
 					note: formState.note.trim() || "",
 					payerId: formState.payerId,
 					accountId: formState.accountId,
@@ -611,7 +627,10 @@ export function TransactionDialog({
 	const showDueDate = formState.paymentMethod === "Boleto";
 	const showPaymentDate = mode === "update" && showDueDate;
 	const showSettledToggle = formState.paymentMethod !== "Cartão de crédito";
-	const showClientField = shouldShowClientField(formState, categoryOptions);
+	const showPartyField = shouldShowPartyField(formState, categoryOptions);
+	const selectedCategoryPartyKind =
+		categoryOptions.find((option) => option.value === formState.categoryId)
+			?.partyKind ?? null;
 	const isUpdateMode = mode === "update";
 	const disablePaymentMethod = Boolean(lockPaymentMethod && mode === "create");
 	const disableCardSelect = Boolean(lockCardSelection && mode === "create");
@@ -653,11 +672,12 @@ export function TransactionDialog({
 								}
 							/>
 
-							{showClientField ? (
-								<ClientSection
+							{showPartyField ? (
+								<PartySection
 									formState={formState}
 									onFieldChange={handleFieldChange}
-									clientOptions={clientOptions}
+									partyOptions={partyOptions}
+									partyKind={selectedCategoryPartyKind}
 								/>
 							) : null}
 						</div>

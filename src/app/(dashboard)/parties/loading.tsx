@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 
-export default function ClientsLoading() {
+export default function PartiesLoading() {
 	return (
 		<main className="flex flex-col items-start gap-6">
 			<div className="w-full space-y-6">

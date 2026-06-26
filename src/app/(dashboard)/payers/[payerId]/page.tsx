@@ -79,7 +79,7 @@ const EMPTY_FILTERS: TransactionSearchFilters = {
 	conditionFilters: [],
 	paymentFilters: [],
 	payerFilters: [],
-	clientFilters: [],
+	partyFilters: [],
 	categoryFilters: [],
 	accountCardFilters: [],
 	searchFilter: null,
@@ -94,7 +94,7 @@ const EMPTY_FILTERS: TransactionSearchFilters = {
 
 const createEmptySlugMaps = (): SlugMaps => ({
 	payer: new Map(),
-	client: new Map(),
+	party: new Map(),
 	category: new Map(),
 	financialAccount: new Map(),
 	card: new Map(),
@@ -152,7 +152,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 		loggedUserFilterSources = await fetchTransactionFilterSources(userId);
 		sluggedFilters = {
 			payerFiltersRaw: [],
-			clientFiltersRaw: [],
+			partyFiltersRaw: [],
 			categoryFiltersRaw: [],
 			accountFiltersRaw: [],
 			cardFiltersRaw: [],
@@ -253,7 +253,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 					avatarUrl: pagador.avatarUrl,
 				},
 			],
-			clientFiltersRaw: [],
+			partyFiltersRaw: [],
 			categoryFiltersRaw: [],
 			accountFiltersRaw: [],
 			cardFiltersRaw: [],
@@ -400,12 +400,12 @@ export default async function Page({ params, searchParams }: PageProps) {
 								payerOptions={optionSets.payerOptions}
 								splitPayerOptions={optionSets.splitPayerOptions}
 								defaultPayerId={pagador.id}
-								clientOptions={optionSets.clientOptions}
+								partyOptions={optionSets.partyOptions}
 								accountOptions={optionSets.accountOptions}
 								cardOptions={optionSets.cardOptions}
 								categoryOptions={optionSets.categoryOptions}
 								payerFilterOptions={payerFilterOptions}
-								clientFilterOptions={optionSets.clientFilterOptions}
+								partyFilterOptions={optionSets.partyFilterOptions}
 								categoryFilterOptions={optionSets.categoryFilterOptions}
 								accountCardFilterOptions={optionSets.accountCardFilterOptions}
 								selectedPeriod={selectedPeriod}
@@ -419,7 +419,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 									loggedUserOptionSets?.splitPayerOptions
 								}
 								importDefaultPayerId={loggedUserOptionSets?.defaultPayerId}
-								importClientOptions={loggedUserOptionSets?.clientOptions}
+								importPartyOptions={loggedUserOptionSets?.partyOptions}
 								importAccountOptions={loggedUserOptionSets?.accountOptions}
 								importCardOptions={loggedUserOptionSets?.cardOptions}
 								importCategoryOptions={loggedUserOptionSets?.categoryOptions}

@@ -129,7 +129,7 @@ function TransactionMobileCard({
 	const isIncomingTransfer = isTransfer && Number(item.amount) > 0;
 	const payerLabel = item.pagadorName?.trim() || "Sem pessoa";
 	const payerDisplayName = payerLabel.split(/\s+/)[0] ?? payerLabel;
-	const clientLabel = item.clientName?.trim() || null;
+	const partyLabel = item.partyName?.trim() || null;
 	const paymentMethodLabel =
 		item.paymentMethod === "Transferência bancária"
 			? "Transf. bancária"
@@ -170,10 +170,10 @@ function TransactionMobileCard({
 									</span>
 								) : null}
 								<span className="truncate">{payerDisplayName}</span>
-								{clientLabel ? (
+								{partyLabel ? (
 									<span className="inline-flex min-w-0 items-center gap-1.5">
-										<span className="shrink-0">Cliente:</span>
-										<ClientAvatarLabel name={clientLabel} size="sm" />
+										<span className="shrink-0">Cliente/Fornecedor:</span>
+										<ClientAvatarLabel name={partyLabel} size="sm" />
 									</span>
 								) : null}
 							</div>

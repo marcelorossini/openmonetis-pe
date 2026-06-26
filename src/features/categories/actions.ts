@@ -10,6 +10,7 @@ import {
 } from "@/shared/lib/actions/helpers";
 import { getUser } from "@/shared/lib/auth/server";
 import { CATEGORY_TYPES } from "@/shared/lib/categories/constants";
+import { CATEGORY_PARTY_KINDS } from "@/shared/lib/categories/party-kind";
 import { db } from "@/shared/lib/db";
 import { uuidSchema } from "@/shared/lib/schemas/common";
 import { normalizeIconInput } from "@/shared/utils/string";
@@ -28,6 +29,12 @@ const categoryBaseSchema = z.object({
 		.max(100, "O ícone deve ter no máximo 100 caracteres.")
 		.nullish()
 		.transform((value) => normalizeIconInput(value)),
+	partyKind: z
+		.enum(CATEGORY_PARTY_KINDS, {
+			message: "Tipo de vínculo inválido.",
+		})
+		.nullish()
+		.transform((value) => value ?? null),
 });
 
 const createCategorySchema = categoryBaseSchema;
@@ -53,6 +60,7 @@ export async function createCategoryAction(
 			name: data.name,
 			type: data.type,
 			icon: data.icon,
+			partyKind: data.partyKind,
 			userId: user.id,
 		});
 
@@ -103,6 +111,7 @@ export async function updateCategoryAction(
 				name: data.name,
 				type: data.type,
 				icon: data.icon,
+				partyKind: data.partyKind,
 			})
 			.where(and(eq(categories.id, data.id), eq(categories.userId, user.id)))
 			.returning();

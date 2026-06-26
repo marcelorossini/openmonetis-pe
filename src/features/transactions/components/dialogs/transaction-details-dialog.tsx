@@ -253,10 +253,12 @@ export function TransactionDetailsDialog({
 								</li>
 
 								<li className="min-w-0 flex items-center justify-between gap-3">
-									<span className="text-muted-foreground">Cliente</span>
-									{transaction.clientName?.trim() ? (
+									<span className="text-muted-foreground">
+										Cliente/Fornecedor
+									</span>
+									{transaction.partyName?.trim() ? (
 										<ClientAvatarLabel
-											name={transaction.clientName.trim()}
+											name={transaction.partyName.trim()}
 											size="xs"
 										/>
 									) : (

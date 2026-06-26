@@ -60,7 +60,7 @@ export type CalendarFormOptions = {
 	payerOptions: SelectOption[];
 	splitPayerOptions: SelectOption[];
 	defaultPayerId: string | null;
-	clientOptions: SelectOption[];
+	partyOptions: SelectOption[];
 	accountOptions: SelectOption[];
 	cardOptions: SelectOption[];
 	categoryOptions: SelectOption[];

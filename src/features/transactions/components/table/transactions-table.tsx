@@ -16,11 +16,11 @@ import {
 } from "@tanstack/react-table";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { type ReactNode, useMemo, useState } from "react";
-import { shouldShowClientColumn } from "@/features/transactions/lib/client-column";
 import type {
 	TransactionsExportContext,
 	TransactionsPaginationState,
 } from "@/features/transactions/lib/export-types";
+import { shouldShowPartyColumn } from "@/features/transactions/lib/party-column";
 import { EmptyState } from "@/shared/components/feedback/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
@@ -57,7 +57,7 @@ type TransactionsTableProps = {
 	noteAsColumn?: boolean;
 	columnOrder?: string[] | null;
 	payerFilterOptions?: TransactionFilterOption[];
-	clientFilterOptions?: TransactionFilterOption[];
+	partyFilterOptions?: TransactionFilterOption[];
 	categoryFilterOptions?: TransactionFilterOption[];
 	accountCardFilterOptions?: AccountCardFilterOption[];
 	selectedPeriod?: string;
@@ -89,7 +89,7 @@ export function TransactionsTable({
 	noteAsColumn = false,
 	columnOrder: columnOrderPreference = null,
 	payerFilterOptions = [],
-	clientFilterOptions = [],
+	partyFilterOptions = [],
 	categoryFilterOptions = [],
 	accountCardFilterOptions = [],
 	selectedPeriod,
@@ -129,14 +129,14 @@ export function TransactionsTable({
 	});
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 	const isServerPaginated = Boolean(serverPagination);
-	const showClientColumn = useMemo(() => shouldShowClientColumn(data), [data]);
+	const showPartyColumn = useMemo(() => shouldShowPartyColumn(data), [data]);
 
 	const columns = useMemo(
 		() =>
 			getTransactionColumns({
 				currentUserId,
 				noteAsColumn,
-				showClientColumn,
+				showPartyColumn,
 				onEdit,
 				onCopy,
 				onImport,
@@ -155,7 +155,7 @@ export function TransactionsTable({
 		[
 			currentUserId,
 			noteAsColumn,
-			showClientColumn,
+			showPartyColumn,
 			columnOrderPreference,
 			onEdit,
 			onCopy,
@@ -333,7 +333,7 @@ export function TransactionsTable({
 					{showFilters ? (
 						<TransactionsFilters
 							payerOptions={payerFilterOptions}
-							clientOptions={clientFilterOptions}
+							partyOptions={partyFilterOptions}
 							categoryOptions={categoryFilterOptions}
 							accountCardOptions={accountCardFilterOptions}
 							className="w-full lg:flex-1 lg:justify-end"

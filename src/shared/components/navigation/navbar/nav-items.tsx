@@ -118,9 +118,9 @@ export const NAV_SECTIONS: NavSection[] = [
 				iconClass: "text-primary",
 			},
 			{
-				href: "/clients",
-				label: "Clientes",
-				description: "Receitas de serviços prestados",
+				href: "/parties",
+				label: "Clientes/fornecedores",
+				description: "Vínculos por categoria",
 				icon: <RiContactsBookLine className="size-4" />,
 				iconClass: "text-primary",
 			},

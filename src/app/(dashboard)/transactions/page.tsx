@@ -65,12 +65,12 @@ export default async function Page({ searchParams }: PageProps) {
 		payerOptions,
 		splitPayerOptions,
 		defaultPayerId,
-		clientOptions,
+		partyOptions,
 		accountOptions,
 		cardOptions,
 		categoryOptions,
 		payerFilterOptions,
-		clientFilterOptions,
+		partyFilterOptions,
 		categoryFilterOptions,
 		accountCardFilterOptions,
 	} = buildOptionSets({
@@ -93,12 +93,12 @@ export default async function Page({ searchParams }: PageProps) {
 					payerOptions={payerOptions}
 					splitPayerOptions={splitPayerOptions}
 					defaultPayerId={defaultPayerId}
-					clientOptions={clientOptions}
+					partyOptions={partyOptions}
 					accountOptions={accountOptions}
 					cardOptions={cardOptions}
 					categoryOptions={categoryOptions}
 					payerFilterOptions={payerFilterOptions}
-					clientFilterOptions={clientFilterOptions}
+					partyFilterOptions={partyFilterOptions}
 					categoryFilterOptions={categoryFilterOptions}
 					accountCardFilterOptions={accountCardFilterOptions}
 					selectedPeriod={selectedPeriod}
