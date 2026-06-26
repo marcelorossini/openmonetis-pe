@@ -3,12 +3,25 @@
 import { createHash, randomBytes } from "node:crypto";
 import { verifyPassword } from "better-auth/crypto";
 import { and, eq, isNull, ne, or } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
-import { account, apiTokens, payers } from "@/db/schema";
+import { account, apiTokens, appBrandingSettings, payers } from "@/db/schema";
 import { revalidateForEntity } from "@/shared/lib/actions/helpers";
 import { auth } from "@/shared/lib/auth/config";
+import { getUser } from "@/shared/lib/auth/server";
+import {
+	DEFAULT_PRIMARY_COLOR_HEX,
+	normalizePrimaryColorHex,
+} from "@/shared/lib/branding/color";
+import {
+	BrandingLogoValidationError,
+	prepareBrandingLogoForStorage,
+} from "@/shared/lib/branding/logo";
+import {
+	APP_BRANDING_CACHE_TAG,
+	APP_BRANDING_ID,
+} from "@/shared/lib/branding/queries";
 import { DEFAULT_CATEGORIES } from "@/shared/lib/categories/defaults";
 import { db, schema } from "@/shared/lib/db";
 import {
@@ -69,6 +82,10 @@ const updatePreferencesSchema = z.object({
 	transactionsColumnOrder: z.array(z.string()).nullable(),
 	attachmentMaxSizeMb: z.number().int().min(1).max(100),
 	showTransactionSummary: z.boolean(),
+});
+
+const updateBrandingColorSchema = z.object({
+	primaryColorHex: z.string().nullable(),
 });
 
 type ResettableUser = {
@@ -167,6 +184,35 @@ async function resetUserAppData(
 			}),
 		),
 	);
+}
+
+async function upsertBrandingSettings(
+	values: Partial<typeof appBrandingSettings.$inferInsert>,
+) {
+	const [existing] = await db
+		.select({ id: appBrandingSettings.id })
+		.from(appBrandingSettings)
+		.where(eq(appBrandingSettings.id, APP_BRANDING_ID))
+		.limit(1);
+
+	if (existing) {
+		await db
+			.update(appBrandingSettings)
+			.set({ ...values, updatedAt: new Date() })
+			.where(eq(appBrandingSettings.id, APP_BRANDING_ID));
+		return;
+	}
+
+	await db.insert(appBrandingSettings).values({
+		id: APP_BRANDING_ID,
+		...values,
+	});
+}
+
+function revalidateBranding() {
+	revalidateTag(APP_BRANDING_CACHE_TAG, "max");
+	revalidatePath("/", "layout");
+	revalidatePath("/settings");
 }
 
 // Actions
@@ -617,6 +663,123 @@ export async function updatePreferencesAction(
 		return {
 			success: false,
 			error: "Erro ao atualizar preferências. Tente novamente.",
+		};
+	}
+}
+
+export async function updateBrandingColorAction(data: {
+	primaryColorHex: string | null;
+}): Promise<ActionResponse<{ primaryColorHex: string }>> {
+	try {
+		await getUser();
+		const validated = updateBrandingColorSchema.parse(data);
+		const normalized =
+			validated.primaryColorHex === null
+				? DEFAULT_PRIMARY_COLOR_HEX
+				: normalizePrimaryColorHex(validated.primaryColorHex);
+
+		if (!normalized) {
+			return {
+				success: false,
+				error: "Informe uma cor hexadecimal válida.",
+			};
+		}
+
+		await upsertBrandingSettings({
+			primaryColorHex:
+				normalized === DEFAULT_PRIMARY_COLOR_HEX ? null : normalized,
+		});
+
+		revalidateBranding();
+
+		return {
+			success: true,
+			message: "Cor principal atualizada com sucesso",
+			data: { primaryColorHex: normalized },
+		};
+	} catch (error) {
+		if (error instanceof z.ZodError) {
+			return {
+				success: false,
+				error: error.issues[0]?.message || "Dados inválidos",
+			};
+		}
+
+		console.error("Erro ao atualizar cor principal:", error);
+		return {
+			success: false,
+			error: "Erro ao atualizar cor principal. Tente novamente.",
+		};
+	}
+}
+
+export async function saveBrandingLogoAction(
+	formData: FormData,
+): Promise<ActionResponse> {
+	try {
+		await getUser();
+		const logo = formData.get("logo");
+
+		if (!(logo instanceof File)) {
+			return {
+				success: false,
+				error: "Selecione um arquivo de logo.",
+			};
+		}
+
+		const preparedLogo = await prepareBrandingLogoForStorage(logo);
+
+		await upsertBrandingSettings({
+			logoContentBase64: preparedLogo.logoContentBase64,
+			logoFileName: preparedLogo.logoFileName,
+			logoMimeType: preparedLogo.logoMimeType,
+			logoFileSize: preparedLogo.logoFileSize,
+		});
+
+		revalidateBranding();
+
+		return {
+			success: true,
+			message: "Logo atualizada com sucesso",
+		};
+	} catch (error) {
+		if (error instanceof BrandingLogoValidationError) {
+			return {
+				success: false,
+				error: error.message,
+			};
+		}
+
+		console.error("Erro ao salvar logo:", error);
+		return {
+			success: false,
+			error: "Erro ao salvar logo. Tente novamente.",
+		};
+	}
+}
+
+export async function resetBrandingLogoAction(): Promise<ActionResponse> {
+	try {
+		await getUser();
+
+		await upsertBrandingSettings({
+			logoContentBase64: null,
+			logoFileName: null,
+			logoMimeType: null,
+			logoFileSize: null,
+		});
+
+		revalidateBranding();
+
+		return {
+			success: true,
+			message: "Logo padrão restaurada com sucesso",
+		};
+	} catch (error) {
+		console.error("Erro ao restaurar logo padrão:", error);
+		return {
+			success: false,
+			error: "Erro ao restaurar logo padrão. Tente novamente.",
 		};
 	}
 }

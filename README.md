@@ -529,6 +529,13 @@ como cor de destaque, temas claro e escuro e tipografia Bricolage Grotesque. A
 interface é construída com tokens semânticos em OKLCH, Tailwind CSS 4 e
 componentes compartilhados baseados em shadcn/ui e Radix UI.
 
+Instâncias self-hosted também podem ajustar a marca global em
+**Ajustes > Personalização**. Essa tela permite enviar um logo próprio para as
+headers e definir a cor principal por seletor visual ou valor hexadecimal. A
+personalização vale para o app inteiro, salva o logo no PostgreSQL da instalação
+e mantém a identidade padrão do OpenMonetis como fallback. O logo personalizado
+não depende de S3; S3 continua sendo usado apenas para anexos.
+
 As regras de cores, tipografia, componentes, responsividade e acessibilidade
 estão documentadas no [`DESIGN.md`](DESIGN.md). Use esse guia como referência ao
 criar telas ou alterar componentes visuais.
