@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { connection } from "next/server";
 
 import { CompanionTab } from "@/features/settings/components/companion-tab";
+import { CustomizationForm } from "@/features/settings/components/customization-form";
 import { DeleteAccountForm } from "@/features/settings/components/delete-account-form";
 import { PasskeysForm } from "@/features/settings/components/passkeys-form";
 import { PreferencesForm } from "@/features/settings/components/preferences-form";
@@ -20,6 +21,7 @@ import {
 	TabsTrigger,
 } from "@/shared/components/ui/tabs";
 import { auth } from "@/shared/lib/auth/config";
+import { fetchAppBrandingSettings } from "@/shared/lib/branding/queries";
 
 export default async function Page() {
 	await connection();
@@ -34,8 +36,11 @@ export default async function Page() {
 	const userName = session.user.name || "";
 	const userEmail = session.user.email || "";
 
-	const { authProvider, userPreferences, userApiTokens } =
-		await fetchSettingsPageData(session.user.id);
+	const [{ authProvider, userPreferences, userApiTokens }, appBranding] =
+		await Promise.all([
+			fetchSettingsPageData(session.user.id),
+			fetchAppBrandingSettings(),
+		]);
 
 	return (
 		<div className="w-full">
@@ -45,6 +50,7 @@ export default async function Page() {
 					<div className="overflow-x-auto overflow-y-hidden scroll-smooth md:overflow-visible [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 						<TabsList className="inline-flex w-max flex-nowrap md:w-full">
 							<TabsTrigger value="preferencias">Preferências</TabsTrigger>
+							<TabsTrigger value="personalizacao">Personalização</TabsTrigger>
 							<TabsTrigger value="companion">Companion</TabsTrigger>
 							<TabsTrigger value="nome">Alterar nome</TabsTrigger>
 							<TabsTrigger value="senha">Alterar senha</TabsTrigger>
@@ -85,6 +91,25 @@ export default async function Page() {
 								showTransactionSummary={
 									userPreferences?.showTransactionSummary ?? true
 								}
+							/>
+						</div>
+					</Card>
+				</TabsContent>
+
+				<TabsContent value="personalizacao" className="mt-4">
+					<Card className="p-6">
+						<div className="space-y-4">
+							<div>
+								<h2 className="text-xl font-semibold mb-1">Personalização</h2>
+								<p className="text-sm text-muted-foreground">
+									Defina a identidade visual desta instalação do OpenMonetis.
+								</p>
+							</div>
+							<Separator />
+							<CustomizationForm
+								primaryColorHex={appBranding.primaryColorHex}
+								logoUrl={appBranding.logoUrl}
+								logoFileName={appBranding.logoFileName}
 							/>
 						</div>
 					</Card>
