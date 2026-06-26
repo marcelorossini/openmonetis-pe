@@ -176,6 +176,27 @@ export const userPreferences = pgTable("preferencias_usuario", {
 		.default(sql`now()`),
 });
 
+export const appBrandingSettings = pgTable("app_branding_settings", {
+	id: text("id").primaryKey().default("global"),
+	primaryColorHex: text("primary_color_hex"),
+	logoContentBase64: text("logo_content_base64"),
+	logoFileName: text("logo_file_name"),
+	logoMimeType: text("logo_mime_type"),
+	logoFileSize: integer("logo_file_size"),
+	createdAt: timestamp("created_at", {
+		mode: "date",
+		withTimezone: true,
+	})
+		.notNull()
+		.default(sql`now()`),
+	updatedAt: timestamp("updated_at", {
+		mode: "date",
+		withTimezone: true,
+	})
+		.notNull()
+		.default(sql`now()`),
+});
+
 // ===================== PUBLIC TABLES =====================
 
 export const financialAccounts = pgTable("contas", {
@@ -1082,6 +1103,7 @@ export type Session = typeof session.$inferSelect;
 export type Verification = typeof verification.$inferSelect;
 export type UserPreferences = typeof userPreferences.$inferSelect;
 export type NewUserPreferences = typeof userPreferences.$inferInsert;
+export type AppBrandingSettings = typeof appBrandingSettings.$inferSelect;
 export type PayerShare = typeof payerShares.$inferSelect;
 export type FinancialAccount = typeof financialAccounts.$inferSelect;
 export type Category = typeof categories.$inferSelect;

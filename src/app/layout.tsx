@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { BrandingProvider } from "@/shared/components/providers/branding-provider";
 import { QueryProvider } from "@/shared/components/providers/query-provider";
 import { ThemeProvider } from "@/shared/components/providers/theme-provider";
 import { Toaster } from "@/shared/components/ui/sonner";
+import { buildBrandingCssVariables } from "@/shared/lib/branding/color";
+import { fetchAppBranding } from "@/shared/lib/branding/queries";
 import "./globals.css";
 import { bricolage } from "@/public/fonts/font_index";
 
@@ -15,11 +18,14 @@ export const metadata: Metadata = {
 		"Controle suas finanças pessoais de forma simples e transparente.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const branding = await fetchAppBranding();
+	const brandingStyle = buildBrandingCssVariables(branding.primaryColorHex);
+
 	return (
 		<html
 			data-scroll-behavior="smooth"
@@ -40,13 +46,22 @@ export default function RootLayout({
 					/>
 				)}
 			</head>
-			<body className="antialiased" suppressHydrationWarning>
-				<ThemeProvider attribute="class" defaultTheme="light">
-					<QueryProvider>
-						<Suspense>{children}</Suspense>
-						<Toaster position="top-right" />
-					</QueryProvider>
-				</ThemeProvider>
+			<body
+				className="antialiased"
+				style={brandingStyle}
+				suppressHydrationWarning
+			>
+				<BrandingProvider
+					logoUrl={branding.logoUrl}
+					logoFileName={branding.logoFileName}
+				>
+					<ThemeProvider attribute="class" defaultTheme="light">
+						<QueryProvider>
+							<Suspense>{children}</Suspense>
+							<Toaster position="top-right" />
+						</QueryProvider>
+					</ThemeProvider>
+				</BrandingProvider>
 			</body>
 		</html>
 	);
