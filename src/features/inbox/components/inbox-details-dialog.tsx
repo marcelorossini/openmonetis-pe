@@ -59,6 +59,11 @@ export function InboxDetailsDialog({
 											{item.sourceApp}
 										</span>
 									)}
+									{item.profileKey && (
+										<span className="font-mono text-xs text-muted-foreground">
+											Perfil: {item.profileKey}
+										</span>
+									)}
 								</div>
 							</div>
 						</div>
@@ -114,6 +119,26 @@ export function InboxDetailsDialog({
 										Forma de pagamento
 									</span>
 									<span>{item.paymentMethod}</span>
+								</div>
+							)}
+							{item.partyExternalKey && (
+								<div className="flex justify-between gap-4">
+									<span className="text-muted-foreground">
+										Valor externo cliente/fornecedor
+									</span>
+									<span className="break-all text-right">
+										{item.partyExternalKey}
+									</span>
+								</div>
+							)}
+							{item.categoryExternalKey && (
+								<div className="flex justify-between gap-4">
+									<span className="text-muted-foreground">
+										Valor externo categoria
+									</span>
+									<span className="break-all text-right">
+										{item.categoryExternalKey}
+									</span>
 								</div>
 							)}
 							{item.autoImportRequested && (

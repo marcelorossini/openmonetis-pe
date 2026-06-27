@@ -17,17 +17,23 @@ const expanded = inboxItemSchema.parse({
 	purchaseDate: "2026-06-25",
 	transactionType: "Despesa",
 	paymentMethod: "Pix",
+	profileKey: "inter-webhook",
 	accountId: "11111111-1111-4111-8111-111111111111",
 	categoryId: "22222222-2222-4222-8222-222222222222",
+	categoryExternalKey: "categoria:servicos-prestados",
 	payerId: "33333333-3333-4333-8333-333333333333",
 	partyId: "44444444-4444-4444-8444-444444444444",
+	partyExternalKey: "pix:cnpj:12345678000199",
 	autoImport: true,
 });
 
 assert.equal(expanded.purchaseDate, "2026-06-25");
 assert.equal(expanded.transactionType, "Despesa");
 assert.equal(expanded.paymentMethod, "Pix");
+assert.equal(expanded.profileKey, "inter-webhook");
 assert.equal(expanded.accountId, "11111111-1111-4111-8111-111111111111");
+assert.equal(expanded.categoryExternalKey, "categoria:servicos-prestados");
+assert.equal(expanded.partyExternalKey, "pix:cnpj:12345678000199");
 assert.equal(expanded.cardId, null);
 assert.equal(expanded.autoImport, true);
 

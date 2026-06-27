@@ -6,6 +6,7 @@ import { connection } from "next/server";
 import { CompanionTab } from "@/features/settings/components/companion-tab";
 import { CustomizationForm } from "@/features/settings/components/customization-form";
 import { DeleteAccountForm } from "@/features/settings/components/delete-account-form";
+import { IntegrationsTab } from "@/features/settings/components/integrations-tab";
 import { PasskeysForm } from "@/features/settings/components/passkeys-form";
 import { PreferencesForm } from "@/features/settings/components/preferences-form";
 import { UpdateEmailForm } from "@/features/settings/components/update-email-form";
@@ -36,11 +37,20 @@ export default async function Page() {
 	const userName = session.user.name || "";
 	const userEmail = session.user.email || "";
 
-	const [{ authProvider, userPreferences, userApiTokens }, appBranding] =
-		await Promise.all([
-			fetchSettingsPageData(session.user.id),
-			fetchAppBrandingSettings(),
-		]);
+	const [
+		{
+			authProvider,
+			userPreferences,
+			userApiTokens,
+			integrationPendingMappings,
+			integrationSavedMappings,
+			integrationTargetOptions,
+		},
+		appBranding,
+	] = await Promise.all([
+		fetchSettingsPageData(session.user.id),
+		fetchAppBrandingSettings(),
+	]);
 
 	return (
 		<div className="w-full">
@@ -52,6 +62,7 @@ export default async function Page() {
 							<TabsTrigger value="preferencias">Preferências</TabsTrigger>
 							<TabsTrigger value="personalizacao">Personalização</TabsTrigger>
 							<TabsTrigger value="companion">Companion</TabsTrigger>
+							<TabsTrigger value="integracoes">Integrações</TabsTrigger>
 							<TabsTrigger value="nome">Alterar nome</TabsTrigger>
 							<TabsTrigger value="senha">Alterar senha</TabsTrigger>
 							<TabsTrigger value="passkeys">Passkeys</TabsTrigger>
@@ -136,6 +147,27 @@ export default async function Page() {
 							</div>
 							<Separator />
 							<CompanionTab tokens={userApiTokens} />
+						</div>
+					</Card>
+				</TabsContent>
+
+				<TabsContent value="integracoes" className="mt-4">
+					<Card className="p-6">
+						<div className="space-y-4">
+							<div>
+								<h2 className="text-xl font-semibold mb-1">Integrações</h2>
+								<p className="text-sm text-muted-foreground">
+									Mapeie valores externos recebidos pela inbox para categorias e
+									clientes/fornecedores locais.
+								</p>
+							</div>
+							<Separator />
+							<IntegrationsTab
+								pendingMappings={integrationPendingMappings}
+								savedMappings={integrationSavedMappings}
+								partyOptions={integrationTargetOptions.partyOptions}
+								categoryOptions={integrationTargetOptions.categoryOptions}
+							/>
 						</div>
 					</Card>
 				</TabsContent>

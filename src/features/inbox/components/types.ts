@@ -6,6 +6,7 @@ export interface InboxItem {
 	id: string;
 	sourceApp: string;
 	sourceAppName: string | null;
+	profileKey: string | null;
 	originalTitle: string | null;
 	originalText: string;
 	notificationTimestamp: Date;
@@ -17,8 +18,10 @@ export interface InboxItem {
 	accountId: string | null;
 	cardId: string | null;
 	categoryId: string | null;
+	categoryExternalKey: string | null;
 	payerId: string | null;
 	partyId: string | null;
+	partyExternalKey: string | null;
 	autoImportRequested: boolean;
 	autoImportError: string | null;
 	status: string;

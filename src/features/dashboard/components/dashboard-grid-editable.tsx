@@ -382,6 +382,7 @@ export function DashboardGridEditable({
 
 			{/* Grid */}
 			<DndContext
+				id="dashboard-widget-grid"
 				sensors={sensors}
 				collisionDetection={closestCorners}
 				onDragEnd={handleDragEnd}

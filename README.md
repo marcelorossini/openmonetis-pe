@@ -87,6 +87,13 @@ A ideia é simples: ter um lugar onde consigo ver todas as minhas contas, cartõ
 
 O endpoint do Companion também aceita dados canônicos para agilizar a revisão: data da compra, forma de pagamento, conta ou cartão, categoria, pessoa e cliente/fornecedor. Quando o payload envia `autoImport: true`, o OpenMonetis tenta criar o lançamento automaticamente; se faltar algum dado obrigatório, o item permanece na inbox para revisão.
 
+Em `Ajustes > Integrações`, valores externos recebidos pela API podem ser mapeados para categorias e clientes/fornecedores locais por origem e perfil. Isso cobre casos como `partyId` chegando como CNPJ ou aliases de categoria vindos de webhook, e reprocessa automaticamente os pré-lançamentos pendentes quando o mapeamento é salvo.
+
+Para detalhes do fluxo, veja:
+
+- `docs/integrations/perfis-de-conversao.md`
+- `docs/integrations/mapeamentos-de-integracao.md`
+
 <p align="center">
   <img src="./public/images/companion-preview-light.webp" alt="OpenMonetis Companion" width="300" height="600" />
 </p>

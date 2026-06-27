@@ -1,5 +1,12 @@
-import { desc, eq } from "drizzle-orm";
-import { apiTokens } from "@/db/schema";
+import { and, asc, desc, eq } from "drizzle-orm";
+import {
+	apiTokens,
+	categories,
+	inboxItems,
+	integrationCategoryMappings,
+	integrationPartyMappings,
+	parties,
+} from "@/db/schema";
 import { db, schema } from "@/shared/lib/db";
 
 interface UserPreferences {
@@ -18,6 +25,33 @@ interface ApiToken {
 	createdAt: Date;
 	expiresAt: Date | null;
 	revokedAt: Date | null;
+}
+
+export interface IntegrationPendingMappingItem {
+	entityType: "party" | "category";
+	sourceApp: string;
+	sourceAppName: string | null;
+	profileKey: string | null;
+	externalKey: string;
+	pendingCount: number;
+	lastReceivedAt: Date;
+}
+
+export interface IntegrationSavedMappingItem {
+	entityType: "party" | "category";
+	sourceApp: string;
+	profileKey: string | null;
+	externalKey: string;
+	targetId: string;
+	targetLabel: string;
+	targetMeta: string | null;
+	updatedAt: Date;
+}
+
+export interface IntegrationTargetOption {
+	value: string;
+	label: string;
+	meta: string | null;
 }
 
 async function fetchAuthProvider(userId: string): Promise<string> {
@@ -63,16 +97,199 @@ async function fetchApiTokens(userId: string): Promise<ApiToken[]> {
 		.orderBy(desc(apiTokens.createdAt));
 }
 
+async function fetchIntegrationPendingMappings(
+	userId: string,
+): Promise<IntegrationPendingMappingItem[]> {
+	const rows = await db
+		.select({
+			sourceApp: inboxItems.sourceApp,
+			sourceAppName: inboxItems.sourceAppName,
+			profileKey: inboxItems.profileKey,
+			partyExternalKey: inboxItems.partyExternalKey,
+			partyId: inboxItems.partyId,
+			categoryExternalKey: inboxItems.categoryExternalKey,
+			categoryId: inboxItems.categoryId,
+			notificationTimestamp: inboxItems.notificationTimestamp,
+		})
+		.from(inboxItems)
+		.where(
+			and(eq(inboxItems.userId, userId), eq(inboxItems.status, "pending")),
+		);
+
+	const grouped = new Map<string, IntegrationPendingMappingItem>();
+
+	for (const row of rows) {
+		if (row.partyExternalKey && !row.partyId) {
+			const key = [
+				"party",
+				row.sourceApp,
+				row.profileKey ?? "",
+				row.partyExternalKey,
+			].join("::");
+			const existing = grouped.get(key);
+
+			if (existing) {
+				existing.pendingCount += 1;
+				if (row.notificationTimestamp > existing.lastReceivedAt) {
+					existing.lastReceivedAt = row.notificationTimestamp;
+				}
+			} else {
+				grouped.set(key, {
+					entityType: "party",
+					sourceApp: row.sourceApp,
+					sourceAppName: row.sourceAppName,
+					profileKey: row.profileKey,
+					externalKey: row.partyExternalKey,
+					pendingCount: 1,
+					lastReceivedAt: row.notificationTimestamp,
+				});
+			}
+		}
+
+		if (row.categoryExternalKey && !row.categoryId) {
+			const key = [
+				"category",
+				row.sourceApp,
+				row.profileKey ?? "",
+				row.categoryExternalKey,
+			].join("::");
+			const existing = grouped.get(key);
+
+			if (existing) {
+				existing.pendingCount += 1;
+				if (row.notificationTimestamp > existing.lastReceivedAt) {
+					existing.lastReceivedAt = row.notificationTimestamp;
+				}
+			} else {
+				grouped.set(key, {
+					entityType: "category",
+					sourceApp: row.sourceApp,
+					sourceAppName: row.sourceAppName,
+					profileKey: row.profileKey,
+					externalKey: row.categoryExternalKey,
+					pendingCount: 1,
+					lastReceivedAt: row.notificationTimestamp,
+				});
+			}
+		}
+	}
+
+	return [...grouped.values()].sort((a, b) => {
+		return b.lastReceivedAt.getTime() - a.lastReceivedAt.getTime();
+	});
+}
+
+async function fetchIntegrationSavedMappings(
+	userId: string,
+): Promise<IntegrationSavedMappingItem[]> {
+	const [partyMappings, categoryMappings] = await Promise.all([
+		db
+			.select({
+				sourceApp: integrationPartyMappings.sourceApp,
+				profileKey: integrationPartyMappings.profileKey,
+				externalKey: integrationPartyMappings.externalKey,
+				targetId: integrationPartyMappings.partyId,
+				targetLabel: parties.name,
+				targetMeta: parties.kind,
+				updatedAt: integrationPartyMappings.updatedAt,
+			})
+			.from(integrationPartyMappings)
+			.innerJoin(parties, eq(parties.id, integrationPartyMappings.partyId))
+			.where(eq(integrationPartyMappings.userId, userId))
+			.orderBy(
+				asc(integrationPartyMappings.sourceApp),
+				asc(integrationPartyMappings.externalKey),
+			),
+		db
+			.select({
+				sourceApp: integrationCategoryMappings.sourceApp,
+				profileKey: integrationCategoryMappings.profileKey,
+				externalKey: integrationCategoryMappings.externalKey,
+				targetId: integrationCategoryMappings.categoryId,
+				targetLabel: categories.name,
+				targetMeta: categories.type,
+				updatedAt: integrationCategoryMappings.updatedAt,
+			})
+			.from(integrationCategoryMappings)
+			.innerJoin(
+				categories,
+				eq(categories.id, integrationCategoryMappings.categoryId),
+			)
+			.where(eq(integrationCategoryMappings.userId, userId))
+			.orderBy(
+				asc(integrationCategoryMappings.sourceApp),
+				asc(integrationCategoryMappings.externalKey),
+			),
+	]);
+
+	return [
+		...partyMappings.map((item) => ({
+			...item,
+			entityType: "party" as const,
+			profileKey: item.profileKey || null,
+		})),
+		...categoryMappings.map((item) => ({
+			...item,
+			entityType: "category" as const,
+			profileKey: item.profileKey || null,
+		})),
+	].sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+}
+
+async function fetchIntegrationTargetOptions(userId: string): Promise<{
+	partyOptions: IntegrationTargetOption[];
+	categoryOptions: IntegrationTargetOption[];
+}> {
+	const [partyRows, categoryRows] = await Promise.all([
+		db
+			.select({
+				value: parties.id,
+				label: parties.name,
+				meta: parties.kind,
+			})
+			.from(parties)
+			.where(eq(parties.userId, userId))
+			.orderBy(asc(parties.name)),
+		db
+			.select({
+				value: categories.id,
+				label: categories.name,
+				meta: categories.type,
+			})
+			.from(categories)
+			.where(eq(categories.userId, userId))
+			.orderBy(asc(categories.name)),
+	]);
+
+	return {
+		partyOptions: partyRows,
+		categoryOptions: categoryRows,
+	};
+}
+
 export async function fetchSettingsPageData(userId: string) {
-	const [authProvider, userPreferences, userApiTokens] = await Promise.all([
+	const [
+		authProvider,
+		userPreferences,
+		userApiTokens,
+		integrationPendingMappings,
+		integrationSavedMappings,
+		integrationTargetOptions,
+	] = await Promise.all([
 		fetchAuthProvider(userId),
 		fetchUserPreferences(userId),
 		fetchApiTokens(userId),
+		fetchIntegrationPendingMappings(userId),
+		fetchIntegrationSavedMappings(userId),
+		fetchIntegrationTargetOptions(userId),
 	]);
 
 	return {
 		authProvider,
 		userPreferences,
 		userApiTokens,
+		integrationPendingMappings,
+		integrationSavedMappings,
+		integrationTargetOptions,
 	};
 }

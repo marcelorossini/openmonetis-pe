@@ -22,6 +22,7 @@ const optionalUuidSchema = z
 export const inboxItemSchema = z.object({
 	sourceApp: z.string().min(1, "sourceApp é obrigatório").max(255),
 	sourceAppName: z.string().max(255).optional(),
+	profileKey: z.string().max(255).optional(),
 	originalTitle: z.string().max(500).optional(),
 	originalText: z.string().min(1, "originalText é obrigatório").max(5000),
 	notificationTimestamp: z
@@ -44,8 +45,10 @@ export const inboxItemSchema = z.object({
 	accountId: optionalUuidSchema,
 	cardId: optionalUuidSchema,
 	categoryId: optionalUuidSchema,
+	categoryExternalKey: z.string().max(255).optional(),
 	payerId: optionalUuidSchema,
 	partyId: optionalUuidSchema,
+	partyExternalKey: z.string().max(255).optional(),
 	autoImport: z.boolean().optional().default(false),
 });
 

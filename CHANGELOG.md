@@ -7,13 +7,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não lançado]
 
-Esta próxima versão amplia o vínculo de lançamentos com contatos externos: categorias passam a definir quando pedem cliente ou fornecedor, sem prender a funcionalidade a uma única categoria de receita.
+Esta próxima versão amplia o vínculo de lançamentos com contatos externos: categorias passam a definir quando pedem cliente ou fornecedor, a API do Companion ganha mais contexto para autoimportação e a nova área de integrações resolve valores externos sem depender de ajuste manual repetitivo na inbox.
 
 ### Adicionado
 - Clientes e fornecedores: nova área em `/parties` para cadastrar contatos ativos e inativos com tipo, documento, email, telefone e anotação opcional.
 - Categorias: novo campo de vínculo no lançamento para escolher nenhum, cliente ou fornecedor.
 - Lançamentos: o campo Cliente/Fornecedor aparece conforme a categoria selecionada, com coluna e filtro dedicados na lista de lançamentos.
 - Companion/API: endpoints de pré-lançamentos agora aceitam conta, cartão, categoria, pessoa, cliente/fornecedor, forma de pagamento, data da compra e tentativa de importação automática para lançamento.
+- Integrações: nova aba em `/settings` para mapear valores externos de cliente/fornecedor e categoria por `sourceApp` e `profileKey`, com fila de pendências derivada da inbox.
 
 ### Alterado
 - Clientes: a rota antiga `/clients` redireciona para `/parties`.

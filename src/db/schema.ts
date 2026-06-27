@@ -541,6 +541,7 @@ export const inboxItems = pgTable(
 		// Informações da fonte
 		sourceApp: text("source_app").notNull(), // Ex: "com.nu.production"
 		sourceAppName: text("source_app_name"), // Ex: "Nubank"
+		profileKey: text("profile_key"),
 
 		// Dados originais da notificação
 		originalTitle: text("original_title"),
@@ -568,6 +569,7 @@ export const inboxItems = pgTable(
 			onDelete: "set null",
 			onUpdate: "cascade",
 		}),
+		categoryExternalKey: text("category_external_key"),
 		payerId: uuid("pagador_id").references(() => payers.id, {
 			onDelete: "set null",
 			onUpdate: "cascade",
@@ -576,6 +578,7 @@ export const inboxItems = pgTable(
 			onDelete: "set null",
 			onUpdate: "cascade",
 		}),
+		partyExternalKey: text("party_external_key"),
 		autoImportRequested: boolean("auto_import_requested")
 			.notNull()
 			.default(false),
@@ -1112,6 +1115,74 @@ export const importCategoryMappings = pgTable(
 	}),
 );
 
+export const integrationPartyMappings = pgTable(
+	"integration_party_mappings",
+	{
+		userId: text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		sourceApp: text("source_app").notNull(),
+		profileKey: text("profile_key").notNull().default(""),
+		externalKey: text("external_key").notNull(),
+		partyId: uuid("party_id")
+			.notNull()
+			.references(() => parties.id, { onDelete: "cascade" }),
+		createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+			.notNull()
+			.defaultNow(),
+		updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+			.notNull()
+			.defaultNow(),
+	},
+	(table) => ({
+		pk: primaryKey({
+			columns: [
+				table.userId,
+				table.sourceApp,
+				table.profileKey,
+				table.externalKey,
+			],
+		}),
+		partyIdIdx: index("integration_party_mappings_party_id_idx").on(
+			table.partyId,
+		),
+	}),
+);
+
+export const integrationCategoryMappings = pgTable(
+	"integration_category_mappings",
+	{
+		userId: text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		sourceApp: text("source_app").notNull(),
+		profileKey: text("profile_key").notNull().default(""),
+		externalKey: text("external_key").notNull(),
+		categoryId: uuid("category_id")
+			.notNull()
+			.references(() => categories.id, { onDelete: "cascade" }),
+		createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+			.notNull()
+			.defaultNow(),
+		updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+			.notNull()
+			.defaultNow(),
+	},
+	(table) => ({
+		pk: primaryKey({
+			columns: [
+				table.userId,
+				table.sourceApp,
+				table.profileKey,
+				table.externalKey,
+			],
+		}),
+		categoryIdIdx: index("integration_category_mappings_category_id_idx").on(
+			table.categoryId,
+		),
+	}),
+);
+
 export const establishmentLogos = pgTable(
 	"establishment_logos",
 	{
@@ -1156,6 +1227,10 @@ export type NewApiToken = typeof apiTokens.$inferInsert;
 export type InboxItem = typeof inboxItems.$inferSelect;
 export type NewInboxItem = typeof inboxItems.$inferInsert;
 export type ImportCategoryMapping = typeof importCategoryMappings.$inferSelect;
+export type IntegrationPartyMapping =
+	typeof integrationPartyMappings.$inferSelect;
+export type IntegrationCategoryMapping =
+	typeof integrationCategoryMappings.$inferSelect;
 
 export const attachmentsRelations = relations(attachments, ({ one, many }) => ({
 	user: one(user, {
