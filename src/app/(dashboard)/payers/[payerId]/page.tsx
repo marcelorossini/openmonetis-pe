@@ -133,6 +133,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 				...EMPTY_FILTERS,
 				searchFilter: allSearchFilters.searchFilter, // Permitir busca mesmo em modo read-only
 			};
+	const userPreferences = await fetchUserPreferences(userId);
 
 	let filterSources: Awaited<
 		ReturnType<typeof fetchTransactionFilterSources>
@@ -166,6 +167,8 @@ export default async function Page({ params, searchParams }: PageProps) {
 		filters: searchFilters,
 		slugMaps,
 		payerId: pagador.id,
+		hideAnticipatedInstallments:
+			userPreferences?.hideAnticipatedInstallments ?? false,
 	});
 
 	const sharesPromise = canEdit
@@ -187,7 +190,6 @@ export default async function Page({ params, searchParams }: PageProps) {
 		shareRows,
 		currentUserShare,
 		estabelecimentos,
-		userPreferences,
 	] = await Promise.all([
 		fetchPayerTransactions(filters),
 		fetchPayerMonthlyBreakdown({
@@ -223,7 +225,6 @@ export default async function Page({ params, searchParams }: PageProps) {
 		sharesPromise,
 		currentUserSharePromise,
 		fetchRecentEstablishments(userId),
-		fetchUserPreferences(userId),
 	]);
 
 	const mappedTransactions = mapTransactionsData(transactionRows);

@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { fetchAccountTransactions } from "@/features/accounts/statement-queries";
+import { fetchUserPreferences } from "@/features/settings/queries";
 import type { TransactionsExportContext } from "@/features/transactions/lib/export-types";
 import {
 	buildSluggedFilters,
@@ -61,7 +62,10 @@ export async function exportTransactionsDataAction(
 	try {
 		const userId = await getUserId();
 		const validated = exportTransactionsSchema.parse(input);
-		const filterSources = await fetchTransactionFilterSources(userId);
+		const [filterSources, userPreferences] = await Promise.all([
+			fetchTransactionFilterSources(userId),
+			fetchUserPreferences(userId),
+		]);
 		const sluggedFilters = buildSluggedFilters(filterSources);
 		const slugMaps = buildSlugMaps(sluggedFilters);
 
@@ -73,6 +77,8 @@ export async function exportTransactionsDataAction(
 			accountId: validated.accountId ?? undefined,
 			cardId: validated.cardId ?? undefined,
 			payerId: validated.payerId ?? undefined,
+			hideAnticipatedInstallments:
+				userPreferences?.hideAnticipatedInstallments ?? false,
 		});
 
 		const rows =

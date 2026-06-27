@@ -20,6 +20,16 @@ Esta próxima versão amplia o vínculo de lançamentos com contatos externos: c
 - Clientes: a rota antiga `/clients` redireciona para `/parties`.
 - Integrações: contas passam a participar do mapeamento da inbox e cada cadastro de conta, categoria e cliente/fornecedor agora oferece um atalho direto para gerenciar seus vínculos em `Ajustes > Integrações`.
 
+## [2.7.10] - 2026-06-27
+
+Esta versão ajusta a experiência de leitura dos lançamentos parcelados após antecipações, permitindo esconder parcelas já liquidadas por antecipação sem perder o histórico quando ele ainda for necessário.
+
+### Adicionado
+- Ajustes: nova preferência `Ocultar parcelas antecipadas` para remover da tabela lançamentos marcados como parcela antecipada.
+
+### Alterado
+- Lançamentos: a preferência passa a ser aplicada nas listagens principais, extratos de conta, faturas de cartão, detalhes de pessoa, detalhes de categoria e exportação de lançamentos, preservando paginação e contagens visíveis.
+
 ## [2.7.9] - 2026-06-21
 
 Esta versão torna a publicação mais previsível ao separar a validação contínua da entrega de versões oficiais. Pull requests e a branch principal continuam sendo verificadas, enquanto imagens Docker e releases passam a ser produzidas somente a partir de uma tag SemVer validada.

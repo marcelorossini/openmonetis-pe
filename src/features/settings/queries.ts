@@ -16,6 +16,7 @@ interface UserPreferences {
 	transactionsColumnOrder: string[] | null;
 	attachmentMaxSizeMb: number;
 	showTransactionSummary: boolean;
+	hideAnticipatedInstallments: boolean;
 }
 
 interface ApiToken {
@@ -72,6 +73,8 @@ export async function fetchUserPreferences(
 			transactionsColumnOrder: schema.userPreferences.transactionsColumnOrder,
 			attachmentMaxSizeMb: schema.userPreferences.attachmentMaxSizeMb,
 			showTransactionSummary: schema.userPreferences.showTransactionSummary,
+			hideAnticipatedInstallments:
+				schema.userPreferences.hideAnticipatedInstallments,
 		})
 		.from(schema.userPreferences)
 		.where(eq(schema.userPreferences.userId, userId))

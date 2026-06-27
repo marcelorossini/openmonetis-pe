@@ -136,6 +136,9 @@ export default async function Page({ searchParams }: PageProps) {
 								showTransactionSummary={
 									userPreferences?.showTransactionSummary ?? true
 								}
+								hideAnticipatedInstallments={
+									userPreferences?.hideAnticipatedInstallments ?? false
+								}
 							/>
 						</div>
 					</Card>

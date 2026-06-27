@@ -6,6 +6,7 @@ import {
 	ilike,
 	inArray,
 	isNotNull,
+	isNull,
 	lte,
 	or,
 	sql,
@@ -416,6 +417,7 @@ export const buildTransactionWhere = ({
 	cardId,
 	accountId,
 	payerId,
+	hideAnticipatedInstallments = false,
 }: {
 	userId: string;
 	period: string;
@@ -424,6 +426,7 @@ export const buildTransactionWhere = ({
 	cardId?: string;
 	accountId?: string;
 	payerId?: string;
+	hideAnticipatedInstallments?: boolean;
 }): SQL[] => {
 	const where: SQL[] = [eq(transactions.userId, userId)];
 
@@ -451,6 +454,15 @@ export const buildTransactionWhere = ({
 
 	if (payerId) {
 		where.push(eq(transactions.payerId, payerId));
+	}
+
+	if (hideAnticipatedInstallments) {
+		where.push(
+			or(
+				isNull(transactions.isAnticipated),
+				eq(transactions.isAnticipated, false),
+			) as SQL,
+		);
 	}
 
 	if (cardId) {
