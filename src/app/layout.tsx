@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 		template: "OpenMonetis | %s",
 	},
 	description:
-		"Controle suas finanças pessoais de forma simples e transparente.",
+		"OpenMonetis PME e um fork nao oficial do OpenMonetis para controle financeiro simples de pequenas empresas, com foco em contas a pagar, contas a receber, clientes, fornecedores e fluxo de caixa.",
 };
 
 export default async function RootLayout({

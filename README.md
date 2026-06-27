@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  Projeto pessoal de gestão financeira. Self-hosted, manual e open source.
+  Fork não oficial do OpenMonetis para controle financeiro simples de pequenas empresas.
 </p>
 
 > **⚠️ Nota:** o OpenMonetis não está sendo encerrado, mas o desenvolvimento deve reduzir para quase zero daqui em diante. O app já cobre minhas demandas atuais de gerenciamento financeiro, então novas mudanças tendem a ser pontuais: correções, ajustes necessários e pequenas melhorias quando fizerem bastante sentido para meu uso.
@@ -49,6 +49,10 @@
 
 ## 🎯 Sobre o Projeto
 
+**OpenMonetis PME** é um fork não oficial do OpenMonetis, adaptado para controle financeiro simples de pequenas empresas, com foco em contas a pagar, contas a receber, clientes, fornecedores e fluxo de caixa.
+
+Todos os créditos pelo projeto original vão para **Felipe Coutinho** ([`@felipegcoutinho`](https://github.com/felipegcoutinho)).
+
 **OpenMonetis** é um projeto pessoal de gestão financeira que criei para organizar minhas próprias finanças. Cansei de usar planilhas desorganizadas e aplicativos que não fazem exatamente o que preciso, então decidi construir algo do jeito que funciona pra mim.
 
 A ideia é simples: ter um lugar onde consigo ver todas as minhas contas, cartões, gastos e receitas de forma clara. Se isso for útil pra você também, fique à vontade para usar e contribuir.
@@ -87,7 +91,7 @@ A ideia é simples: ter um lugar onde consigo ver todas as minhas contas, cartõ
 
 O endpoint do Companion também aceita dados canônicos para agilizar a revisão: data da compra, forma de pagamento, conta ou cartão, categoria, pessoa e cliente/fornecedor. Quando o payload envia `autoImport: true`, o OpenMonetis tenta criar o lançamento automaticamente; se faltar algum dado obrigatório, o item permanece na inbox para revisão.
 
-Em `Ajustes > Integrações`, valores externos recebidos pela API podem ser mapeados para categorias e clientes/fornecedores locais por origem e perfil. Isso cobre casos como `partyId` chegando como CNPJ ou aliases de categoria vindos de webhook, e reprocessa automaticamente os pré-lançamentos pendentes quando o mapeamento é salvo.
+Em `Ajustes > Integrações`, valores externos recebidos pela API podem ser mapeados para contas, categorias e clientes/fornecedores locais por origem e perfil. Isso cobre casos como conta vinda por alias, `partyId` chegando como CNPJ ou aliases de categoria vindos de webhook, e reprocessa automaticamente os pré-lançamentos pendentes quando o mapeamento é salvo. Os próprios cadastros de conta, categoria e cliente/fornecedor também oferecem um atalho direto para abrir essa área já filtrada pela entidade.
 
 Para detalhes do fluxo, veja:
 
