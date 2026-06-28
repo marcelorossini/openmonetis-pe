@@ -1,6 +1,6 @@
 {
-	"name": "OpenMonetis",
-	"short_name": "OpenMonetis",
+	"name": "OpenMonetis PE",
+	"short_name": "OpenMonetis PE",
 	"description": "Fork nao oficial do OpenMonetis para controle financeiro simples de pequenas empresas.",
 	"icons": [
 		{

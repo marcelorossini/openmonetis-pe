@@ -17,6 +17,7 @@ Esta próxima versão amplia o vínculo de lançamentos com contatos externos: c
 - Integrações: nova aba em `/settings` para mapear valores externos de cliente/fornecedor e categoria por `sourceApp` e `profileKey`, com fila de pendências derivada da inbox.
 
 ### Alterado
+- Projeto: renomeado para OpenMonetis PE (`openmonetis-pe`) e reposicionado para controle financeiro simples de pequenas empresas, incluindo metadados, README, landing page, Docker, setup e links públicos.
 - Clientes: a rota antiga `/clients` redireciona para `/parties`.
 - Integrações: contas passam a participar do mapeamento da inbox e cada cadastro de conta, categoria e cliente/fornecedor agora oferece um atalho direto para gerenciar seus vínculos em `Ajustes > Integrações`.
 

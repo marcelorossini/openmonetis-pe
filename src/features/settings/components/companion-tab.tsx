@@ -61,7 +61,7 @@ const steps: {
 	{
 		icon: RiShieldCheckLine,
 		title: "Pronto!",
-		description: "Notificações serão enviadas ao OpenMonetis.",
+		description: "Notificações serão enviadas ao OpenMonetis PE.",
 	},
 ];
 

@@ -152,8 +152,8 @@ export function LoginForm({
 				>
 					<FieldGroup className="mx-auto w-full max-w-md gap-5">
 						<AuthHeader
-							title="Entrar no OpenMonetis"
-							description="Acesse sua conta para acompanhar cartões, lançamentos e metas em um só lugar."
+							title="Entrar no OpenMonetis PE"
+							description="Acesse sua conta para acompanhar caixa, lançamentos e metas em um só lugar."
 						/>
 
 						<AuthErrorAlert error={error} />

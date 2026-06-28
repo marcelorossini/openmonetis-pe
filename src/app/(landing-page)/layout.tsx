@@ -3,10 +3,10 @@ import type { ReactNode } from "react";
 
 const BASE_URL = process.env.PUBLIC_DOMAIN
 	? `https://${process.env.PUBLIC_DOMAIN}`
-	: "https://openmonetis.com";
+	: "https://openmonetis-pe.com";
 
 const TITLE =
-	"OpenMonetis PME | Controle financeiro simples para pequenas empresas";
+	"OpenMonetis PE | Controle financeiro simples para pequenas empresas";
 const DESCRIPTION =
 	"Fork nao oficial do OpenMonetis, adaptado para pequenas empresas com foco em contas a pagar, contas a receber, clientes, fornecedores e fluxo de caixa. Creditos ao autor original Felipe Coutinho.";
 
@@ -17,15 +17,17 @@ export const metadata: Metadata = {
 	},
 	description: DESCRIPTION,
 	keywords: [
-		"finanças pessoais",
+		"finanças para pequenas empresas",
 		"controle financeiro",
 		"self-hosted",
 		"open source",
 		"gestão financeira",
-		"orçamento pessoal",
+		"contas a pagar",
+		"contas a receber",
+		"clientes e fornecedores",
 		"lançamentos financeiros",
 		"cartão de crédito",
-		"planejamento financeiro",
+		"fluxo de caixa",
 	],
 	alternates: {
 		canonical: "/",
@@ -34,7 +36,7 @@ export const metadata: Metadata = {
 		type: "website",
 		locale: "pt_BR",
 		url: "/",
-		siteName: "OpenMonetis",
+		siteName: "OpenMonetis PE",
 		title: TITLE,
 		description: DESCRIPTION,
 		images: [
@@ -42,7 +44,7 @@ export const metadata: Metadata = {
 				url: "/images/dashboard-preview-light.png",
 				width: 1920,
 				height: 1080,
-				alt: "OpenMonetis PME — Dashboard de controle financeiro para pequenas empresas",
+				alt: "OpenMonetis PE — Dashboard de controle financeiro para pequenas empresas",
 			},
 		],
 	},
@@ -68,7 +70,7 @@ export default function LandingLayout({ children }: { children: ReactNode }) {
 	const jsonLd = {
 		"@context": "https://schema.org",
 		"@type": "SoftwareApplication",
-		name: "OpenMonetis",
+		name: "OpenMonetis PE",
 		applicationCategory: "FinanceApplication",
 		operatingSystem: "Web",
 		offers: {
@@ -81,7 +83,7 @@ export default function LandingLayout({ children }: { children: ReactNode }) {
 		isAccessibleForFree: true,
 		author: {
 			"@type": "Organization",
-			name: "OpenMonetis",
+			name: "OpenMonetis PE",
 			url: BASE_URL,
 		},
 	};

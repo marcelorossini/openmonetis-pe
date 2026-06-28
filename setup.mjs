@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * OpenMonetis Setup Script
+ * OpenMonetis PE Setup Script
  * Uso: node setup.mjs
  */
 
@@ -113,7 +113,7 @@ for (let i = 0; i < logoLines.length; i++) {
   const nameCol = nameIdx >= 0 && nameIdx < nameLines.length ? nameLines[nameIdx] : "";
   console.log(logoCol + "  " + nameCol);
 }
-console.log(`\n${" ".repeat(46)}${c.dim}Gestão financeira · self-hosted${c.reset}\n`);
+console.log(`\n${" ".repeat(46)}${c.dim}Gestão financeira para pequenas empresas · self-hosted${c.reset}\n`);
 
 // ─── ETAPA 1: Verificações do sistema ────────────────────────────────────────
 
@@ -182,7 +182,7 @@ if (dockerAvailable) {
   } else {
     useLocalDocker = true;
     databaseUrl =
-      "postgresql://openmonetis:openmonetis_dev_password@localhost:5432/openmonetis_db";
+      "postgresql://openmonetis_pe:openmonetis_pe_dev_password@localhost:5432/openmonetis_pe_db";
     console.log(`${sym.ok} Banco local selecionado`);
   }
 } else {
@@ -221,8 +221,8 @@ let resendApiKey = "";
 let resendFromEmail = "";
 if (await askYesNo("  E-mail via Resend (notificações e convites)?")) {
   resendApiKey = await ask("  RESEND_API_KEY: ");
-  resendFromEmail = await ask(`  RESEND_FROM_EMAIL [OpenMonetis <noreply@seudominio.com>]: `);
-  if (!resendFromEmail.trim()) resendFromEmail = "OpenMonetis <noreply@seudominio.com>";
+  resendFromEmail = await ask(`  RESEND_FROM_EMAIL [OpenMonetis PE <noreply@seudominio.com>]: `);
+  if (!resendFromEmail.trim()) resendFromEmail = "OpenMonetis PE <noreply@seudominio.com>";
 }
 
 // AI
@@ -249,31 +249,31 @@ if (await askYesNo("  Insights locais com Ollama?")) {
 // Domínio público
 let publicDomain = "";
 if (await askYesNo("  Domínio público separado para a landing page?")) {
-  publicDomain = await ask("  PUBLIC_DOMAIN (ex: openmonetis.com): ");
+  publicDomain = await ask("  PUBLIC_DOMAIN (ex: openmonetis-pe.com): ");
 }
 
 rl.close();
 
 // ─── ETAPA 5: Confirmar e executar ────────────────────────────────────────────
 
-const targetDir = resolve("openmonetis");
+const targetDir = resolve("openmonetis-pe");
 
 section("Instalação");
 console.log(`
-  ${sym.arrow} Clonar repositório em ./openmonetis
+  ${sym.arrow} Clonar repositório em ./openmonetis-pe
   ${sym.arrow} Gerar .env
-  ${sym.arrow} pnpm install${useLocalDocker ? `\n  ${sym.arrow} Subir banco PostgreSQL (Docker)\n  ${sym.arrow} Habilitar extensões` : ""}
+  ${sym.arrow} pnpm install${useLocalDocker ? `\n  ${sym.arrow} Subir banco PostgreSQL (Docker)` : ""}
   ${sym.arrow} pnpm db:push
 `);
 
 if (existsSync(targetDir)) {
-  abort("A pasta ./openmonetis já existe. Remova-a e tente novamente.");
+  abort("A pasta ./openmonetis-pe já existe. Remova-a e tente novamente.");
 }
 
 // Clonar
 let s = spinner("Clonando repositório...");
 try {
-  run("git clone https://github.com/felipegcoutinho/openmonetis.git openmonetis");
+  run("git clone https://github.com/marcelorossini/openmonetis-pe.git openmonetis-pe");
   s.stop("Repositório clonado");
 } catch {
   s.fail("Falha ao clonar repositório");
@@ -281,7 +281,6 @@ try {
 }
 
 // Gerar .env
-const val = (v, fallback = "") => v?.trim() || fallback;
 const opt = (key, value) => (value?.trim() ? `${key}=${value}` : `# ${key}=`);
 
 const envContent = [
@@ -302,9 +301,9 @@ const envContent = [
   "DB_PORT=5432",
   "",
   "# === PostgreSQL (Docker local) ===",
-  "POSTGRES_USER=openmonetis",
-  "POSTGRES_PASSWORD=openmonetis_dev_password",
-  "POSTGRES_DB=openmonetis_db",
+  "POSTGRES_USER=openmonetis_pe",
+  "POSTGRES_PASSWORD=openmonetis_pe_dev_password",
+  "POSTGRES_DB=openmonetis_pe_db",
   "",
   "# === Multi-domínio ===",
   opt("PUBLIC_DOMAIN", publicDomain),
@@ -344,7 +343,7 @@ try {
 if (useLocalDocker) {
   s = spinner("Subindo banco PostgreSQL...");
   try {
-    run("pnpm docker:up:db", { cwd: targetDir });
+    run("pnpm docker:db", { cwd: targetDir });
     s.stop("Banco iniciado");
   } catch {
     s.fail("Falha ao iniciar o banco");
@@ -356,7 +355,7 @@ if (useLocalDocker) {
   let ready = false;
   for (let i = 0; i < 20; i++) {
     try {
-      run("docker compose exec -T db pg_isready -U openmonetis", { cwd: targetDir });
+      run("docker compose exec -T db pg_isready -U openmonetis_pe", { cwd: targetDir });
       ready = true;
       break;
     } catch {
@@ -369,15 +368,6 @@ if (useLocalDocker) {
   }
   s.stop("PostgreSQL pronto");
 
-  // Extensões
-  s = spinner("Habilitando extensões do banco...");
-  try {
-    run("pnpm db:extensions", { cwd: targetDir });
-    s.stop("Extensões habilitadas");
-  } catch {
-    s.fail("Falha ao habilitar extensões");
-    process.exit(1);
-  }
 }
 
 // db:push
@@ -393,10 +383,10 @@ try {
 // ─── Finalização ──────────────────────────────────────────────────────────────
 
 console.log(`
-${c.green}${c.bold}  ✔ OpenMonetis instalado com sucesso!${c.reset}
+${c.green}${c.bold}  ✔ OpenMonetis PE instalado com sucesso!${c.reset}
 
   ${c.bold}Para iniciar:${c.reset}
-    cd openmonetis
+    cd openmonetis-pe
     pnpm dev${
       useLocalDocker
         ? `          ${c.dim}→ desenvolvimento${c.reset}\n    pnpm docker:up    ${c.dim}→ produção local (app + banco)${c.reset}`
@@ -404,5 +394,5 @@ ${c.green}${c.bold}  ✔ OpenMonetis instalado com sucesso!${c.reset}
     }
 
   ${c.bold}Acesse:${c.reset}  ${betterAuthUrl}
-  ${c.bold}Docs:${c.reset}    https://github.com/felipegcoutinho/openmonetis
+  ${c.bold}Docs:${c.reset}    https://github.com/marcelorossini/openmonetis-pe
 `);

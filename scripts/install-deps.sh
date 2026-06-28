@@ -1,12 +1,12 @@
 #!/bin/sh
-# install-deps.sh — Instala pré-requisitos do OpenMonetis
+# install-deps.sh — Instala pré-requisitos do OpenMonetis PE
 # Testado apenas em Ubuntu Server 24.04 LTS
-# Uso: curl -fsSL https://raw.githubusercontent.com/felipegcoutinho/openmonetis/main/scripts/install-deps.sh -o install-deps.sh
+# Uso: curl -fsSL https://raw.githubusercontent.com/marcelorossini/openmonetis-pe/main/scripts/install-deps.sh -o install-deps.sh
 #      sudo sh install-deps.sh
 
 set -e
 
-LOG_FILE="/tmp/openmonetis-install.log"
+LOG_FILE="/tmp/openmonetis-pe-install.log"
 > "$LOG_FILE"
 
 # Suprimir prompt interativo do corepack ao chamar pnpm/node versioning
@@ -113,7 +113,7 @@ fi
 
 CURRENT_USER="${SUDO_USER:-$(whoami)}"
 
-printf "\n${BOLD}OpenMonetis — Instalação de Dependências${RESET}\n"
+printf "\n${BOLD}OpenMonetis PE — Instalação de Dependências${RESET}\n"
 printf "Usuário: ${CYAN}%s${RESET} | Log: %s\n" "$CURRENT_USER" "$LOG_FILE"
 
 # ── [1/5] Dependências base ────────────────────────────────────────────────────

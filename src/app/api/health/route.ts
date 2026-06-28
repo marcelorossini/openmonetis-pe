@@ -18,7 +18,7 @@ export async function GET() {
 		return NextResponse.json(
 			{
 				status: "ok",
-				name: "OpenMonetis",
+				name: "OpenMonetis PE",
 				timestamp: new Date().toISOString(),
 			},
 			{ status: 200 },
@@ -30,7 +30,7 @@ export async function GET() {
 		return NextResponse.json(
 			{
 				status: "error",
-				name: "OpenMonetis",
+				name: "OpenMonetis PE",
 				timestamp: new Date().toISOString(),
 				message: "Database connection failed",
 			},

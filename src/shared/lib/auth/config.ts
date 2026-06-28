@@ -119,7 +119,7 @@ export const auth = betterAuth({
 	// Plugins
 	plugins: [
 		passkey({
-			rpName: "OpenMonetis",
+			rpName: "OpenMonetis PE",
 		}),
 	],
 

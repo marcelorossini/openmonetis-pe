@@ -11,11 +11,11 @@ import { bricolage } from "@/public/fonts/font_index";
 
 export const metadata: Metadata = {
 	title: {
-		default: "OpenMonetis | Suas finanças, do seu jeito",
-		template: "OpenMonetis | %s",
+		default: "OpenMonetis PE | Controle financeiro para pequenas empresas",
+		template: "OpenMonetis PE | %s",
 	},
 	description:
-		"OpenMonetis PME e um fork nao oficial do OpenMonetis para controle financeiro simples de pequenas empresas, com foco em contas a pagar, contas a receber, clientes, fornecedores e fluxo de caixa.",
+		"OpenMonetis PE e um fork nao oficial do OpenMonetis para controle financeiro simples de pequenas empresas, com foco em contas a pagar, contas a receber, clientes, fornecedores e fluxo de caixa.",
 };
 
 export default async function RootLayout({
@@ -34,7 +34,7 @@ export default async function RootLayout({
 			suppressHydrationWarning
 		>
 			<head>
-				<meta name="apple-mobile-web-app-title" content="OpenMonetis" />
+				<meta name="apple-mobile-web-app-title" content="OpenMonetis PE" />
 				{process.env.UMAMI_URL && process.env.UMAMI_WEBSITE_ID && (
 					<script
 						defer

@@ -6,7 +6,7 @@ export function LogoIcon(props: SVGProps<SVGSVGElement>) {
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 200 200"
 			role="img"
-			aria-label="OpenMonetis"
+			aria-label="OpenMonetis PE"
 			{...props}
 		>
 			<path

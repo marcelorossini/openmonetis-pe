@@ -6,7 +6,7 @@ export function LogoText(props: SVGProps<SVGSVGElement>) {
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 574.201 89.6"
 			role="img"
-			aria-label="OpenMonetis"
+			aria-label="OpenMonetis PE"
 			fill="#000000"
 			stroke="none"
 			fillRule="evenodd"

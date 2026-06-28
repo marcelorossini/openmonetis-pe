@@ -536,7 +536,7 @@ export function IntegrationsTab({
 						<DialogTitle>Mapeamento de integração</DialogTitle>
 						<DialogDescription>
 							Associe o valor recebido pela integração a uma entidade local do
-							OpenMonetis.
+							OpenMonetis PE.
 						</DialogDescription>
 					</DialogHeader>
 

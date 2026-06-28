@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================
-# openmonetis-backup.sh
+# openmonetis-pe-backup.sh
 # Backup automático do PostgreSQL para Google Drive via rclone
 # Suporta: banco remoto (Supabase/etc) ou Docker local
 # ==============================================================
@@ -33,9 +33,9 @@ DB_MODE="remote"
 REMOTE_DB_URL="${DATABASE_URL}"
 
 # --- Modo docker ---
-DOCKER_CONTAINER="openmonetis_postgres"
-DOCKER_DB_NAME="openmonetis_db"
-DOCKER_DB_USER="openmonetis"
+DOCKER_CONTAINER="openmonetis_pe_postgres"
+DOCKER_DB_NAME="openmonetis_pe_db"
+DOCKER_DB_USER="openmonetis_pe"
 
 # --- Destino e retenção ---
 BACKUP_DIR="$PROJECT_DIR/backup"
@@ -52,13 +52,13 @@ log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 
 mkdir -p "$BACKUP_DIR"
 
-DUMP_FILE="$BACKUP_DIR/openmonetis_${TIMESTAMP}.dump"
-SQL_FILE="$BACKUP_DIR/openmonetis_${TIMESTAMP}.sql.gz"
-DATA_FILE="$BACKUP_DIR/openmonetis_${TIMESTAMP}.data.sql.gz"
+DUMP_FILE="$BACKUP_DIR/openmonetis-pe_${TIMESTAMP}.dump"
+SQL_FILE="$BACKUP_DIR/openmonetis-pe_${TIMESTAMP}.sql.gz"
+DATA_FILE="$BACKUP_DIR/openmonetis-pe_${TIMESTAMP}.data.sql.gz"
 
 log "Iniciando backup (modo: $DB_MODE)..."
 
-# Schemas relevantes do OpenMonetis (descarta lixo Supabase: auth, realtime, storage, vault, graphql, etc.)
+# Schemas relevantes do OpenMonetis PE (descarta lixo Supabase: auth, realtime, storage, vault, graphql, etc.)
 SCHEMA_FLAGS=(--schema=public --schema=drizzle)
 
 # --- Dump ---
@@ -95,18 +95,18 @@ if ! command -v rclone &>/dev/null; then
   log "AVISO: rclone não encontrado. Pulando upload."
 else
   rclone copy "$BACKUP_DIR" "$GDRIVE_REMOTE" \
-    --include "openmonetis_${TIMESTAMP}*"
+    --include "openmonetis-pe_${TIMESTAMP}*"
   log "Upload concluído → $GDRIVE_REMOTE"
 
   # Limpeza remota
   rclone delete "$GDRIVE_REMOTE" \
     --min-age "${RETENTION_REMOTE_DAYS}d" \
-    --include "openmonetis_*"
+    --include "openmonetis-pe_*"
   log "Limpeza remota: mantidos últimos $RETENTION_REMOTE_DAYS dias."
 fi
 
 # --- Limpeza local ---
-find "$BACKUP_DIR" -name "openmonetis_*" -mtime +"$RETENTION_LOCAL_DAYS" -delete
+find "$BACKUP_DIR" -name "openmonetis-pe_*" -mtime +"$RETENTION_LOCAL_DAYS" -delete
 log "Limpeza local: mantidos últimos $RETENTION_LOCAL_DAYS dias."
 
 log "Backup finalizado com sucesso."

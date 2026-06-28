@@ -48,7 +48,7 @@ export const mainFeatures: FeatureItem[] = [
 		icon: RiWalletLine,
 		title: "Contas e transações",
 		description:
-			"Contas bancárias, cartões e dinheiro em um só lugar, se organize como preferir.",
+			"Contas bancárias, cartões, dinheiro, entradas e saídas em um só lugar.",
 		colorVar: "var(--data-5)",
 	},
 	{
@@ -62,7 +62,7 @@ export const mainFeatures: FeatureItem[] = [
 		icon: RiRobot2Line,
 		title: "Insights com IA",
 		description:
-			"Análises por IA com insights sobre padrões de gastos e recomendações personalizadas.",
+			"Análises por IA com insights sobre padrões de caixa, despesas e receitas.",
 		colorVar: "var(--data-6)",
 	},
 	{
@@ -83,7 +83,7 @@ export const mainFeatures: FeatureItem[] = [
 		icon: RiTeamLine,
 		title: "Gestão colaborativa",
 		description:
-			"Compartilhe acesso com permissões granulares (admin/viewer) e notificações por e-mail.",
+			"Compartilhe acesso com permissões granulares e notificações por e-mail.",
 		colorVar: "var(--data-3)",
 	},
 ];
@@ -93,14 +93,14 @@ export const extraFeatures: FeatureItem[] = [
 		icon: RiPieChartLine,
 		title: "Categorias e orçamentos",
 		description:
-			"Categorias personalizadas com orçamentos mensais e indicadores visuais de progresso.",
+			"Categorias personalizadas para acompanhar limites, centros de custo e metas.",
 		colorVar: "var(--data-6)",
 	},
 	{
 		icon: RiFileTextLine,
 		title: "Anotações e tarefas",
 		description:
-			"Notas de texto e listas de tarefas com checkboxes e arquivamento.",
+			"Notas, tarefas e anexos para manter contexto junto aos lançamentos.",
 		colorVar: "var(--data-6)",
 	},
 	{
@@ -113,7 +113,7 @@ export const extraFeatures: FeatureItem[] = [
 	{
 		icon: RiDownloadCloudLine,
 		title: "Importação em massa",
-		description: "Importe múltiplos lançamentos de uma só vez.",
+		description: "Importe extratos e múltiplos lançamentos de uma só vez.",
 		colorVar: "var(--data-5)",
 	},
 	{
@@ -163,7 +163,7 @@ export const companionSteps: FeatureItem[] = [
 	{
 		icon: RiNotification3Line,
 		title: "Notificação bancária chega",
-		description: "O Companion intercepta automaticamente",
+		description: "O Companion identifica movimentações dos apps bancários",
 		colorVar: "var(--data-1)",
 	},
 	{
@@ -174,7 +174,7 @@ export const companionSteps: FeatureItem[] = [
 	},
 	{
 		icon: RiCheckLine,
-		title: "Revise e confirme no OpenMonetis",
+		title: "Revise e confirme no OpenMonetis PE",
 		description: "Pré-lançamentos ficam na inbox para sua aprovação",
 		colorVar: "var(--data-5)",
 	},
@@ -215,44 +215,44 @@ export const stackItems = [
 export const whoIsItForItems: FeatureItem[] = [
 	{
 		icon: RiTimeLine,
-		title: "Tem disciplina de registrar gastos",
+		title: "Mantém a rotina financeira atualizada",
 		description:
-			"Não se importa em dedicar alguns minutos por dia ou semana para manter tudo atualizado",
+			"Dedica alguns minutos por dia ou semana para registrar e revisar movimentações",
 		colorVar: "var(--data-4)",
 	},
 	{
 		icon: RiLockLine,
 		title: "Quer controle total sobre seus dados",
 		description:
-			"Prefere hospedar seus próprios dados ao invés de depender de serviços terceiros",
+			"Prefere hospedar os dados da empresa ao invés de depender de serviços terceiros",
 		colorVar: "var(--data-5)",
 	},
 	{
 		icon: RiLineChartLine,
-		title: "Gosta de entender exatamente onde o dinheiro vai",
+		title: "Quer entender para onde o caixa vai",
 		description:
-			"Quer visualizar padrões de gastos e tomar decisões informadas",
+			"Quer visualizar padrões de pagamento, recebimento e despesas para decidir melhor",
 		colorVar: "var(--data-3)",
 	},
 	{
 		icon: RiTimeLine,
 		title: "Não é plug and play",
 		description:
-			"Você vai precisar configurar as coisas, conectar suas contas e ajustar o sistema para o seu jeito de usar.",
+			"Você vai precisar configurar contas, categorias e contatos para refletir sua operação.",
 		colorVar: "var(--data-4)",
 	},
 	{
 		icon: RiShieldCheckLine,
-		title: "Não é para qualquer um",
+		title: "Não é um ERP completo",
 		description:
-			"Não é uma empresa, não é um SaaS, não é uma plataforma. É um projeto pessoal.",
+			"É um controle financeiro simples para pequenas empresas, não uma suíte fiscal ou contábil.",
 		colorVar: "var(--data-1)",
 	},
 	{
 		icon: RiErrorWarningLine,
-		title: "Não sou responsável por nada",
+		title: "Você opera sua própria instância",
 		description:
-			"Não sou responsável por nada que aconteça com você ou com seus dados.",
+			"Backups, acesso e segurança da instalação ficam sob responsabilidade de quem hospeda.",
 		colorVar: "var(--data-5)",
 	},
 ];

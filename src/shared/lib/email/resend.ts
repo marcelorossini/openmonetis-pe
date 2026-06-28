@@ -5,7 +5,7 @@ import { config } from "dotenv";
  * Lê RESEND_FROM_EMAIL do .env (valor deve estar entre aspas se tiver espaço:
  * Garante carregamento do .env no contexto da chamada (ex.: Server Actions).
  */
-const FALLBACK_FROM = "OpenMonetis <noreply@resend.dev>";
+const FALLBACK_FROM = "OpenMonetis PE <noreply@resend.dev>";
 
 export function getResendFromEmail(): string {
 	// Garantir que .env foi carregado (não sobrescreve variáveis já definidas)

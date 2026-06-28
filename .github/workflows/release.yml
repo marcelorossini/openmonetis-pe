@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  DOCKER_IMAGE_NAME: openmonetis
+  DOCKER_IMAGE_NAME: openmonetis-pe
 
 permissions:
   contents: read

@@ -20,7 +20,7 @@ export function SetupTabs() {
 				<div className="space-y-4 md:space-y-6">
 					<StepCard step={1} title="Clone o repositório">
 						<code className="block text-xs sm:text-sm bg-muted px-2 py-1 rounded overflow-x-auto">
-							git clone https://github.com/felipegcoutinho/openmonetis.git
+							git clone https://github.com/marcelorossini/openmonetis-pe.git
 						</code>
 					</StepCard>
 
@@ -48,7 +48,7 @@ export function SetupTabs() {
 				<div className="space-y-4 md:space-y-6">
 					<StepCard step={1} title="Clone o repositório">
 						<code className="block text-xs sm:text-sm bg-muted px-2 py-1 rounded overflow-x-auto">
-							git clone https://github.com/felipegcoutinho/openmonetis.git
+							git clone https://github.com/marcelorossini/openmonetis-pe.git
 						</code>
 					</StepCard>
 

@@ -1,11 +1,11 @@
-# CLAUDE.md - OpenMonetis
+# CLAUDE.md - OpenMonetis PE
 
-> Self-hosted personal finance app (Next.js 16, React 19, PostgreSQL, Drizzle ORM, Better Auth, Tailwind 4, shadcn/ui).
+> Self-hosted financial control app for small businesses (Next.js 16, React 19, PostgreSQL, Drizzle ORM, Better Auth, Tailwind 4, shadcn/ui).
 > Portuguese UI, English folders/imports. Linter: Biome 2.x. Package manager: pnpm.
 
 ## Related Projects
 
-- **OpenMonetis Companion** (`~/github/openmonetis-companion`): Android app que captura notificacoes de apps bancarios e envia para o OpenMonetis via API. Os itens chegam na feature `inbox` para revisao.
+- **OpenMonetis Companion** (`~/github/openmonetis-companion`): Android app que captura notificacoes de apps bancarios e envia para o OpenMonetis PE via API. Os itens chegam na feature `inbox` para revisao.
 
 ---
 
@@ -278,7 +278,7 @@ pnpm exec tsc --noEmit
 pnpm run db:generate
 pnpm run db:push
 pnpm run db:studio
-pnpm run docker:up:db
+pnpm docker:db
 ```
 
 ---

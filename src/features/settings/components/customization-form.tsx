@@ -181,7 +181,7 @@ export function CustomizationForm({
 						<div className="flex min-w-0 flex-col gap-1">
 							<span className="text-sm font-medium">Prévia</span>
 							<span className="truncate text-sm text-muted-foreground">
-								{previewLabel ?? "Logo padrão do OpenMonetis"}
+								{previewLabel ?? "Logo padrão do OpenMonetis PE"}
 							</span>
 						</div>
 						<div className="flex h-12 min-w-36 items-center justify-end rounded-md bg-primary px-3">

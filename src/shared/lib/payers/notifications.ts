@@ -104,7 +104,7 @@ const buildHtmlBody = ({
       </table>
 
       <p style="margin:0;font-size:12px;color:#94a3b8;">
-        Enviado automaticamente por ${userLabel} via OpenMonetis.
+        Enviado automaticamente por ${userLabel} via OpenMonetis PE.
       </p>
     </div>
   `;

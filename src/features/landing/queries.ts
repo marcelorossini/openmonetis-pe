@@ -4,7 +4,7 @@ export async function fetchGitHubStats(): Promise<{
 }> {
 	try {
 		const res = await fetch(
-			"https://api.github.com/repos/felipegcoutinho/openmonetis",
+			"https://api.github.com/repos/marcelorossini/openmonetis-pe",
 			{ next: { revalidate: 3600 } },
 		);
 		if (!res.ok) return { stars: 200, forks: 60 };

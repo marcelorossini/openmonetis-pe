@@ -18,7 +18,7 @@ interface PrivacyContextType {
 const PrivacyContext = createContext<PrivacyContextType | undefined>(undefined);
 
 const STORAGE_KEY = "app:privacyMode";
-const PRIVACY_MODE_EVENT = "openmonetis:privacy-mode";
+const PRIVACY_MODE_EVENT = "openmonetis-pe:privacy-mode";
 
 // Read from localStorage safely (returns false on server)
 function getStoredValue(): boolean {

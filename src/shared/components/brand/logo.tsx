@@ -1,7 +1,6 @@
 "use client";
 
 import { LogoIcon } from "@/shared/components/brand/logo-icon";
-import { LogoText } from "@/shared/components/brand/logo-text";
 import { useBranding } from "@/shared/components/providers/branding-provider";
 import { cn } from "@/shared/utils/ui";
 
@@ -23,7 +22,6 @@ const iconFilterClass = "brightness-0 saturate-0";
 export function Logo({
 	variant = "full",
 	className,
-	invertTextOnDark = true,
 	colorIcon = false,
 	iconClassName,
 	textClassName,
@@ -68,13 +66,14 @@ export function Logo({
 						iconClassName,
 					)}
 				/>
-				<LogoText
+				<span
 					className={cn(
-						"hidden h-auto w-[110px] shrink-0 sm:block",
-						invertTextOnDark && "dark:invert",
+						"hidden shrink-0 text-lg font-semibold tracking-normal sm:block",
 						textClassName,
 					)}
-				/>
+				>
+					OpenMonetis PE
+				</span>
 			</div>
 		);
 	}
@@ -88,12 +87,9 @@ export function Logo({
 			<LogoIcon
 				className={cn("size-7 shrink-0", !colorIcon && iconFilterClass)}
 			/>
-			<LogoText
-				className={cn(
-					"h-auto w-[100px] shrink-0",
-					invertTextOnDark && "dark:invert",
-				)}
-			/>
+			<span className="shrink-0 text-base font-semibold tracking-normal">
+				OpenMonetis PE
+			</span>
 		</div>
 	);
 }

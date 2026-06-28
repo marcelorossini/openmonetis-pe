@@ -86,8 +86,8 @@ export function DeleteAccountForm() {
 						<div>
 							<h3 className="font-semibold">Zerar conta</h3>
 							<p className="text-sm text-muted-foreground">
-								Apaga todos os dados do OpenMonetis e deixa sua conta no estado
-								inicial, mantendo seu login e credenciais de acesso.
+								Apaga todos os dados do OpenMonetis PE e deixa sua conta no
+								estado inicial, mantendo seu login e credenciais de acesso.
 							</p>
 						</div>
 

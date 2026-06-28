@@ -385,7 +385,7 @@ const buildSummaryHtml = ({
 
   <!-- Rodapé externo -->
   <p style="margin:16px 0 0 0;font-size:12.5px;color:#94a3b8;text-align:center;">
-    Este e-mail foi enviado automaticamente pelo <strong>OpenMonetis</strong>.
+    Este e-mail foi enviado automaticamente pelo <strong>OpenMonetis PE</strong>.
   </p>
 </div>
 

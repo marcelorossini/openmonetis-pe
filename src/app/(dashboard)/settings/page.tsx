@@ -120,7 +120,7 @@ export default async function Page({ searchParams }: PageProps) {
 							<div>
 								<h2 className="text-xl font-semibold mb-1">Preferências</h2>
 								<p className="text-sm text-muted-foreground">
-									Personalize sua experiência no OpenMonetis ajustando as
+									Personalize sua experiência no OpenMonetis PE ajustando as
 									configurações de acordo com suas necessidades.
 								</p>
 							</div>
@@ -150,7 +150,7 @@ export default async function Page({ searchParams }: PageProps) {
 							<div>
 								<h2 className="text-xl font-semibold mb-1">Personalização</h2>
 								<p className="text-sm text-muted-foreground">
-									Defina a identidade visual desta instalação do OpenMonetis.
+									Defina a identidade visual desta instalação do OpenMonetis PE.
 								</p>
 							</div>
 							<Separator />
@@ -217,8 +217,9 @@ export default async function Page({ searchParams }: PageProps) {
 							<div>
 								<h2 className="text-xl font-semibold mb-1">Alterar nome</h2>
 								<p className="text-sm text-muted-foreground">
-									Atualize como seu nome aparece no OpenMonetis. Esse nome pode
-									ser exibido em diferentes seções do app e em comunicações.
+									Atualize como seu nome aparece no OpenMonetis PE. Esse nome
+									pode ser exibido em diferentes seções do app e em
+									comunicações.
 								</p>
 							</div>
 							<Separator />
@@ -285,8 +286,8 @@ export default async function Page({ searchParams }: PageProps) {
 							<div>
 								<h2 className="text-xl font-semibold mb-1">Ações perigosas</h2>
 								<p className="text-sm text-muted-foreground">
-									Você pode zerar os dados do OpenMonetis e manter seu acesso,
-									ou excluir sua conta inteira de forma irreversível.
+									Você pode zerar os dados do OpenMonetis PE e manter seu
+									acesso, ou excluir sua conta inteira de forma irreversível.
 								</p>
 							</div>
 							<DeleteAccountForm />

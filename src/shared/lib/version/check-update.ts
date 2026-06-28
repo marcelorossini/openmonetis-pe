@@ -1,6 +1,6 @@
 import { version as currentVersion } from "@/package.json";
 
-const GITHUB_REPO = "felipegcoutinho/openmonetis";
+const GITHUB_REPO = "marcelorossini/openmonetis-pe";
 const RELEASES_URL = `https://github.com/${GITHUB_REPO}/releases`;
 
 export type UpdateCheckResult = {

@@ -119,13 +119,14 @@ export default async function Page() {
 						</Badge>
 
 						<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold">
-							Suas finanças,
-							<span className="text-primary"> do seu jeito</span>
+							Controle financeiro
+							<span className="text-primary"> para pequenas empresas</span>
 						</h1>
 
 						<p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl px-4 sm:px-0">
-							Gestão financeira self-hosted e open source. Lance manualmente ou
-							capture notificações bancárias direto pelo{" "}
+							Organize contas a pagar, contas a receber, clientes, fornecedores
+							e fluxo de caixa em uma instalação self-hosted. Lance manualmente
+							ou capture notificações bancárias direto pelo{" "}
 							<span className="text-foreground font-medium">
 								Companion para Android
 							</span>
@@ -134,7 +135,7 @@ export default async function Page() {
 
 						<div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto px-4 sm:px-0">
 							<Link
-								href="https://github.com/felipegcoutinho/openmonetis"
+								href="https://github.com/marcelorossini/openmonetis-pe"
 								target="_blank"
 								className="w-full sm:w-auto"
 							>
@@ -144,7 +145,7 @@ export default async function Page() {
 								</Button>
 							</Link>
 							<Link
-								href="https://github.com/felipegcoutinho/openmonetis#readme"
+								href="https://github.com/marcelorossini/openmonetis-pe#readme"
 								target="_blank"
 								className="w-full sm:w-auto"
 							>
@@ -169,7 +170,7 @@ export default async function Page() {
 							</div>
 							<Image
 								src={landingImages.hero.light}
-								alt="openmonetis Dashboard Preview"
+								alt="OpenMonetis PE Dashboard Preview"
 								width={1920}
 								height={1080}
 								className="w-full h-auto dark:hidden"
@@ -177,7 +178,7 @@ export default async function Page() {
 							/>
 							<Image
 								src={landingImages.hero.dark}
-								alt="openmonetis Dashboard Preview"
+								alt="OpenMonetis PE Dashboard Preview"
 								width={1920}
 								height={1080}
 								className="w-full h-auto hidden dark:block"
@@ -225,8 +226,8 @@ export default async function Page() {
 									Funcionalidades que importam
 								</h2>
 								<p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
-									Ferramentas simples para organizar suas contas, cartões,
-									gastos e receitas
+									Ferramentas simples para acompanhar caixa, contas,
+									recebimentos, pagamentos e contatos comerciais
 								</p>
 							</div>
 						</AnimateOnScroll>
@@ -276,7 +277,7 @@ export default async function Page() {
 									Mobile
 								</Badge>
 								<h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 md:mb-4 font-semibold">
-									Use o OpenMonetis no celular sem perder o fluxo
+									Use o OpenMonetis PE no celular sem perder o fluxo
 								</h2>
 								<p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
 									Instale como PWA para acesso rápido no dia a dia. No Android,
@@ -314,7 +315,7 @@ export default async function Page() {
 										PWA instalável
 									</Badge>
 									<h3 className="text-2xl md:text-3xl font-medium tracking-tight mb-3">
-										Leve o OpenMonetis para a tela inicial
+										Leve o OpenMonetis PE para a tela inicial
 									</h3>
 									<p className="text-muted-foreground mb-6 leading-relaxed">
 										Adicione à tela inicial e abra direto, como um app. Sem
@@ -528,7 +529,7 @@ export default async function Page() {
 
 						<div className="mt-6 md:mt-8 text-center">
 							<Link
-								href="https://github.com/felipegcoutinho/openmonetis#-início-rápido"
+								href="https://github.com/marcelorossini/openmonetis-pe#-início-rápido"
 								target="_blank"
 								className="text-sm text-primary hover:underline"
 							>
@@ -549,10 +550,10 @@ export default async function Page() {
 									Para quem é?
 								</Badge>
 								<h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 md:mb-4 font-semibold">
-									Feito para quem gosta de controle
+									Feito para pequenos negócios que gostam de controle
 								</h2>
 								<p className="text-base md:text-lg text-muted-foreground px-4 sm:px-0">
-									O OpenMonetis não é para todo mundo.
+									O OpenMonetis PE não substitui um ERP completo.
 								</p>
 							</div>
 						</AnimateOnScroll>
@@ -600,11 +601,11 @@ export default async function Page() {
 							</h2>
 							<p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8">
 								Clone o repositório, rode localmente e veja se faz sentido pra
-								você. É open source e gratuito.
+								rotina da sua empresa. É open source e gratuito.
 							</p>
 							<div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
 								<Link
-									href="https://github.com/felipegcoutinho/openmonetis"
+									href="https://github.com/marcelorossini/openmonetis-pe"
 									target="_blank"
 									className="w-full sm:w-auto"
 								>
@@ -614,7 +615,7 @@ export default async function Page() {
 									</Button>
 								</Link>
 								<Link
-									href="https://github.com/felipegcoutinho/openmonetis#-início-rápido"
+									href="https://github.com/marcelorossini/openmonetis-pe#-início-rápido"
 									target="_blank"
 									className="w-full sm:w-auto"
 								>
@@ -640,7 +641,7 @@ export default async function Page() {
 							<div className="sm:col-span-2 md:col-span-1">
 								<Logo variant="compact" colorIcon />
 								<p className="text-sm text-muted-foreground mt-3 md:mt-4">
-									Projeto pessoal de gestão financeira. Open source e
+									Controle financeiro para pequenas empresas. Open source e
 									self-hosted.
 								</p>
 							</div>
@@ -650,7 +651,7 @@ export default async function Page() {
 								<ul className="space-y-2.5 md:space-y-3 text-sm text-muted-foreground">
 									<li>
 										<Link
-											href="https://github.com/felipegcoutinho/openmonetis"
+											href="https://github.com/marcelorossini/openmonetis-pe"
 											target="_blank"
 											className="hover:text-foreground transition-colors flex items-center gap-2"
 										>
@@ -660,7 +661,7 @@ export default async function Page() {
 									</li>
 									<li>
 										<Link
-											href="https://github.com/felipegcoutinho/openmonetis#readme"
+											href="https://github.com/marcelorossini/openmonetis-pe#readme"
 											target="_blank"
 											className="hover:text-foreground transition-colors"
 										>
@@ -669,7 +670,7 @@ export default async function Page() {
 									</li>
 									<li>
 										<Link
-											href="https://github.com/felipegcoutinho/openmonetis/issues"
+											href="https://github.com/marcelorossini/openmonetis-pe/issues"
 											target="_blank"
 											className="hover:text-foreground transition-colors"
 										>
@@ -698,7 +699,7 @@ export default async function Page() {
 
 						<div className="border-t mt-8 md:mt-12 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4 text-sm text-muted-foreground">
 							<p>
-								© {new Date().getFullYear()} openmonetis. Projeto open source
+								© {new Date().getFullYear()} openmonetis-pe. Projeto open source
 								sob licença.
 							</p>
 							<div className="flex items-center gap-2">

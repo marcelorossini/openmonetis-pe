@@ -1,4 +1,4 @@
-Contact: https://github.com/felipegcoutinho/openmonetis/security/advisories
+Contact: https://github.com/marcelorossini/openmonetis-pe/security/advisories
 Expires: 2027-04-04T00:00:00.000Z
 Preferred-Languages: pt-BR, en
-Canonical: https://openmonetis.com/.well-known/security.txt
+Canonical: https://openmonetis-pe.com/.well-known/security.txt
