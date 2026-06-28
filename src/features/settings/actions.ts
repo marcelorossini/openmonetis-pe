@@ -131,6 +131,8 @@ async function resetUserAppData(
 		.where(eq(schema.attachments.userId, userId));
 
 	await db.transaction(async (tx: typeof db) => {
+		// Regra do reset: toda nova tabela de dados do app vinculada ao usuário
+		// precisa entrar nesta limpeza, além das revalidações de resetAccountAction.
 		await tx
 			.delete(schema.payerShares)
 			.where(
@@ -147,8 +149,20 @@ async function resetUserAppData(
 			.delete(schema.integrationPartyMappings)
 			.where(eq(schema.integrationPartyMappings.userId, userId));
 		await tx
+			.delete(schema.integrationAccountMappings)
+			.where(eq(schema.integrationAccountMappings.userId, userId));
+		await tx
 			.delete(schema.integrationCategoryMappings)
 			.where(eq(schema.integrationCategoryMappings.userId, userId));
+		await tx
+			.delete(schema.importCategoryMappings)
+			.where(eq(schema.importCategoryMappings.userId, userId));
+		await tx
+			.delete(schema.dashboardNotificationStates)
+			.where(eq(schema.dashboardNotificationStates.userId, userId));
+		await tx
+			.delete(schema.establishmentLogos)
+			.where(eq(schema.establishmentLogos.userId, userId));
 		await tx
 			.delete(schema.apiTokens)
 			.where(eq(schema.apiTokens.userId, userId));
@@ -160,6 +174,9 @@ async function resetUserAppData(
 			.delete(schema.inboxItems)
 			.where(eq(schema.inboxItems.userId, userId));
 		await tx.delete(schema.budgets).where(eq(schema.budgets.userId, userId));
+		await tx
+			.delete(schema.financialTitles)
+			.where(eq(schema.financialTitles.userId, userId));
 		await tx
 			.delete(schema.installmentAnticipations)
 			.where(eq(schema.installmentAnticipations.userId, userId));
@@ -174,6 +191,7 @@ async function resetUserAppData(
 		await tx
 			.delete(schema.financialAccounts)
 			.where(eq(schema.financialAccounts.userId, userId));
+		await tx.delete(schema.parties).where(eq(schema.parties.userId, userId));
 		await tx.delete(schema.payers).where(eq(schema.payers.userId, userId));
 		await tx
 			.delete(schema.categories)
@@ -592,9 +610,11 @@ export async function resetAccountAction(
 		revalidateForEntity("categories", session.user.id);
 		revalidateForEntity("budgets", session.user.id);
 		revalidateForEntity("payers", session.user.id);
+		revalidateForEntity("parties", session.user.id);
 		revalidateForEntity("notes", session.user.id);
 		revalidateForEntity("transactions", session.user.id);
 		revalidateForEntity("inbox", session.user.id);
+		revalidateForEntity("financialTitles", session.user.id);
 		revalidatePath("/settings");
 		revalidatePath("/insights");
 		revalidatePath("/reports");
