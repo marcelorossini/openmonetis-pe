@@ -295,6 +295,13 @@
 			"when": 1782594000000,
 			"tag": "0042_add_financial_title_recurrence",
 			"breakpoints": true
+		},
+		{
+			"idx": 43,
+			"version": "7",
+			"when": 1782601200000,
+			"tag": "0043_add_inbox_reconciliation_metadata",
+			"breakpoints": true
 		}
 	]
 }
