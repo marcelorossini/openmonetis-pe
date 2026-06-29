@@ -1,4 +1,4 @@
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray, isNull } from "drizzle-orm";
 import { categories, integrationCategoryMappings } from "@/db/schema";
 import {
 	type CategoryType,
@@ -144,6 +144,44 @@ function assertCategoryCanBeDeleted(category: typeof categories.$inferSelect) {
 			`A categoria '${category.name}' é protegida e não pode ser removida.`,
 		);
 	}
+}
+
+function matchesProtectedCategoryApiIdentity(
+	category: typeof categories.$inferSelect,
+	input: CategoriesApiCreateInput | CategoriesApiUpdateInput,
+) {
+	return (
+		category.name === input.name &&
+		category.type === input.type &&
+		normalizeCategoryPartyKind(category.partyKind) ===
+			normalizeCategoryPartyKind(input.partyKind)
+	);
+}
+
+async function findProtectedCategoryIdForApiReuse(
+	userId: string,
+	input: CategoriesApiCreateInput,
+): Promise<string | null> {
+	if (!input.integration || !isProtectedCategoryName(input.name)) {
+		return null;
+	}
+
+	const existing = await db.query.categories.findFirst({
+		columns: {
+			id: true,
+		},
+		where: and(
+			eq(categories.userId, userId),
+			eq(categories.name, input.name),
+			eq(categories.type, input.type),
+			input.partyKind
+				? eq(categories.partyKind, input.partyKind)
+				: isNull(categories.partyKind),
+		),
+		orderBy: [asc(categories.createdAt), asc(categories.id)],
+	});
+
+	return existing?.id ?? null;
 }
 
 export async function fetchCategoryForApi(
@@ -333,13 +371,26 @@ export async function upsertCategoryFromApi({
 			integration,
 		);
 		if (mappedCategoryId) {
-			const updated = await updateCategoryForUser(
-				userId,
-				mappedCategoryId,
-				input,
-			);
-			if (!updated) {
-				throw new Error("Não foi possível atualizar a categoria integrada.");
+			const existing = await fetchCategoryRowForUser(userId, mappedCategoryId);
+			if (!existing) {
+				throw new Error("Categoria integrada não encontrada.");
+			}
+
+			if (isProtectedCategoryName(existing.name)) {
+				if (!matchesProtectedCategoryApiIdentity(existing, input)) {
+					throw new CategoryServiceError(
+						`A categoria '${existing.name}' é protegida e não pode ser editada.`,
+					);
+				}
+			} else {
+				const updated = await updateCategoryForUser(
+					userId,
+					mappedCategoryId,
+					input,
+				);
+				if (!updated) {
+					throw new Error("Não foi possível atualizar a categoria integrada.");
+				}
 			}
 
 			await saveCategoryIntegrationBinding(
@@ -351,6 +402,27 @@ export async function upsertCategoryFromApi({
 			const item = await fetchCategoryForApi(userId, mappedCategoryId);
 			if (!item) {
 				throw new Error("Categoria integrada não encontrada após atualização.");
+			}
+
+			return { mode: "updated", item };
+		}
+
+		const reusableProtectedCategoryId = await findProtectedCategoryIdForApiReuse(
+			userId,
+			input,
+		);
+		if (reusableProtectedCategoryId) {
+			await saveCategoryIntegrationBinding(
+				userId,
+				reusableProtectedCategoryId,
+				integration,
+			);
+
+			const item = await fetchCategoryForApi(userId, reusableProtectedCategoryId);
+			if (!item) {
+				throw new Error(
+					"Categoria protegida integrada não encontrada após vinculação.",
+				);
 			}
 
 			return { mode: "updated", item };
@@ -379,6 +451,20 @@ export async function updateCategoryFromApi({
 	categoryId: string;
 	input: CategoriesApiUpdateInput;
 }): Promise<CategoryApiItem | null> {
+	const existing = await fetchCategoryRowForUser(userId, categoryId);
+	if (!existing) return null;
+
+	if (isProtectedCategoryName(existing.name)) {
+		if (!input.integration || !matchesProtectedCategoryApiIdentity(existing, input)) {
+			throw new CategoryServiceError(
+				`A categoria '${existing.name}' é protegida e não pode ser editada.`,
+			);
+		}
+
+		await saveCategoryIntegrationBinding(userId, categoryId, input.integration);
+		return fetchCategoryForApi(userId, categoryId);
+	}
+
 	const updated = await updateCategoryForUser(userId, categoryId, input);
 	if (!updated) return null;
 

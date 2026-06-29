@@ -387,6 +387,16 @@ O `POST /api/categories` segue a mesma ideia:
 
 Sem `integration`, o `POST` sempre cria uma nova categoria.
 
+Exceção para categorias protegidas:
+
+- quando o payload identifica exatamente uma categoria protegida existente
+  (mesmo `name`, `type` e `partyKind`), o OpenMonetis reaproveita essa
+  categoria e apenas grava o binding externo
+- isso evita duplicidade em categorias reservadas como `Transferência interna`,
+  `Saldo inicial` e `Pagamentos`
+- os metadados da categoria protegida continuam imutáveis; apenas o vínculo de
+  integração pode ser anexado por esse fluxo
+
 ### Semântica do DELETE
 
 O `DELETE /api/parties/:partyId` não remove o registro fisicamente.
@@ -403,7 +413,8 @@ Já o `DELETE /api/categories/:categoryId` remove a categoria de fato.
 
 Exceção:
 
-- categorias protegidas continuam bloqueadas para edição e remoção
+- categorias protegidas continuam bloqueadas para edição manual de metadados e
+  para remoção
 - exemplos: `Transferência interna`, `Saldo inicial` e `Pagamentos`
 
 ### Leitura

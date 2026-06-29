@@ -1120,7 +1120,7 @@ export function buildPublicOpenApiDocument() {
 					tags: ["Categories"],
 					summary: "Cria ou atualiza uma categoria por binding externo",
 					description:
-						"Sem `integration`, sempre cria uma nova categoria. Com `integration`, o endpoint faz upsert por `userId + sourceApp + profileKey + externalKey`.",
+						"Sem `integration`, sempre cria uma nova categoria. Com `integration`, o endpoint faz upsert por `userId + sourceApp + profileKey + externalKey`. Quando o payload identifica exatamente uma categoria protegida existente, o binding externo é anexado nela sem alterar seus metadados.",
 					security: bearerSecurity,
 					requestBody: {
 						required: true,
@@ -1465,7 +1465,7 @@ export function buildPublicOpenApiDocument() {
 					tags: ["Categories"],
 					summary: "Atualiza uma categoria existente",
 					description:
-						"Também aceita o bloco `integration` para criar ou atualizar o binding externo da categoria.",
+						"Também aceita o bloco `integration` para criar ou atualizar o binding externo da categoria. Em categorias protegidas, apenas o binding pode ser anexado; os metadados continuam imutáveis.",
 					security: bearerSecurity,
 					parameters: [{ $ref: "#/components/parameters/CategoryId" }],
 					requestBody: {
